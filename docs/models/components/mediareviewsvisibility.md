@@ -2,6 +2,16 @@
 
 Whether or not the account has media reviews visibility enabled
 
+## Example Usage
+
+```go
+import (
+	"github.com/LukeHagar/plexgo/models/components"
+)
+
+value := components.MediaReviewsVisibilityNoOne
+```
+
 
 ## Values
 

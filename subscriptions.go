@@ -656,7 +656,7 @@ func (s *Subscriptions) ProcessSubscriptions(ctx context.Context, opts ...operat
 	switch {
 	case httpRes.StatusCode == 200:
 		res.Headers = httpRes.Header
-
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 403:
 		fallthrough
 	case httpRes.StatusCode >= 400 && httpRes.StatusCode < 500:
@@ -1299,6 +1299,7 @@ func (s *Subscriptions) CancelGrab(ctx context.Context, request operations.Cance
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 403:
 		fallthrough
 	case httpRes.StatusCode == 404:
@@ -1504,6 +1505,7 @@ func (s *Subscriptions) DeleteSubscription(ctx context.Context, request operatio
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 400:
 		fallthrough
 	case httpRes.StatusCode == 403:

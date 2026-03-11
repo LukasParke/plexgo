@@ -7,6 +7,16 @@ The visibility of this hub in recommendations:
   - shared: Visible to shared users
 
 
+## Example Usage
+
+```go
+import (
+	"github.com/LukeHagar/plexgo/models/operations"
+)
+
+value := operations.RecommendationsVisibilityAll
+```
+
 
 ## Values
 

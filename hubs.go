@@ -2035,6 +2035,7 @@ func (s *Hubs) ResetSectionDefaults(ctx context.Context, request operations.Rese
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 403:
 		fallthrough
 	case httpRes.StatusCode == 404:
@@ -2475,6 +2476,7 @@ func (s *Hubs) CreateCustomHub(ctx context.Context, request operations.CreateCus
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 400:
 		fallthrough
 	case httpRes.StatusCode == 403:
@@ -2913,6 +2915,7 @@ func (s *Hubs) DeleteCustomHub(ctx context.Context, request operations.DeleteCus
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 400:
 		fallthrough
 	case httpRes.StatusCode == 403:
@@ -3124,6 +3127,7 @@ func (s *Hubs) UpdateHubVisibility(ctx context.Context, request operations.Updat
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 403:
 		fallthrough
 	case httpRes.StatusCode == 404:

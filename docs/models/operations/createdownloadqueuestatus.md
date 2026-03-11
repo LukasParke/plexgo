@@ -8,6 +8,16 @@ The state of this queue
   - error: At least one item has encountered an error
 
 
+## Example Usage
+
+```go
+import (
+	"github.com/LukeHagar/plexgo/models/operations"
+)
+
+value := operations.CreateDownloadQueueStatusDeciding
+```
+
 
 ## Values
 

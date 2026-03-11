@@ -7,6 +7,16 @@ Whether this hub is visible on the home screen
   - shared: Visible to shared users
 
 
+## Example Usage
+
+```go
+import (
+	"github.com/LukeHagar/plexgo/models/components"
+)
+
+value := components.HomeVisibilityAll
+```
+
 
 ## Values
 

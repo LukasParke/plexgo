@@ -2,6 +2,16 @@
 
 The output format for the image; defaults to jpg
 
+## Example Usage
+
+```go
+import (
+	"github.com/LukeHagar/plexgo/models/operations"
+)
+
+value := operations.FormatJpg
+```
+
 
 ## Values
 

@@ -13,6 +13,16 @@ The status of this update.
 - done - This release is complete
 
 
+## Example Usage
+
+```go
+import (
+	"github.com/LukeHagar/plexgo/models/operations"
+)
+
+value := operations.GetUpdatesStatusStateAvailable
+```
+
 
 ## Values
 

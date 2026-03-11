@@ -2,6 +2,16 @@
 
 Your current mailing list status
 
+## Example Usage
+
+```go
+import (
+	"github.com/LukeHagar/plexgo/models/components"
+)
+
+value := components.MailingListStatusActive
+```
+
 
 ## Values
 

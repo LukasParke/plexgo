@@ -6,6 +6,16 @@ Stream type:
   - SUBTITLE = 3 (Subtitle stream)
 
 
+## Example Usage
+
+```go
+import (
+	"github.com/LukeHagar/plexgo/models/components"
+)
+
+value := components.StreamTypeVideo
+```
+
 
 ## Values
 

@@ -2,6 +2,16 @@
 
 Include IPv6 entries in the results
 
+## Example Usage
+
+```go
+import (
+	"github.com/LukeHagar/plexgo/models/operations"
+)
+
+value := operations.IncludeIPv6False
+```
+
 
 ## Values
 

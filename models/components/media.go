@@ -3,30 +3,63 @@
 package components
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/LukeHagar/plexgo/internal/utils"
 )
 
+// HasVoiceActivity - Voice activity detection availability flag returned by PMS.
+// PMS returns this as string values (`"0"` or `"1"`) instead of a JSON boolean.
+type HasVoiceActivity int
+
+const (
+	HasVoiceActivityFalse HasVoiceActivity = 0
+	HasVoiceActivityTrue  HasVoiceActivity = 1
+)
+
+func (e HasVoiceActivity) ToPointer() *HasVoiceActivity {
+	return &e
+}
+func (e *HasVoiceActivity) UnmarshalJSON(data []byte) error {
+	var v int
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case 0:
+		fallthrough
+	case 1:
+		*e = HasVoiceActivity(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for HasVoiceActivity: %v", v)
+	}
+}
+
 // Media - `Media` represents an one or more media files (parts) and is a child of a metadata item. There aren't necessarily any guaranteed attributes on media elements since the attributes will vary based on the type. The possible attributes are not documented here, but they typically have self-evident names. High-level media information that can be used for badging and flagging, such as `videoResolution` and codecs, is included on the media element.
 type Media struct {
-	AspectRatio           *float32       `json:"aspectRatio,omitempty"`
-	AudioChannels         *int           `json:"audioChannels,omitempty"`
-	AudioCodec            *string        `json:"audioCodec,omitempty"`
-	AudioProfile          *string        `json:"audioProfile,omitempty"`
-	Bitrate               *int           `json:"bitrate,omitempty"`
-	Container             *string        `json:"container,omitempty"`
-	Duration              *int           `json:"duration,omitempty"`
-	Has64bitOffsets       *bool          `json:"has64bitOffsets,omitempty"`
-	HasVoiceActivity      *bool          `json:"hasVoiceActivity,omitempty"`
-	Height                *int           `json:"height,omitempty"`
-	ID                    int64          `json:"id"`
-	OptimizedForStreaming *bool          `json:"optimizedForStreaming,omitempty"`
-	Part                  []Part         `json:"Part,omitempty"`
-	VideoCodec            *string        `json:"videoCodec,omitempty"`
-	VideoFrameRate        *string        `json:"videoFrameRate,omitempty"`
-	VideoProfile          *string        `json:"videoProfile,omitempty"`
-	VideoResolution       *string        `json:"videoResolution,omitempty"`
-	Width                 *int           `json:"width,omitempty"`
-	AdditionalProperties  map[string]any `additionalProperties:"true" json:"-"`
+	AspectRatio     *float32 `json:"aspectRatio,omitempty"`
+	AudioChannels   *int     `json:"audioChannels,omitempty"`
+	AudioCodec      *string  `json:"audioCodec,omitempty"`
+	AudioProfile    *string  `json:"audioProfile,omitempty"`
+	Bitrate         *int     `json:"bitrate,omitempty"`
+	Container       *string  `json:"container,omitempty"`
+	Duration        *int     `json:"duration,omitempty"`
+	Has64bitOffsets *bool    `json:"has64bitOffsets,omitempty"`
+	// Voice activity detection availability flag returned by PMS.
+	// PMS returns this as string values (`"0"` or `"1"`) instead of a JSON boolean.
+	//
+	HasVoiceActivity      *HasVoiceActivity `default:"0" json:"hasVoiceActivity"`
+	Height                *int              `json:"height,omitempty"`
+	ID                    int64             `json:"id"`
+	OptimizedForStreaming *bool             `json:"optimizedForStreaming,omitempty"`
+	Part                  []Part            `json:"Part,omitempty"`
+	VideoCodec            *string           `json:"videoCodec,omitempty"`
+	VideoFrameRate        *string           `json:"videoFrameRate,omitempty"`
+	VideoProfile          *string           `json:"videoProfile,omitempty"`
+	VideoResolution       *string           `json:"videoResolution,omitempty"`
+	Width                 *int              `json:"width,omitempty"`
+	AdditionalProperties  map[string]any    `additionalProperties:"true" json:"-"`
 }
 
 func (m Media) MarshalJSON() ([]byte, error) {
@@ -96,7 +129,7 @@ func (m *Media) GetHas64bitOffsets() *bool {
 	return m.Has64bitOffsets
 }
 
-func (m *Media) GetHasVoiceActivity() *bool {
+func (m *Media) GetHasVoiceActivity() *HasVoiceActivity {
 	if m == nil {
 		return nil
 	}

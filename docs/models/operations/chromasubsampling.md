@@ -7,6 +7,16 @@ Use the specified chroma subsambling.
   - 3: 444
 Defaults to 3 (444)
 
+## Example Usage
+
+```go
+import (
+	"github.com/LukeHagar/plexgo/models/operations"
+)
+
+value := operations.ChromaSubsamplingZero
+```
+
 
 ## Values
 

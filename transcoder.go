@@ -675,6 +675,7 @@ func (s *Transcoder) TriggerFallback(ctx context.Context, request operations.Tri
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 404:
 		fallthrough
 	case httpRes.StatusCode == 412:
@@ -886,6 +887,7 @@ func (s *Transcoder) TranscodeSubtitles(ctx context.Context, request operations.
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 400:
 		fallthrough
 	case httpRes.StatusCode == 403:

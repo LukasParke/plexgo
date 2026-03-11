@@ -8,6 +8,16 @@
 - `4`: Virtual
 
 
+## Example Usage
+
+```go
+import (
+	"github.com/LukeHagar/plexgo/models/operations"
+)
+
+value := operations.LineupTypeMinus1
+```
+
 
 ## Values
 

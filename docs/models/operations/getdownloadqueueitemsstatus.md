@@ -9,6 +9,16 @@ The state of the item:
   - expired: The transcoded item has timed out and is no longer available
 
 
+## Example Usage
+
+```go
+import (
+	"github.com/LukeHagar/plexgo/models/operations"
+)
+
+value := operations.GetDownloadQueueItemsStatusDeciding
+```
+
 
 ## Values
 

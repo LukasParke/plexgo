@@ -2,6 +2,16 @@
 
 The current state of the media.
 
+## Example Usage
+
+```go
+import (
+	"github.com/LukeHagar/plexgo/models/operations"
+)
+
+value := operations.StateStopped
+```
+
 
 ## Values
 

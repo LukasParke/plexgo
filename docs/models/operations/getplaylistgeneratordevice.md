@@ -5,4 +5,4 @@
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
-| `Profile`          | **string*          | :heavy_minus_sign: | N/A                |
+| `Profile`          | `*string`          | :heavy_minus_sign: | N/A                |

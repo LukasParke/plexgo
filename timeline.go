@@ -213,6 +213,7 @@ func (s *Timeline) MarkPlayed(ctx context.Context, request operations.MarkPlayed
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 400:
 		fallthrough
 	case httpRes.StatusCode == 404:
@@ -650,6 +651,7 @@ func (s *Timeline) Unscrobble(ctx context.Context, request operations.Unscrobble
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 400:
 		fallthrough
 	case httpRes.StatusCode == 404:

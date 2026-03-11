@@ -2,6 +2,16 @@
 
 The task name
 
+## Example Usage
+
+```go
+import (
+	"github.com/LukeHagar/plexgo/models/operations"
+)
+
+value := operations.PathParamButlerTaskAutomaticUpdates
+```
+
 
 ## Values
 

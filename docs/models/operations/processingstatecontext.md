@@ -2,6 +2,16 @@
 
 The error which could have occurred (or `good`)
 
+## Example Usage
+
+```go
+import (
+	"github.com/LukeHagar/plexgo/models/operations"
+)
+
+value := operations.ProcessingStateContextGood
+```
+
 
 ## Values
 

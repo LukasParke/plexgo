@@ -639,6 +639,7 @@ func (s *LiveTV) GetSessionPlaylistIndex(ctx context.Context, request operations
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 404:
 		fallthrough
 	case httpRes.StatusCode >= 400 && httpRes.StatusCode < 500:
@@ -842,6 +843,7 @@ func (s *LiveTV) GetSessionSegment(ctx context.Context, request operations.GetSe
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 404:
 		fallthrough
 	case httpRes.StatusCode >= 400 && httpRes.StatusCode < 500:

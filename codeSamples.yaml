@@ -284,6 +284,7 @@ actions:
 
                 res, err := s.Timeline.MarkPlayed(ctx, operations.MarkPlayedRequest{
                     Identifier: "<value>",
+                    Key: plexgo.Pointer("59398"),
                 })
                 if err != nil {
                     log.Fatal(err)
@@ -9038,7 +9039,9 @@ actions:
                     plexgo.WithSecurity("<YOUR_API_KEY_HERE>"),
                 )
 
-                res, err := s.LibraryPlaylists.CreatePlaylist(ctx, operations.CreatePlaylistRequest{})
+                res, err := s.LibraryPlaylists.CreatePlaylist(ctx, operations.CreatePlaylistRequest{
+                    URI: plexgo.Pointer("https://short-term-disconnection.name/"),
+                })
                 if err != nil {
                     log.Fatal(err)
                 }
@@ -9706,7 +9709,7 @@ actions:
 
                 s := plexgo.New(
                     plexgo.WithAccepts(components.AcceptsApplicationXML),
-                    plexgo.WithClientIdentifier("abc123"),
+                    plexgo.WithClientIdentifier("3381b62b-9ab7-4e37-827b-203e9809eb58"),
                     plexgo.WithSecurity("<YOUR_API_KEY_HERE>"),
                 )
 
@@ -9757,7 +9760,7 @@ actions:
                 )
 
                 res, err := s.General.GetSourceConnectionInformation(ctx, operations.GetSourceConnectionInformationRequest{
-                    Source: "<value>",
+                    Source: "server://client-identifier",
                     Refresh: components.BoolIntTrue.ToPointer(),
                 })
                 if err != nil {
@@ -10346,7 +10349,7 @@ actions:
 
                 s := plexgo.New(
                     plexgo.WithAccepts(components.AcceptsApplicationXML),
-                    plexgo.WithClientIdentifier("abc123"),
+                    plexgo.WithClientIdentifier("3381b62b-9ab7-4e37-827b-203e9809eb58"),
                     plexgo.WithProduct("Plex for Roku"),
                     plexgo.WithVersion("2.4.1"),
                     plexgo.WithPlatform("Roku"),
@@ -10354,7 +10357,7 @@ actions:
                     plexgo.WithDevice("Roku 3"),
                     plexgo.WithModel("4200X"),
                     plexgo.WithDeviceVendor("Roku"),
-                    plexgo.WithDeviceName("Living Room TV"),
+                    plexgo.WithDeviceName("Chrome"),
                     plexgo.WithMarketplace("googlePlay"),
                     plexgo.WithSecurity("<YOUR_API_KEY_HERE>"),
                 )
@@ -10388,7 +10391,7 @@ actions:
 
                 s := plexgo.New(
                     plexgo.WithAccepts(components.AcceptsApplicationXML),
-                    plexgo.WithClientIdentifier("abc123"),
+                    plexgo.WithClientIdentifier("3381b62b-9ab7-4e37-827b-203e9809eb58"),
                     plexgo.WithProduct("Plex for Roku"),
                     plexgo.WithVersion("2.4.1"),
                     plexgo.WithPlatform("Roku"),

@@ -643,6 +643,7 @@ func (s *DVRs) DeleteDVR(ctx context.Context, request operations.DeleteDVRReques
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode >= 400 && httpRes.StatusCode < 500:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -1748,6 +1749,7 @@ func (s *DVRs) StopDVRReload(ctx context.Context, request operations.StopDVRRelo
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode >= 400 && httpRes.StatusCode < 500:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -1950,7 +1952,7 @@ func (s *DVRs) ReloadGuide(ctx context.Context, request operations.ReloadGuideRe
 	switch {
 	case httpRes.StatusCode == 200:
 		res.Headers = httpRes.Header
-
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode >= 400 && httpRes.StatusCode < 500:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {

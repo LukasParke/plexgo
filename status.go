@@ -853,6 +853,7 @@ func (s *Status) TerminateSession(ctx context.Context, request operations.Termin
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 401:
 		fallthrough
 	case httpRes.StatusCode == 403:

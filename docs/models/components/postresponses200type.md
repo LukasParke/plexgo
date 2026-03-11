@@ -1,5 +1,15 @@
 # PostResponses200Type
 
+## Example Usage
+
+```go
+import (
+	"github.com/LukeHagar/plexgo/models/components"
+)
+
+value := components.PostResponses200TypeIntro
+```
+
 
 ## Values
 

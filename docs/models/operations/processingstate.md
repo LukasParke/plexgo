@@ -2,6 +2,16 @@
 
 The state of processing if this generator is part of an optimizer playlist
 
+## Example Usage
+
+```go
+import (
+	"github.com/LukeHagar/plexgo/models/operations"
+)
+
+value := operations.ProcessingStateProcessed
+```
+
 
 ## Values
 

@@ -192,6 +192,7 @@ func (s *Butler) StopTasks(ctx context.Context, opts ...operations.Option) (*ope
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode >= 400 && httpRes.StatusCode < 500:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -587,6 +588,7 @@ func (s *Butler) StartTasks(ctx context.Context, opts ...operations.Option) (*op
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode >= 400 && httpRes.StatusCode < 500:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -788,6 +790,7 @@ func (s *Butler) StopTask(ctx context.Context, request operations.StopTaskReques
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 404:
 		fallthrough
 	case httpRes.StatusCode >= 400 && httpRes.StatusCode < 500:
@@ -993,6 +996,7 @@ func (s *Butler) StartTask(ctx context.Context, request operations.StartTaskRequ
 	case httpRes.StatusCode == 200:
 		fallthrough
 	case httpRes.StatusCode == 202:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 404:
 		fallthrough
 	case httpRes.StatusCode >= 400 && httpRes.StatusCode < 500:

@@ -1,5 +1,15 @@
 # PathParamElement
 
+## Example Usage
+
+```go
+import (
+	"github.com/LukeHagar/plexgo/models/operations"
+)
+
+value := operations.PathParamElementThumb
+```
+
 
 ## Values
 

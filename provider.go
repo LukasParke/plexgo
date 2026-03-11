@@ -417,6 +417,7 @@ func (s *Provider) AddProvider(ctx context.Context, request operations.AddProvid
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 400:
 		fallthrough
 	case httpRes.StatusCode >= 400 && httpRes.StatusCode < 500:
@@ -604,6 +605,7 @@ func (s *Provider) RefreshProviders(ctx context.Context, opts ...operations.Opti
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode >= 400 && httpRes.StatusCode < 500:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -805,6 +807,7 @@ func (s *Provider) DeleteMediaProvider(ctx context.Context, request operations.D
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 400:
 		fallthrough
 	case httpRes.StatusCode == 403:

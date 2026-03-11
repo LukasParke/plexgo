@@ -213,6 +213,7 @@ func (s *Updater) ApplyUpdates(ctx context.Context, request operations.ApplyUpda
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 400:
 		fallthrough
 	case httpRes.StatusCode >= 400 && httpRes.StatusCode < 500:
@@ -422,6 +423,7 @@ func (s *Updater) CheckUpdates(ctx context.Context, request operations.CheckUpda
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode >= 400 && httpRes.StatusCode < 500:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {

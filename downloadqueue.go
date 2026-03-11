@@ -1316,6 +1316,7 @@ func (s *DownloadQueue) GetDownloadQueueMedia(ctx context.Context, request opera
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 503:
 		res.Headers = httpRes.Header
 		rawBody, err := utils.ConsumeRawBody(httpRes)
@@ -1524,6 +1525,7 @@ func (s *DownloadQueue) RemoveDownloadQueueItems(ctx context.Context, request op
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode >= 400 && httpRes.StatusCode < 500:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -1950,6 +1952,7 @@ func (s *DownloadQueue) RestartProcessingDownloadQueueItems(ctx context.Context,
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode >= 400 && httpRes.StatusCode < 500:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {

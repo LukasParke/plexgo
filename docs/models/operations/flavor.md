@@ -5,6 +5,16 @@
 - `2`: The country has a single postal code, returned in `example`.
 
 
+## Example Usage
+
+```go
+import (
+	"github.com/LukeHagar/plexgo/models/operations"
+)
+
+value := operations.FlavorZero
+```
+
 
 ## Values
 

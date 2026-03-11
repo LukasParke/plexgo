@@ -212,6 +212,7 @@ func (s *Rate) SetRating(ctx context.Context, request operations.SetRatingReques
 
 	switch {
 	case httpRes.StatusCode == 200:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 400:
 		fallthrough
 	case httpRes.StatusCode == 404:

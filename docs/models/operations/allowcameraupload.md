@@ -2,6 +2,16 @@
 
 Indicates if the user is allowed to upload from a camera.
 
+## Example Usage
+
+```go
+import (
+	"github.com/LukeHagar/plexgo/models/operations"
+)
+
+value := operations.AllowCameraUploadDisable
+```
+
 
 ## Values
 

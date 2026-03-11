@@ -2,6 +2,16 @@
 
 The type of this generator
 
+## Example Usage
+
+```go
+import (
+	"github.com/LukeHagar/plexgo/models/operations"
+)
+
+value := operations.GetPlaylistGeneratorTypeMinus1
+```
+
 
 ## Values
 
