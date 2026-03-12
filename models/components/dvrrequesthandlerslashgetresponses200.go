@@ -53,6 +53,9 @@ func (d *DvrRequestHandlerSlashGetResponses200MediaContainerMediaContainer) GetS
 	return d.Status
 }
 
+// #region class-body-dvrrequesthandlerslashgetresponses200mediacontainermediacontainer
+// #endregion class-body-dvrrequesthandlerslashgetresponses200mediacontainermediacontainer
+
 type Dvr struct {
 	Device   []Device `json:"Device,omitempty"`
 	Key      *string  `json:"key,omitempty"`
@@ -115,6 +118,9 @@ func (d *DvrRequestHandlerSlashGetResponses200MediaContainer) GetDvr() []Dvr {
 	return d.Dvr
 }
 
+// #region class-body-dvrrequesthandlerslashgetresponses200mediacontainer
+// #endregion class-body-dvrrequesthandlerslashgetresponses200mediacontainer
+
 // DvrRequestHandlerSlashGetResponses200 - OK
 type DvrRequestHandlerSlashGetResponses200 struct {
 	MediaContainer *DvrRequestHandlerSlashGetResponses200MediaContainer `json:"MediaContainer,omitempty"`
@@ -126,3 +132,6 @@ func (d *DvrRequestHandlerSlashGetResponses200) GetMediaContainer() *DvrRequestH
 	}
 	return d.MediaContainer
 }
+
+// #region class-body-dvrrequesthandlerslashgetresponses200
+// #endregion class-body-dvrrequesthandlerslashgetresponses200

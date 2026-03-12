@@ -1,23 +1,33 @@
 # MediaContainerWithDecisionHasVoiceActivity
 
 Voice activity detection availability flag returned by PMS.
-PMS returns this as string values (`"0"` or `"1"`) instead of a JSON boolean.
+PMS may return this as a boolean or as string values (`"0"` or `"1"`).
 
 
-## Example Usage
+
+## Supported Types
+
+### 
 
 ```go
-import (
-	"github.com/LukeHagar/plexgo/models/components"
-)
-
-value := components.MediaContainerWithDecisionHasVoiceActivityFalse
+mediaContainerWithDecisionHasVoiceActivity := components.CreateMediaContainerWithDecisionHasVoiceActivityBoolean(bool{/* values here */})
 ```
 
+### HasVoiceActivity2
 
-## Values
+```go
+mediaContainerWithDecisionHasVoiceActivity := components.CreateMediaContainerWithDecisionHasVoiceActivityHasVoiceActivity2(components.HasVoiceActivity2{/* values here */})
+```
 
-| Name                                              | Value                                             |
-| ------------------------------------------------- | ------------------------------------------------- |
-| `MediaContainerWithDecisionHasVoiceActivityFalse` | 0                                                 |
-| `MediaContainerWithDecisionHasVoiceActivityTrue`  | 1                                                 |
+## Union Discrimination
+
+Use the `Type` field to determine which variant is active, then access the corresponding field:
+
+```go
+switch mediaContainerWithDecisionHasVoiceActivity.Type {
+	case components.MediaContainerWithDecisionHasVoiceActivityTypeBoolean:
+		// mediaContainerWithDecisionHasVoiceActivity.Boolean is populated
+	case components.MediaContainerWithDecisionHasVoiceActivityTypeHasVoiceActivity2:
+		// mediaContainerWithDecisionHasVoiceActivity.HasVoiceActivity2 is populated
+}
+```

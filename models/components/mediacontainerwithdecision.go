@@ -4,6 +4,7 @@ package components
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/LukeHagar/plexgo/internal/utils"
 	"github.com/LukeHagar/plexgo/types"
@@ -22,32 +23,95 @@ func (m *MediaContainerWithDecisionGuids) GetID() string {
 	return m.ID
 }
 
-// MediaContainerWithDecisionHasVoiceActivity - Voice activity detection availability flag returned by PMS.
-// PMS returns this as string values (`"0"` or `"1"`) instead of a JSON boolean.
-type MediaContainerWithDecisionHasVoiceActivity int
+type HasVoiceActivity2 string
 
 const (
-	MediaContainerWithDecisionHasVoiceActivityFalse MediaContainerWithDecisionHasVoiceActivity = 0
-	MediaContainerWithDecisionHasVoiceActivityTrue  MediaContainerWithDecisionHasVoiceActivity = 1
+	HasVoiceActivity2Zero HasVoiceActivity2 = "0"
+	HasVoiceActivity2One  HasVoiceActivity2 = "1"
 )
 
-func (e MediaContainerWithDecisionHasVoiceActivity) ToPointer() *MediaContainerWithDecisionHasVoiceActivity {
+func (e HasVoiceActivity2) ToPointer() *HasVoiceActivity2 {
 	return &e
 }
-func (e *MediaContainerWithDecisionHasVoiceActivity) UnmarshalJSON(data []byte) error {
-	var v int
+func (e *HasVoiceActivity2) UnmarshalJSON(data []byte) error {
+	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
-	case 0:
+	case "0":
 		fallthrough
-	case 1:
-		*e = MediaContainerWithDecisionHasVoiceActivity(v)
+	case "1":
+		*e = HasVoiceActivity2(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for MediaContainerWithDecisionHasVoiceActivity: %v", v)
+		return fmt.Errorf("invalid value for HasVoiceActivity2: %v", v)
 	}
+}
+
+type MediaContainerWithDecisionHasVoiceActivityType string
+
+const (
+	MediaContainerWithDecisionHasVoiceActivityTypeBoolean           MediaContainerWithDecisionHasVoiceActivityType = "boolean"
+	MediaContainerWithDecisionHasVoiceActivityTypeHasVoiceActivity2 MediaContainerWithDecisionHasVoiceActivityType = "hasVoiceActivity_2"
+)
+
+// MediaContainerWithDecisionHasVoiceActivity - Voice activity detection availability flag returned by PMS.
+// PMS may return this as a boolean or as string values (`"0"` or `"1"`).
+type MediaContainerWithDecisionHasVoiceActivity struct {
+	Boolean           *bool              `queryParam:"inline" union:"member"`
+	HasVoiceActivity2 *HasVoiceActivity2 `queryParam:"inline" union:"member"`
+
+	Type MediaContainerWithDecisionHasVoiceActivityType
+}
+
+func CreateMediaContainerWithDecisionHasVoiceActivityBoolean(boolean bool) MediaContainerWithDecisionHasVoiceActivity {
+	typ := MediaContainerWithDecisionHasVoiceActivityTypeBoolean
+
+	return MediaContainerWithDecisionHasVoiceActivity{
+		Boolean: &boolean,
+		Type:    typ,
+	}
+}
+
+func CreateMediaContainerWithDecisionHasVoiceActivityHasVoiceActivity2(hasVoiceActivity2 HasVoiceActivity2) MediaContainerWithDecisionHasVoiceActivity {
+	typ := MediaContainerWithDecisionHasVoiceActivityTypeHasVoiceActivity2
+
+	return MediaContainerWithDecisionHasVoiceActivity{
+		HasVoiceActivity2: &hasVoiceActivity2,
+		Type:              typ,
+	}
+}
+
+func (u *MediaContainerWithDecisionHasVoiceActivity) UnmarshalJSON(data []byte) error {
+
+	var boolean bool = false
+	if err := utils.UnmarshalJSON(data, &boolean, "", true, nil); err == nil {
+		u.Boolean = &boolean
+		u.Type = MediaContainerWithDecisionHasVoiceActivityTypeBoolean
+		return nil
+	}
+
+	var hasVoiceActivity2 HasVoiceActivity2 = HasVoiceActivity2("")
+	if err := utils.UnmarshalJSON(data, &hasVoiceActivity2, "", true, nil); err == nil {
+		u.HasVoiceActivity2 = &hasVoiceActivity2
+		u.Type = MediaContainerWithDecisionHasVoiceActivityTypeHasVoiceActivity2
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for MediaContainerWithDecisionHasVoiceActivity", string(data))
+}
+
+func (u MediaContainerWithDecisionHasVoiceActivity) MarshalJSON() ([]byte, error) {
+	if u.Boolean != nil {
+		return utils.MarshalJSON(u.Boolean, "", true)
+	}
+
+	if u.HasVoiceActivity2 != nil {
+		return utils.MarshalJSON(u.HasVoiceActivity2, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type MediaContainerWithDecisionHasVoiceActivity: all fields are null")
 }
 
 // MediaContainerWithDecisionStreamType - Stream type:
@@ -863,9 +927,9 @@ type MediaContainerWithDecisionMedia struct {
 	Duration        *int     `json:"duration,omitempty"`
 	Has64bitOffsets *bool    `json:"has64bitOffsets,omitempty"`
 	// Voice activity detection availability flag returned by PMS.
-	// PMS returns this as string values (`"0"` or `"1"`) instead of a JSON boolean.
+	// PMS may return this as a boolean or as string values (`"0"` or `"1"`).
 	//
-	HasVoiceActivity      *MediaContainerWithDecisionHasVoiceActivity `default:"0" json:"hasVoiceActivity"`
+	HasVoiceActivity      *MediaContainerWithDecisionHasVoiceActivity `json:"hasVoiceActivity,omitempty"`
 	Height                *int                                        `json:"height,omitempty"`
 	ID                    int64                                       `json:"id"`
 	OptimizedForStreaming *bool                                       `json:"optimizedForStreaming,omitempty"`
@@ -1046,6 +1110,186 @@ func (m *MediaContainerWithDecisionMedia) GetAdditionalProperties() map[string]a
 	return m.AdditionalProperties
 }
 
+type MediaContainerWithDecisionSkipChildren2 string
+
+const (
+	MediaContainerWithDecisionSkipChildren2Zero MediaContainerWithDecisionSkipChildren2 = "0"
+	MediaContainerWithDecisionSkipChildren2One  MediaContainerWithDecisionSkipChildren2 = "1"
+)
+
+func (e MediaContainerWithDecisionSkipChildren2) ToPointer() *MediaContainerWithDecisionSkipChildren2 {
+	return &e
+}
+func (e *MediaContainerWithDecisionSkipChildren2) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "0":
+		fallthrough
+	case "1":
+		*e = MediaContainerWithDecisionSkipChildren2(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for MediaContainerWithDecisionSkipChildren2: %v", v)
+	}
+}
+
+type MediaContainerWithDecisionSkipChildrenType string
+
+const (
+	MediaContainerWithDecisionSkipChildrenTypeBoolean                                 MediaContainerWithDecisionSkipChildrenType = "boolean"
+	MediaContainerWithDecisionSkipChildrenTypeMediaContainerWithDecisionSkipChildren2 MediaContainerWithDecisionSkipChildrenType = "MediaContainerWithDecision_skipChildren_2"
+)
+
+// MediaContainerWithDecisionSkipChildren - When found on a show item, indicates that the children (seasons) should be skipped in favor of the grandchildren (episodes). Useful for mini-series, etc.
+type MediaContainerWithDecisionSkipChildren struct {
+	Boolean                                 *bool                                    `queryParam:"inline" union:"member"`
+	MediaContainerWithDecisionSkipChildren2 *MediaContainerWithDecisionSkipChildren2 `queryParam:"inline" union:"member"`
+
+	Type MediaContainerWithDecisionSkipChildrenType
+}
+
+func CreateMediaContainerWithDecisionSkipChildrenBoolean(boolean bool) MediaContainerWithDecisionSkipChildren {
+	typ := MediaContainerWithDecisionSkipChildrenTypeBoolean
+
+	return MediaContainerWithDecisionSkipChildren{
+		Boolean: &boolean,
+		Type:    typ,
+	}
+}
+
+func CreateMediaContainerWithDecisionSkipChildrenMediaContainerWithDecisionSkipChildren2(mediaContainerWithDecisionSkipChildren2 MediaContainerWithDecisionSkipChildren2) MediaContainerWithDecisionSkipChildren {
+	typ := MediaContainerWithDecisionSkipChildrenTypeMediaContainerWithDecisionSkipChildren2
+
+	return MediaContainerWithDecisionSkipChildren{
+		MediaContainerWithDecisionSkipChildren2: &mediaContainerWithDecisionSkipChildren2,
+		Type:                                    typ,
+	}
+}
+
+func (u *MediaContainerWithDecisionSkipChildren) UnmarshalJSON(data []byte) error {
+
+	var boolean bool = false
+	if err := utils.UnmarshalJSON(data, &boolean, "", true, nil); err == nil {
+		u.Boolean = &boolean
+		u.Type = MediaContainerWithDecisionSkipChildrenTypeBoolean
+		return nil
+	}
+
+	var mediaContainerWithDecisionSkipChildren2 MediaContainerWithDecisionSkipChildren2 = MediaContainerWithDecisionSkipChildren2("")
+	if err := utils.UnmarshalJSON(data, &mediaContainerWithDecisionSkipChildren2, "", true, nil); err == nil {
+		u.MediaContainerWithDecisionSkipChildren2 = &mediaContainerWithDecisionSkipChildren2
+		u.Type = MediaContainerWithDecisionSkipChildrenTypeMediaContainerWithDecisionSkipChildren2
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for MediaContainerWithDecisionSkipChildren", string(data))
+}
+
+func (u MediaContainerWithDecisionSkipChildren) MarshalJSON() ([]byte, error) {
+	if u.Boolean != nil {
+		return utils.MarshalJSON(u.Boolean, "", true)
+	}
+
+	if u.MediaContainerWithDecisionSkipChildren2 != nil {
+		return utils.MarshalJSON(u.MediaContainerWithDecisionSkipChildren2, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type MediaContainerWithDecisionSkipChildren: all fields are null")
+}
+
+type MediaContainerWithDecisionSkipParent2 string
+
+const (
+	MediaContainerWithDecisionSkipParent2Zero MediaContainerWithDecisionSkipParent2 = "0"
+	MediaContainerWithDecisionSkipParent2One  MediaContainerWithDecisionSkipParent2 = "1"
+)
+
+func (e MediaContainerWithDecisionSkipParent2) ToPointer() *MediaContainerWithDecisionSkipParent2 {
+	return &e
+}
+func (e *MediaContainerWithDecisionSkipParent2) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "0":
+		fallthrough
+	case "1":
+		*e = MediaContainerWithDecisionSkipParent2(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for MediaContainerWithDecisionSkipParent2: %v", v)
+	}
+}
+
+type MediaContainerWithDecisionSkipParentType string
+
+const (
+	MediaContainerWithDecisionSkipParentTypeBoolean                               MediaContainerWithDecisionSkipParentType = "boolean"
+	MediaContainerWithDecisionSkipParentTypeMediaContainerWithDecisionSkipParent2 MediaContainerWithDecisionSkipParentType = "MediaContainerWithDecision_skipParent_2"
+)
+
+// MediaContainerWithDecisionSkipParent - When present on an episode or track item, indicates parent should be skipped in favor of grandparent (show).
+type MediaContainerWithDecisionSkipParent struct {
+	Boolean                               *bool                                  `queryParam:"inline" union:"member"`
+	MediaContainerWithDecisionSkipParent2 *MediaContainerWithDecisionSkipParent2 `queryParam:"inline" union:"member"`
+
+	Type MediaContainerWithDecisionSkipParentType
+}
+
+func CreateMediaContainerWithDecisionSkipParentBoolean(boolean bool) MediaContainerWithDecisionSkipParent {
+	typ := MediaContainerWithDecisionSkipParentTypeBoolean
+
+	return MediaContainerWithDecisionSkipParent{
+		Boolean: &boolean,
+		Type:    typ,
+	}
+}
+
+func CreateMediaContainerWithDecisionSkipParentMediaContainerWithDecisionSkipParent2(mediaContainerWithDecisionSkipParent2 MediaContainerWithDecisionSkipParent2) MediaContainerWithDecisionSkipParent {
+	typ := MediaContainerWithDecisionSkipParentTypeMediaContainerWithDecisionSkipParent2
+
+	return MediaContainerWithDecisionSkipParent{
+		MediaContainerWithDecisionSkipParent2: &mediaContainerWithDecisionSkipParent2,
+		Type:                                  typ,
+	}
+}
+
+func (u *MediaContainerWithDecisionSkipParent) UnmarshalJSON(data []byte) error {
+
+	var boolean bool = false
+	if err := utils.UnmarshalJSON(data, &boolean, "", true, nil); err == nil {
+		u.Boolean = &boolean
+		u.Type = MediaContainerWithDecisionSkipParentTypeBoolean
+		return nil
+	}
+
+	var mediaContainerWithDecisionSkipParent2 MediaContainerWithDecisionSkipParent2 = MediaContainerWithDecisionSkipParent2("")
+	if err := utils.UnmarshalJSON(data, &mediaContainerWithDecisionSkipParent2, "", true, nil); err == nil {
+		u.MediaContainerWithDecisionSkipParent2 = &mediaContainerWithDecisionSkipParent2
+		u.Type = MediaContainerWithDecisionSkipParentTypeMediaContainerWithDecisionSkipParent2
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for MediaContainerWithDecisionSkipParent", string(data))
+}
+
+func (u MediaContainerWithDecisionSkipParent) MarshalJSON() ([]byte, error) {
+	if u.Boolean != nil {
+		return utils.MarshalJSON(u.Boolean, "", true)
+	}
+
+	if u.MediaContainerWithDecisionSkipParent2 != nil {
+		return utils.MarshalJSON(u.MediaContainerWithDecisionSkipParent2, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type MediaContainerWithDecisionSkipParent: all fields are null")
+}
+
 // MediaContainerWithDecisionMetadata - Items in a library are referred to as "metadata items." These metadata items are distinct from "media items" which represent actual instances of media that can be consumed. Consider a TV library that has a single video file in it for a particular episode of a show. The library has a single media item, but it has three metadata items: one for the show, one for the season, and one for the episode. Consider a movie library that has two video files in it: the same movie, but two different resolutions. The library has a single metadata item for the movie, but that metadata item has two media items, one for each resolution. Additionally a "media item" will have one or more "media parts" where the the parts are intended to be watched together, such as a CD1 and CD2 parts of the same movie.
 //
 // Note that when a metadata item has multiple media items, those media items should be isomorphic. That is, a 4K version and 1080p version of a movie are different versions of the same movie. They have the same duration, same summary, same rating, etc. and they can generally be considered interchangeable. A theatrical release vs. director's cut vs. unrated version on the other hand would be separate metadata items.
@@ -1151,9 +1395,9 @@ type MediaContainerWithDecisionMetadata struct {
 	// Used by old clients to provide nested menus allowing for primative (but structured) navigation.
 	Secondary *bool `json:"secondary,omitempty"`
 	// When found on a show item, indicates that the children (seasons) should be skipped in favor of the grandchildren (episodes). Useful for mini-series, etc.
-	SkipChildren *bool `json:"skipChildren,omitempty"`
+	SkipChildren *MediaContainerWithDecisionSkipChildren `json:"skipChildren,omitempty"`
 	// When present on an episode or track item, indicates parent should be skipped in favor of grandparent (show).
-	SkipParent *bool `json:"skipParent,omitempty"`
+	SkipParent *MediaContainerWithDecisionSkipParent `json:"skipParent,omitempty"`
 	// Typically only seen in metadata at a library's top level
 	Sort []Sort `json:"Sort,omitempty"`
 	// When present, the studio or label which produced an item (e.g. movie studio for movies, record label for albums).
@@ -1575,14 +1819,14 @@ func (m *MediaContainerWithDecisionMetadata) GetSecondary() *bool {
 	return m.Secondary
 }
 
-func (m *MediaContainerWithDecisionMetadata) GetSkipChildren() *bool {
+func (m *MediaContainerWithDecisionMetadata) GetSkipChildren() *MediaContainerWithDecisionSkipChildren {
 	if m == nil {
 		return nil
 	}
 	return m.SkipChildren
 }
 
-func (m *MediaContainerWithDecisionMetadata) GetSkipParent() *bool {
+func (m *MediaContainerWithDecisionMetadata) GetSkipParent() *MediaContainerWithDecisionSkipParent {
 	if m == nil {
 		return nil
 	}

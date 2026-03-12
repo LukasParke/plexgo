@@ -1952,6 +1952,7 @@ func (s *DVRs) ReloadGuide(ctx context.Context, request operations.ReloadGuideRe
 	switch {
 	case httpRes.StatusCode == 200:
 		res.Headers = httpRes.Header
+
 		utils.DrainBody(httpRes)
 	case httpRes.StatusCode >= 400 && httpRes.StatusCode < 500:
 		rawBody, err := utils.ConsumeRawBody(httpRes)

@@ -1,23 +1,33 @@
 # HasVoiceActivity
 
 Voice activity detection availability flag returned by PMS.
-PMS returns this as string values (`"0"` or `"1"`) instead of a JSON boolean.
+PMS may return this as a boolean or as string values (`"0"` or `"1"`).
 
 
-## Example Usage
+
+## Supported Types
+
+### 
 
 ```go
-import (
-	"github.com/LukeHagar/plexgo/models/components"
-)
-
-value := components.HasVoiceActivityFalse
+hasVoiceActivity := components.CreateHasVoiceActivityBoolean(bool{/* values here */})
 ```
 
+### Two
 
-## Values
+```go
+hasVoiceActivity := components.CreateHasVoiceActivityTwo(components.Two{/* values here */})
+```
 
-| Name                    | Value                   |
-| ----------------------- | ----------------------- |
-| `HasVoiceActivityFalse` | 0                       |
-| `HasVoiceActivityTrue`  | 1                       |
+## Union Discrimination
+
+Use the `Type` field to determine which variant is active, then access the corresponding field:
+
+```go
+switch hasVoiceActivity.Type {
+	case components.HasVoiceActivityTypeBoolean:
+		// hasVoiceActivity.Boolean is populated
+	case components.HasVoiceActivityTypeTwo:
+		// hasVoiceActivity.Two is populated
+}
+```

@@ -104,6 +104,9 @@ func (h *HistoryAllGetResponses200Metadata) GetViewedAt() *int64 {
 	return h.ViewedAt
 }
 
+// #region class-body-historyallgetresponses200metadata
+// #endregion class-body-historyallgetresponses200metadata
+
 // HistoryAllGetResponses200MediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
 // Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
 // The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
@@ -154,6 +157,9 @@ func (h *HistoryAllGetResponses200MediaContainer) GetMetadata() []HistoryAllGetR
 	return h.Metadata
 }
 
+// #region class-body-historyallgetresponses200mediacontainer
+// #endregion class-body-historyallgetresponses200mediacontainer
+
 // HistoryAllGetResponses200 - OK
 type HistoryAllGetResponses200 struct {
 	MediaContainer *HistoryAllGetResponses200MediaContainer `json:"MediaContainer,omitempty"`
@@ -165,3 +171,6 @@ func (h *HistoryAllGetResponses200) GetMediaContainer() *HistoryAllGetResponses2
 	}
 	return h.MediaContainer
 }
+
+// #region class-body-historyallgetresponses200
+// #endregion class-body-historyallgetresponses200

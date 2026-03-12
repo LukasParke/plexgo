@@ -152,6 +152,9 @@ func (p *PostResponses200MediaContainer) GetAdditionalProperties() map[string]an
 	return p.AdditionalProperties
 }
 
+// #region class-body-postresponses200mediacontainer
+// #endregion class-body-postresponses200mediacontainer
+
 // PostResponses200 - OK
 type PostResponses200 struct {
 	MediaContainer *PostResponses200MediaContainer `json:"MediaContainer,omitempty"`
@@ -163,3 +166,6 @@ func (p *PostResponses200) GetMediaContainer() *PostResponses200MediaContainer {
 	}
 	return p.MediaContainer
 }
+
+// #region class-body-postresponses200
+// #endregion class-body-postresponses200

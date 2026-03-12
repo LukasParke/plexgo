@@ -656,6 +656,7 @@ func (s *Subscriptions) ProcessSubscriptions(ctx context.Context, opts ...operat
 	switch {
 	case httpRes.StatusCode == 200:
 		res.Headers = httpRes.Header
+
 		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 403:
 		fallthrough

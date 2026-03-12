@@ -16709,6 +16709,7 @@ func (s *Library) GetMediaPart(ctx context.Context, request operations.GetMediaP
 	switch {
 	case httpRes.StatusCode == 200:
 		res.Headers = httpRes.Header
+
 		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 403:
 		fallthrough

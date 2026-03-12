@@ -29,12 +29,14 @@ generation:
     generateNewTests: false
     skipResponseBodyAssertions: false
 go:
-  version: 0.28.3
+  version: 0.28.4
   additionalDependencies: {}
   allowUnknownFieldsInWeakUnions: false
   baseErrorName: PlexAPIError
   clientServerStatusCodesAsErrors: true
   defaultErrorName: SDKError
+  enableCustomCodeRegions: false
+  enableSkipDeserialization: false
   flattenGlobalSecurity: true
   forwardCompatibleEnumsByDefault: false
   forwardCompatibleUnionsByDefault: "false"

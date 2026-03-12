@@ -121,6 +121,9 @@ func (s *SlashGetResponses200MediaContainer) GetViewMode() *int64 {
 	return s.ViewMode
 }
 
+// #region class-body-slashgetresponses200mediacontainer
+// #endregion class-body-slashgetresponses200mediacontainer
+
 // SlashGetResponses200 - OK
 type SlashGetResponses200 struct {
 	MediaContainer *SlashGetResponses200MediaContainer `json:"MediaContainer,omitempty"`
@@ -132,3 +135,6 @@ func (s *SlashGetResponses200) GetMediaContainer() *SlashGetResponses200MediaCon
 	}
 	return s.MediaContainer
 }
+
+// #region class-body-slashgetresponses200
+// #endregion class-body-slashgetresponses200

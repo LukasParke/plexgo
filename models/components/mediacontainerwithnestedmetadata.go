@@ -3,6 +3,9 @@
 package components
 
 import (
+	"encoding/json"
+	"errors"
+	"fmt"
 	"github.com/LukeHagar/plexgo/internal/utils"
 	"github.com/LukeHagar/plexgo/types"
 )
@@ -18,6 +21,186 @@ func (m *MediaContainerWithNestedMetadataGuids) GetID() string {
 		return ""
 	}
 	return m.ID
+}
+
+type MediaContainerWithNestedMetadataSkipChildren2 string
+
+const (
+	MediaContainerWithNestedMetadataSkipChildren2Zero MediaContainerWithNestedMetadataSkipChildren2 = "0"
+	MediaContainerWithNestedMetadataSkipChildren2One  MediaContainerWithNestedMetadataSkipChildren2 = "1"
+)
+
+func (e MediaContainerWithNestedMetadataSkipChildren2) ToPointer() *MediaContainerWithNestedMetadataSkipChildren2 {
+	return &e
+}
+func (e *MediaContainerWithNestedMetadataSkipChildren2) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "0":
+		fallthrough
+	case "1":
+		*e = MediaContainerWithNestedMetadataSkipChildren2(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for MediaContainerWithNestedMetadataSkipChildren2: %v", v)
+	}
+}
+
+type MediaContainerWithNestedMetadataSkipChildrenType string
+
+const (
+	MediaContainerWithNestedMetadataSkipChildrenTypeBoolean                                       MediaContainerWithNestedMetadataSkipChildrenType = "boolean"
+	MediaContainerWithNestedMetadataSkipChildrenTypeMediaContainerWithNestedMetadataSkipChildren2 MediaContainerWithNestedMetadataSkipChildrenType = "MediaContainerWithNestedMetadata_skipChildren_2"
+)
+
+// MediaContainerWithNestedMetadataSkipChildren - When found on a show item, indicates that the children (seasons) should be skipped in favor of the grandchildren (episodes). Useful for mini-series, etc.
+type MediaContainerWithNestedMetadataSkipChildren struct {
+	Boolean                                       *bool                                          `queryParam:"inline" union:"member"`
+	MediaContainerWithNestedMetadataSkipChildren2 *MediaContainerWithNestedMetadataSkipChildren2 `queryParam:"inline" union:"member"`
+
+	Type MediaContainerWithNestedMetadataSkipChildrenType
+}
+
+func CreateMediaContainerWithNestedMetadataSkipChildrenBoolean(boolean bool) MediaContainerWithNestedMetadataSkipChildren {
+	typ := MediaContainerWithNestedMetadataSkipChildrenTypeBoolean
+
+	return MediaContainerWithNestedMetadataSkipChildren{
+		Boolean: &boolean,
+		Type:    typ,
+	}
+}
+
+func CreateMediaContainerWithNestedMetadataSkipChildrenMediaContainerWithNestedMetadataSkipChildren2(mediaContainerWithNestedMetadataSkipChildren2 MediaContainerWithNestedMetadataSkipChildren2) MediaContainerWithNestedMetadataSkipChildren {
+	typ := MediaContainerWithNestedMetadataSkipChildrenTypeMediaContainerWithNestedMetadataSkipChildren2
+
+	return MediaContainerWithNestedMetadataSkipChildren{
+		MediaContainerWithNestedMetadataSkipChildren2: &mediaContainerWithNestedMetadataSkipChildren2,
+		Type: typ,
+	}
+}
+
+func (u *MediaContainerWithNestedMetadataSkipChildren) UnmarshalJSON(data []byte) error {
+
+	var boolean bool = false
+	if err := utils.UnmarshalJSON(data, &boolean, "", true, nil); err == nil {
+		u.Boolean = &boolean
+		u.Type = MediaContainerWithNestedMetadataSkipChildrenTypeBoolean
+		return nil
+	}
+
+	var mediaContainerWithNestedMetadataSkipChildren2 MediaContainerWithNestedMetadataSkipChildren2 = MediaContainerWithNestedMetadataSkipChildren2("")
+	if err := utils.UnmarshalJSON(data, &mediaContainerWithNestedMetadataSkipChildren2, "", true, nil); err == nil {
+		u.MediaContainerWithNestedMetadataSkipChildren2 = &mediaContainerWithNestedMetadataSkipChildren2
+		u.Type = MediaContainerWithNestedMetadataSkipChildrenTypeMediaContainerWithNestedMetadataSkipChildren2
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for MediaContainerWithNestedMetadataSkipChildren", string(data))
+}
+
+func (u MediaContainerWithNestedMetadataSkipChildren) MarshalJSON() ([]byte, error) {
+	if u.Boolean != nil {
+		return utils.MarshalJSON(u.Boolean, "", true)
+	}
+
+	if u.MediaContainerWithNestedMetadataSkipChildren2 != nil {
+		return utils.MarshalJSON(u.MediaContainerWithNestedMetadataSkipChildren2, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type MediaContainerWithNestedMetadataSkipChildren: all fields are null")
+}
+
+type MediaContainerWithNestedMetadataSkipParent2 string
+
+const (
+	MediaContainerWithNestedMetadataSkipParent2Zero MediaContainerWithNestedMetadataSkipParent2 = "0"
+	MediaContainerWithNestedMetadataSkipParent2One  MediaContainerWithNestedMetadataSkipParent2 = "1"
+)
+
+func (e MediaContainerWithNestedMetadataSkipParent2) ToPointer() *MediaContainerWithNestedMetadataSkipParent2 {
+	return &e
+}
+func (e *MediaContainerWithNestedMetadataSkipParent2) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "0":
+		fallthrough
+	case "1":
+		*e = MediaContainerWithNestedMetadataSkipParent2(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for MediaContainerWithNestedMetadataSkipParent2: %v", v)
+	}
+}
+
+type MediaContainerWithNestedMetadataSkipParentType string
+
+const (
+	MediaContainerWithNestedMetadataSkipParentTypeBoolean                                     MediaContainerWithNestedMetadataSkipParentType = "boolean"
+	MediaContainerWithNestedMetadataSkipParentTypeMediaContainerWithNestedMetadataSkipParent2 MediaContainerWithNestedMetadataSkipParentType = "MediaContainerWithNestedMetadata_skipParent_2"
+)
+
+// MediaContainerWithNestedMetadataSkipParent - When present on an episode or track item, indicates parent should be skipped in favor of grandparent (show).
+type MediaContainerWithNestedMetadataSkipParent struct {
+	Boolean                                     *bool                                        `queryParam:"inline" union:"member"`
+	MediaContainerWithNestedMetadataSkipParent2 *MediaContainerWithNestedMetadataSkipParent2 `queryParam:"inline" union:"member"`
+
+	Type MediaContainerWithNestedMetadataSkipParentType
+}
+
+func CreateMediaContainerWithNestedMetadataSkipParentBoolean(boolean bool) MediaContainerWithNestedMetadataSkipParent {
+	typ := MediaContainerWithNestedMetadataSkipParentTypeBoolean
+
+	return MediaContainerWithNestedMetadataSkipParent{
+		Boolean: &boolean,
+		Type:    typ,
+	}
+}
+
+func CreateMediaContainerWithNestedMetadataSkipParentMediaContainerWithNestedMetadataSkipParent2(mediaContainerWithNestedMetadataSkipParent2 MediaContainerWithNestedMetadataSkipParent2) MediaContainerWithNestedMetadataSkipParent {
+	typ := MediaContainerWithNestedMetadataSkipParentTypeMediaContainerWithNestedMetadataSkipParent2
+
+	return MediaContainerWithNestedMetadataSkipParent{
+		MediaContainerWithNestedMetadataSkipParent2: &mediaContainerWithNestedMetadataSkipParent2,
+		Type: typ,
+	}
+}
+
+func (u *MediaContainerWithNestedMetadataSkipParent) UnmarshalJSON(data []byte) error {
+
+	var boolean bool = false
+	if err := utils.UnmarshalJSON(data, &boolean, "", true, nil); err == nil {
+		u.Boolean = &boolean
+		u.Type = MediaContainerWithNestedMetadataSkipParentTypeBoolean
+		return nil
+	}
+
+	var mediaContainerWithNestedMetadataSkipParent2 MediaContainerWithNestedMetadataSkipParent2 = MediaContainerWithNestedMetadataSkipParent2("")
+	if err := utils.UnmarshalJSON(data, &mediaContainerWithNestedMetadataSkipParent2, "", true, nil); err == nil {
+		u.MediaContainerWithNestedMetadataSkipParent2 = &mediaContainerWithNestedMetadataSkipParent2
+		u.Type = MediaContainerWithNestedMetadataSkipParentTypeMediaContainerWithNestedMetadataSkipParent2
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for MediaContainerWithNestedMetadataSkipParent", string(data))
+}
+
+func (u MediaContainerWithNestedMetadataSkipParent) MarshalJSON() ([]byte, error) {
+	if u.Boolean != nil {
+		return utils.MarshalJSON(u.Boolean, "", true)
+	}
+
+	if u.MediaContainerWithNestedMetadataSkipParent2 != nil {
+		return utils.MarshalJSON(u.MediaContainerWithNestedMetadataSkipParent2, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type MediaContainerWithNestedMetadataSkipParent: all fields are null")
 }
 
 // MetadataItem - Items in a library are referred to as "metadata items." These metadata items are distinct from "media items" which represent actual instances of media that can be consumed. Consider a TV library that has a single video file in it for a particular episode of a show. The library has a single media item, but it has three metadata items: one for the show, one for the season, and one for the episode. Consider a movie library that has two video files in it: the same movie, but two different resolutions. The library has a single metadata item for the movie, but that metadata item has two media items, one for each resolution. Additionally a "media item" will have one or more "media parts" where the the parts are intended to be watched together, such as a CD1 and CD2 parts of the same movie.
@@ -125,9 +308,9 @@ type MetadataItem struct {
 	// Used by old clients to provide nested menus allowing for primative (but structured) navigation.
 	Secondary *bool `json:"secondary,omitempty"`
 	// When found on a show item, indicates that the children (seasons) should be skipped in favor of the grandchildren (episodes). Useful for mini-series, etc.
-	SkipChildren *bool `json:"skipChildren,omitempty"`
+	SkipChildren *MediaContainerWithNestedMetadataSkipChildren `json:"skipChildren,omitempty"`
 	// When present on an episode or track item, indicates parent should be skipped in favor of grandparent (show).
-	SkipParent *bool `json:"skipParent,omitempty"`
+	SkipParent *MediaContainerWithNestedMetadataSkipParent `json:"skipParent,omitempty"`
 	// Typically only seen in metadata at a library's top level
 	Sort []Sort `json:"Sort,omitempty"`
 	// When present, the studio or label which produced an item (e.g. movie studio for movies, record label for albums).
@@ -550,14 +733,14 @@ func (m *MetadataItem) GetSecondary() *bool {
 	return m.Secondary
 }
 
-func (m *MetadataItem) GetSkipChildren() *bool {
+func (m *MetadataItem) GetSkipChildren() *MediaContainerWithNestedMetadataSkipChildren {
 	if m == nil {
 		return nil
 	}
 	return m.SkipChildren
 }
 
-func (m *MetadataItem) GetSkipParent() *bool {
+func (m *MetadataItem) GetSkipParent() *MediaContainerWithNestedMetadataSkipParent {
 	if m == nil {
 		return nil
 	}

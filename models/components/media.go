@@ -4,36 +4,100 @@ package components
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/LukeHagar/plexgo/internal/utils"
 )
 
-// HasVoiceActivity - Voice activity detection availability flag returned by PMS.
-// PMS returns this as string values (`"0"` or `"1"`) instead of a JSON boolean.
-type HasVoiceActivity int
+type Two string
 
 const (
-	HasVoiceActivityFalse HasVoiceActivity = 0
-	HasVoiceActivityTrue  HasVoiceActivity = 1
+	TwoZero Two = "0"
+	TwoOne  Two = "1"
 )
 
-func (e HasVoiceActivity) ToPointer() *HasVoiceActivity {
+func (e Two) ToPointer() *Two {
 	return &e
 }
-func (e *HasVoiceActivity) UnmarshalJSON(data []byte) error {
-	var v int
+func (e *Two) UnmarshalJSON(data []byte) error {
+	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
-	case 0:
+	case "0":
 		fallthrough
-	case 1:
-		*e = HasVoiceActivity(v)
+	case "1":
+		*e = Two(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for HasVoiceActivity: %v", v)
+		return fmt.Errorf("invalid value for Two: %v", v)
 	}
+}
+
+type HasVoiceActivityType string
+
+const (
+	HasVoiceActivityTypeBoolean HasVoiceActivityType = "boolean"
+	HasVoiceActivityTypeTwo     HasVoiceActivityType = "2"
+)
+
+// HasVoiceActivity - Voice activity detection availability flag returned by PMS.
+// PMS may return this as a boolean or as string values (`"0"` or `"1"`).
+type HasVoiceActivity struct {
+	Boolean *bool `queryParam:"inline" union:"member"`
+	Two     *Two  `queryParam:"inline" union:"member"`
+
+	Type HasVoiceActivityType
+}
+
+func CreateHasVoiceActivityBoolean(boolean bool) HasVoiceActivity {
+	typ := HasVoiceActivityTypeBoolean
+
+	return HasVoiceActivity{
+		Boolean: &boolean,
+		Type:    typ,
+	}
+}
+
+func CreateHasVoiceActivityTwo(two Two) HasVoiceActivity {
+	typ := HasVoiceActivityTypeTwo
+
+	return HasVoiceActivity{
+		Two:  &two,
+		Type: typ,
+	}
+}
+
+func (u *HasVoiceActivity) UnmarshalJSON(data []byte) error {
+
+	var boolean bool = false
+	if err := utils.UnmarshalJSON(data, &boolean, "", true, nil); err == nil {
+		u.Boolean = &boolean
+		u.Type = HasVoiceActivityTypeBoolean
+		return nil
+	}
+
+	var two Two = Two("")
+	if err := utils.UnmarshalJSON(data, &two, "", true, nil); err == nil {
+		u.Two = &two
+		u.Type = HasVoiceActivityTypeTwo
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for HasVoiceActivity", string(data))
+}
+
+func (u HasVoiceActivity) MarshalJSON() ([]byte, error) {
+	if u.Boolean != nil {
+		return utils.MarshalJSON(u.Boolean, "", true)
+	}
+
+	if u.Two != nil {
+		return utils.MarshalJSON(u.Two, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type HasVoiceActivity: all fields are null")
 }
 
 // Media - `Media` represents an one or more media files (parts) and is a child of a metadata item. There aren't necessarily any guaranteed attributes on media elements since the attributes will vary based on the type. The possible attributes are not documented here, but they typically have self-evident names. High-level media information that can be used for badging and flagging, such as `videoResolution` and codecs, is included on the media element.
@@ -47,9 +111,9 @@ type Media struct {
 	Duration        *int     `json:"duration,omitempty"`
 	Has64bitOffsets *bool    `json:"has64bitOffsets,omitempty"`
 	// Voice activity detection availability flag returned by PMS.
-	// PMS returns this as string values (`"0"` or `"1"`) instead of a JSON boolean.
+	// PMS may return this as a boolean or as string values (`"0"` or `"1"`).
 	//
-	HasVoiceActivity      *HasVoiceActivity `default:"0" json:"hasVoiceActivity"`
+	HasVoiceActivity      *HasVoiceActivity `json:"hasVoiceActivity,omitempty"`
 	Height                *int              `json:"height,omitempty"`
 	ID                    int64             `json:"id"`
 	OptimizedForStreaming *bool             `json:"optimizedForStreaming,omitempty"`

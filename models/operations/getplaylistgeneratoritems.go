@@ -4,6 +4,7 @@ package operations
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/LukeHagar/plexgo/internal/utils"
 	"github.com/LukeHagar/plexgo/models/components"
@@ -268,6 +269,186 @@ func (g *GetPlaylistGeneratorItemsGuids) GetID() string {
 	return g.ID
 }
 
+type SkipChildren2 string
+
+const (
+	SkipChildren2Zero SkipChildren2 = "0"
+	SkipChildren2One  SkipChildren2 = "1"
+)
+
+func (e SkipChildren2) ToPointer() *SkipChildren2 {
+	return &e
+}
+func (e *SkipChildren2) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "0":
+		fallthrough
+	case "1":
+		*e = SkipChildren2(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for SkipChildren2: %v", v)
+	}
+}
+
+type GetPlaylistGeneratorItemsSkipChildrenType string
+
+const (
+	GetPlaylistGeneratorItemsSkipChildrenTypeBoolean       GetPlaylistGeneratorItemsSkipChildrenType = "boolean"
+	GetPlaylistGeneratorItemsSkipChildrenTypeSkipChildren2 GetPlaylistGeneratorItemsSkipChildrenType = "skipChildren_2"
+)
+
+// GetPlaylistGeneratorItemsSkipChildren - When found on a show item, indicates that the children (seasons) should be skipped in favor of the grandchildren (episodes). Useful for mini-series, etc.
+type GetPlaylistGeneratorItemsSkipChildren struct {
+	Boolean       *bool          `queryParam:"inline" union:"member"`
+	SkipChildren2 *SkipChildren2 `queryParam:"inline" union:"member"`
+
+	Type GetPlaylistGeneratorItemsSkipChildrenType
+}
+
+func CreateGetPlaylistGeneratorItemsSkipChildrenBoolean(boolean bool) GetPlaylistGeneratorItemsSkipChildren {
+	typ := GetPlaylistGeneratorItemsSkipChildrenTypeBoolean
+
+	return GetPlaylistGeneratorItemsSkipChildren{
+		Boolean: &boolean,
+		Type:    typ,
+	}
+}
+
+func CreateGetPlaylistGeneratorItemsSkipChildrenSkipChildren2(skipChildren2 SkipChildren2) GetPlaylistGeneratorItemsSkipChildren {
+	typ := GetPlaylistGeneratorItemsSkipChildrenTypeSkipChildren2
+
+	return GetPlaylistGeneratorItemsSkipChildren{
+		SkipChildren2: &skipChildren2,
+		Type:          typ,
+	}
+}
+
+func (u *GetPlaylistGeneratorItemsSkipChildren) UnmarshalJSON(data []byte) error {
+
+	var boolean bool = false
+	if err := utils.UnmarshalJSON(data, &boolean, "", true, nil); err == nil {
+		u.Boolean = &boolean
+		u.Type = GetPlaylistGeneratorItemsSkipChildrenTypeBoolean
+		return nil
+	}
+
+	var skipChildren2 SkipChildren2 = SkipChildren2("")
+	if err := utils.UnmarshalJSON(data, &skipChildren2, "", true, nil); err == nil {
+		u.SkipChildren2 = &skipChildren2
+		u.Type = GetPlaylistGeneratorItemsSkipChildrenTypeSkipChildren2
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for GetPlaylistGeneratorItemsSkipChildren", string(data))
+}
+
+func (u GetPlaylistGeneratorItemsSkipChildren) MarshalJSON() ([]byte, error) {
+	if u.Boolean != nil {
+		return utils.MarshalJSON(u.Boolean, "", true)
+	}
+
+	if u.SkipChildren2 != nil {
+		return utils.MarshalJSON(u.SkipChildren2, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type GetPlaylistGeneratorItemsSkipChildren: all fields are null")
+}
+
+type GetPlaylistGeneratorItemsSkipParent2 string
+
+const (
+	GetPlaylistGeneratorItemsSkipParent2Zero GetPlaylistGeneratorItemsSkipParent2 = "0"
+	GetPlaylistGeneratorItemsSkipParent2One  GetPlaylistGeneratorItemsSkipParent2 = "1"
+)
+
+func (e GetPlaylistGeneratorItemsSkipParent2) ToPointer() *GetPlaylistGeneratorItemsSkipParent2 {
+	return &e
+}
+func (e *GetPlaylistGeneratorItemsSkipParent2) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "0":
+		fallthrough
+	case "1":
+		*e = GetPlaylistGeneratorItemsSkipParent2(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for GetPlaylistGeneratorItemsSkipParent2: %v", v)
+	}
+}
+
+type GetPlaylistGeneratorItemsSkipParentType string
+
+const (
+	GetPlaylistGeneratorItemsSkipParentTypeBoolean                              GetPlaylistGeneratorItemsSkipParentType = "boolean"
+	GetPlaylistGeneratorItemsSkipParentTypeGetPlaylistGeneratorItemsSkipParent2 GetPlaylistGeneratorItemsSkipParentType = "getPlaylistGeneratorItems_skipParent_2"
+)
+
+// GetPlaylistGeneratorItemsSkipParent - When present on an episode or track item, indicates parent should be skipped in favor of grandparent (show).
+type GetPlaylistGeneratorItemsSkipParent struct {
+	Boolean                              *bool                                 `queryParam:"inline" union:"member"`
+	GetPlaylistGeneratorItemsSkipParent2 *GetPlaylistGeneratorItemsSkipParent2 `queryParam:"inline" union:"member"`
+
+	Type GetPlaylistGeneratorItemsSkipParentType
+}
+
+func CreateGetPlaylistGeneratorItemsSkipParentBoolean(boolean bool) GetPlaylistGeneratorItemsSkipParent {
+	typ := GetPlaylistGeneratorItemsSkipParentTypeBoolean
+
+	return GetPlaylistGeneratorItemsSkipParent{
+		Boolean: &boolean,
+		Type:    typ,
+	}
+}
+
+func CreateGetPlaylistGeneratorItemsSkipParentGetPlaylistGeneratorItemsSkipParent2(getPlaylistGeneratorItemsSkipParent2 GetPlaylistGeneratorItemsSkipParent2) GetPlaylistGeneratorItemsSkipParent {
+	typ := GetPlaylistGeneratorItemsSkipParentTypeGetPlaylistGeneratorItemsSkipParent2
+
+	return GetPlaylistGeneratorItemsSkipParent{
+		GetPlaylistGeneratorItemsSkipParent2: &getPlaylistGeneratorItemsSkipParent2,
+		Type:                                 typ,
+	}
+}
+
+func (u *GetPlaylistGeneratorItemsSkipParent) UnmarshalJSON(data []byte) error {
+
+	var boolean bool = false
+	if err := utils.UnmarshalJSON(data, &boolean, "", true, nil); err == nil {
+		u.Boolean = &boolean
+		u.Type = GetPlaylistGeneratorItemsSkipParentTypeBoolean
+		return nil
+	}
+
+	var getPlaylistGeneratorItemsSkipParent2 GetPlaylistGeneratorItemsSkipParent2 = GetPlaylistGeneratorItemsSkipParent2("")
+	if err := utils.UnmarshalJSON(data, &getPlaylistGeneratorItemsSkipParent2, "", true, nil); err == nil {
+		u.GetPlaylistGeneratorItemsSkipParent2 = &getPlaylistGeneratorItemsSkipParent2
+		u.Type = GetPlaylistGeneratorItemsSkipParentTypeGetPlaylistGeneratorItemsSkipParent2
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for GetPlaylistGeneratorItemsSkipParent", string(data))
+}
+
+func (u GetPlaylistGeneratorItemsSkipParent) MarshalJSON() ([]byte, error) {
+	if u.Boolean != nil {
+		return utils.MarshalJSON(u.Boolean, "", true)
+	}
+
+	if u.GetPlaylistGeneratorItemsSkipParent2 != nil {
+		return utils.MarshalJSON(u.GetPlaylistGeneratorItemsSkipParent2, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type GetPlaylistGeneratorItemsSkipParent: all fields are null")
+}
+
 // ProcessingState - The state of processing if this generator is part of an optimizer playlist
 type ProcessingState string
 
@@ -469,9 +650,9 @@ type GetPlaylistGeneratorItemsMetadata struct {
 	// Used by old clients to provide nested menus allowing for primative (but structured) navigation.
 	Secondary *bool `json:"secondary,omitempty"`
 	// When found on a show item, indicates that the children (seasons) should be skipped in favor of the grandchildren (episodes). Useful for mini-series, etc.
-	SkipChildren *bool `json:"skipChildren,omitempty"`
+	SkipChildren *GetPlaylistGeneratorItemsSkipChildren `json:"skipChildren,omitempty"`
 	// When present on an episode or track item, indicates parent should be skipped in favor of grandparent (show).
-	SkipParent *bool `json:"skipParent,omitempty"`
+	SkipParent *GetPlaylistGeneratorItemsSkipParent `json:"skipParent,omitempty"`
 	// Typically only seen in metadata at a library's top level
 	Sort []components.Sort `json:"Sort,omitempty"`
 	// When present, the studio or label which produced an item (e.g. movie studio for movies, record label for albums).
@@ -897,14 +1078,14 @@ func (g *GetPlaylistGeneratorItemsMetadata) GetSecondary() *bool {
 	return g.Secondary
 }
 
-func (g *GetPlaylistGeneratorItemsMetadata) GetSkipChildren() *bool {
+func (g *GetPlaylistGeneratorItemsMetadata) GetSkipChildren() *GetPlaylistGeneratorItemsSkipChildren {
 	if g == nil {
 		return nil
 	}
 	return g.SkipChildren
 }
 
-func (g *GetPlaylistGeneratorItemsMetadata) GetSkipParent() *bool {
+func (g *GetPlaylistGeneratorItemsMetadata) GetSkipParent() *GetPlaylistGeneratorItemsSkipParent {
 	if g == nil {
 		return nil
 	}

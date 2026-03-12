@@ -1088,6 +1088,7 @@ func (s *Epg) GetLineup(ctx context.Context, request operations.GetLineupRequest
 	switch {
 	case httpRes.StatusCode == 200:
 		res.Headers = httpRes.Header
+
 		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 404:
 		fallthrough

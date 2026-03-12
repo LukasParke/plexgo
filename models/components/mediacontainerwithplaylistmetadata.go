@@ -4,6 +4,7 @@ package components
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/LukeHagar/plexgo/internal/utils"
 	"github.com/LukeHagar/plexgo/types"
@@ -50,6 +51,186 @@ func (m *MediaContainerWithPlaylistMetadataGuids) GetID() string {
 		return ""
 	}
 	return m.ID
+}
+
+type MediaContainerWithPlaylistMetadataSkipChildren2 string
+
+const (
+	MediaContainerWithPlaylistMetadataSkipChildren2Zero MediaContainerWithPlaylistMetadataSkipChildren2 = "0"
+	MediaContainerWithPlaylistMetadataSkipChildren2One  MediaContainerWithPlaylistMetadataSkipChildren2 = "1"
+)
+
+func (e MediaContainerWithPlaylistMetadataSkipChildren2) ToPointer() *MediaContainerWithPlaylistMetadataSkipChildren2 {
+	return &e
+}
+func (e *MediaContainerWithPlaylistMetadataSkipChildren2) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "0":
+		fallthrough
+	case "1":
+		*e = MediaContainerWithPlaylistMetadataSkipChildren2(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for MediaContainerWithPlaylistMetadataSkipChildren2: %v", v)
+	}
+}
+
+type MediaContainerWithPlaylistMetadataSkipChildrenType string
+
+const (
+	MediaContainerWithPlaylistMetadataSkipChildrenTypeBoolean                                         MediaContainerWithPlaylistMetadataSkipChildrenType = "boolean"
+	MediaContainerWithPlaylistMetadataSkipChildrenTypeMediaContainerWithPlaylistMetadataSkipChildren2 MediaContainerWithPlaylistMetadataSkipChildrenType = "MediaContainerWithPlaylistMetadata_skipChildren_2"
+)
+
+// MediaContainerWithPlaylistMetadataSkipChildren - When found on a show item, indicates that the children (seasons) should be skipped in favor of the grandchildren (episodes). Useful for mini-series, etc.
+type MediaContainerWithPlaylistMetadataSkipChildren struct {
+	Boolean                                         *bool                                            `queryParam:"inline" union:"member"`
+	MediaContainerWithPlaylistMetadataSkipChildren2 *MediaContainerWithPlaylistMetadataSkipChildren2 `queryParam:"inline" union:"member"`
+
+	Type MediaContainerWithPlaylistMetadataSkipChildrenType
+}
+
+func CreateMediaContainerWithPlaylistMetadataSkipChildrenBoolean(boolean bool) MediaContainerWithPlaylistMetadataSkipChildren {
+	typ := MediaContainerWithPlaylistMetadataSkipChildrenTypeBoolean
+
+	return MediaContainerWithPlaylistMetadataSkipChildren{
+		Boolean: &boolean,
+		Type:    typ,
+	}
+}
+
+func CreateMediaContainerWithPlaylistMetadataSkipChildrenMediaContainerWithPlaylistMetadataSkipChildren2(mediaContainerWithPlaylistMetadataSkipChildren2 MediaContainerWithPlaylistMetadataSkipChildren2) MediaContainerWithPlaylistMetadataSkipChildren {
+	typ := MediaContainerWithPlaylistMetadataSkipChildrenTypeMediaContainerWithPlaylistMetadataSkipChildren2
+
+	return MediaContainerWithPlaylistMetadataSkipChildren{
+		MediaContainerWithPlaylistMetadataSkipChildren2: &mediaContainerWithPlaylistMetadataSkipChildren2,
+		Type: typ,
+	}
+}
+
+func (u *MediaContainerWithPlaylistMetadataSkipChildren) UnmarshalJSON(data []byte) error {
+
+	var boolean bool = false
+	if err := utils.UnmarshalJSON(data, &boolean, "", true, nil); err == nil {
+		u.Boolean = &boolean
+		u.Type = MediaContainerWithPlaylistMetadataSkipChildrenTypeBoolean
+		return nil
+	}
+
+	var mediaContainerWithPlaylistMetadataSkipChildren2 MediaContainerWithPlaylistMetadataSkipChildren2 = MediaContainerWithPlaylistMetadataSkipChildren2("")
+	if err := utils.UnmarshalJSON(data, &mediaContainerWithPlaylistMetadataSkipChildren2, "", true, nil); err == nil {
+		u.MediaContainerWithPlaylistMetadataSkipChildren2 = &mediaContainerWithPlaylistMetadataSkipChildren2
+		u.Type = MediaContainerWithPlaylistMetadataSkipChildrenTypeMediaContainerWithPlaylistMetadataSkipChildren2
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for MediaContainerWithPlaylistMetadataSkipChildren", string(data))
+}
+
+func (u MediaContainerWithPlaylistMetadataSkipChildren) MarshalJSON() ([]byte, error) {
+	if u.Boolean != nil {
+		return utils.MarshalJSON(u.Boolean, "", true)
+	}
+
+	if u.MediaContainerWithPlaylistMetadataSkipChildren2 != nil {
+		return utils.MarshalJSON(u.MediaContainerWithPlaylistMetadataSkipChildren2, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type MediaContainerWithPlaylistMetadataSkipChildren: all fields are null")
+}
+
+type MediaContainerWithPlaylistMetadataSkipParent2 string
+
+const (
+	MediaContainerWithPlaylistMetadataSkipParent2Zero MediaContainerWithPlaylistMetadataSkipParent2 = "0"
+	MediaContainerWithPlaylistMetadataSkipParent2One  MediaContainerWithPlaylistMetadataSkipParent2 = "1"
+)
+
+func (e MediaContainerWithPlaylistMetadataSkipParent2) ToPointer() *MediaContainerWithPlaylistMetadataSkipParent2 {
+	return &e
+}
+func (e *MediaContainerWithPlaylistMetadataSkipParent2) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "0":
+		fallthrough
+	case "1":
+		*e = MediaContainerWithPlaylistMetadataSkipParent2(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for MediaContainerWithPlaylistMetadataSkipParent2: %v", v)
+	}
+}
+
+type MediaContainerWithPlaylistMetadataSkipParentType string
+
+const (
+	MediaContainerWithPlaylistMetadataSkipParentTypeBoolean                                       MediaContainerWithPlaylistMetadataSkipParentType = "boolean"
+	MediaContainerWithPlaylistMetadataSkipParentTypeMediaContainerWithPlaylistMetadataSkipParent2 MediaContainerWithPlaylistMetadataSkipParentType = "MediaContainerWithPlaylistMetadata_skipParent_2"
+)
+
+// MediaContainerWithPlaylistMetadataSkipParent - When present on an episode or track item, indicates parent should be skipped in favor of grandparent (show).
+type MediaContainerWithPlaylistMetadataSkipParent struct {
+	Boolean                                       *bool                                          `queryParam:"inline" union:"member"`
+	MediaContainerWithPlaylistMetadataSkipParent2 *MediaContainerWithPlaylistMetadataSkipParent2 `queryParam:"inline" union:"member"`
+
+	Type MediaContainerWithPlaylistMetadataSkipParentType
+}
+
+func CreateMediaContainerWithPlaylistMetadataSkipParentBoolean(boolean bool) MediaContainerWithPlaylistMetadataSkipParent {
+	typ := MediaContainerWithPlaylistMetadataSkipParentTypeBoolean
+
+	return MediaContainerWithPlaylistMetadataSkipParent{
+		Boolean: &boolean,
+		Type:    typ,
+	}
+}
+
+func CreateMediaContainerWithPlaylistMetadataSkipParentMediaContainerWithPlaylistMetadataSkipParent2(mediaContainerWithPlaylistMetadataSkipParent2 MediaContainerWithPlaylistMetadataSkipParent2) MediaContainerWithPlaylistMetadataSkipParent {
+	typ := MediaContainerWithPlaylistMetadataSkipParentTypeMediaContainerWithPlaylistMetadataSkipParent2
+
+	return MediaContainerWithPlaylistMetadataSkipParent{
+		MediaContainerWithPlaylistMetadataSkipParent2: &mediaContainerWithPlaylistMetadataSkipParent2,
+		Type: typ,
+	}
+}
+
+func (u *MediaContainerWithPlaylistMetadataSkipParent) UnmarshalJSON(data []byte) error {
+
+	var boolean bool = false
+	if err := utils.UnmarshalJSON(data, &boolean, "", true, nil); err == nil {
+		u.Boolean = &boolean
+		u.Type = MediaContainerWithPlaylistMetadataSkipParentTypeBoolean
+		return nil
+	}
+
+	var mediaContainerWithPlaylistMetadataSkipParent2 MediaContainerWithPlaylistMetadataSkipParent2 = MediaContainerWithPlaylistMetadataSkipParent2("")
+	if err := utils.UnmarshalJSON(data, &mediaContainerWithPlaylistMetadataSkipParent2, "", true, nil); err == nil {
+		u.MediaContainerWithPlaylistMetadataSkipParent2 = &mediaContainerWithPlaylistMetadataSkipParent2
+		u.Type = MediaContainerWithPlaylistMetadataSkipParentTypeMediaContainerWithPlaylistMetadataSkipParent2
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for MediaContainerWithPlaylistMetadataSkipParent", string(data))
+}
+
+func (u MediaContainerWithPlaylistMetadataSkipParent) MarshalJSON() ([]byte, error) {
+	if u.Boolean != nil {
+		return utils.MarshalJSON(u.Boolean, "", true)
+	}
+
+	if u.MediaContainerWithPlaylistMetadataSkipParent2 != nil {
+		return utils.MarshalJSON(u.MediaContainerWithPlaylistMetadataSkipParent2, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type MediaContainerWithPlaylistMetadataSkipParent: all fields are null")
 }
 
 // MediaContainerWithPlaylistMetadataMetadata - Items in a library are referred to as "metadata items." These metadata items are distinct from "media items" which represent actual instances of media that can be consumed. Consider a TV library that has a single video file in it for a particular episode of a show. The library has a single media item, but it has three metadata items: one for the show, one for the season, and one for the episode. Consider a movie library that has two video files in it: the same movie, but two different resolutions. The library has a single metadata item for the movie, but that metadata item has two media items, one for each resolution. Additionally a "media item" will have one or more "media parts" where the the parts are intended to be watched together, such as a CD1 and CD2 parts of the same movie.
@@ -165,9 +346,9 @@ type MediaContainerWithPlaylistMetadataMetadata struct {
 	// Used by old clients to provide nested menus allowing for primative (but structured) navigation.
 	Secondary *bool `json:"secondary,omitempty"`
 	// When found on a show item, indicates that the children (seasons) should be skipped in favor of the grandchildren (episodes). Useful for mini-series, etc.
-	SkipChildren *bool `json:"skipChildren,omitempty"`
+	SkipChildren *MediaContainerWithPlaylistMetadataSkipChildren `json:"skipChildren,omitempty"`
 	// When present on an episode or track item, indicates parent should be skipped in favor of grandparent (show).
-	SkipParent *bool `json:"skipParent,omitempty"`
+	SkipParent *MediaContainerWithPlaylistMetadataSkipParent `json:"skipParent,omitempty"`
 	// Typically only seen in metadata at a library's top level
 	Sort []Sort `json:"Sort,omitempty"`
 	// When present, the studio or label which produced an item (e.g. movie studio for movies, record label for albums).
@@ -617,14 +798,14 @@ func (m *MediaContainerWithPlaylistMetadataMetadata) GetSecondary() *bool {
 	return m.Secondary
 }
 
-func (m *MediaContainerWithPlaylistMetadataMetadata) GetSkipChildren() *bool {
+func (m *MediaContainerWithPlaylistMetadataMetadata) GetSkipChildren() *MediaContainerWithPlaylistMetadataSkipChildren {
 	if m == nil {
 		return nil
 	}
 	return m.SkipChildren
 }
 
-func (m *MediaContainerWithPlaylistMetadataMetadata) GetSkipParent() *bool {
+func (m *MediaContainerWithPlaylistMetadataMetadata) GetSkipParent() *MediaContainerWithPlaylistMetadataSkipParent {
 	if m == nil {
 		return nil
 	}

@@ -3,6 +3,9 @@
 package components
 
 import (
+	"encoding/json"
+	"errors"
+	"fmt"
 	"github.com/LukeHagar/plexgo/internal/utils"
 	"github.com/LukeHagar/plexgo/types"
 )
@@ -18,6 +21,186 @@ func (i *ItemsGuids) GetID() string {
 		return ""
 	}
 	return i.ID
+}
+
+type ItemsSkipChildren2 string
+
+const (
+	ItemsSkipChildren2Zero ItemsSkipChildren2 = "0"
+	ItemsSkipChildren2One  ItemsSkipChildren2 = "1"
+)
+
+func (e ItemsSkipChildren2) ToPointer() *ItemsSkipChildren2 {
+	return &e
+}
+func (e *ItemsSkipChildren2) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "0":
+		fallthrough
+	case "1":
+		*e = ItemsSkipChildren2(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ItemsSkipChildren2: %v", v)
+	}
+}
+
+type ItemsSkipChildrenType string
+
+const (
+	ItemsSkipChildrenTypeBoolean            ItemsSkipChildrenType = "boolean"
+	ItemsSkipChildrenTypeItemsSkipChildren2 ItemsSkipChildrenType = "Items_skipChildren_2"
+)
+
+// ItemsSkipChildren - When found on a show item, indicates that the children (seasons) should be skipped in favor of the grandchildren (episodes). Useful for mini-series, etc.
+type ItemsSkipChildren struct {
+	Boolean            *bool               `queryParam:"inline" union:"member"`
+	ItemsSkipChildren2 *ItemsSkipChildren2 `queryParam:"inline" union:"member"`
+
+	Type ItemsSkipChildrenType
+}
+
+func CreateItemsSkipChildrenBoolean(boolean bool) ItemsSkipChildren {
+	typ := ItemsSkipChildrenTypeBoolean
+
+	return ItemsSkipChildren{
+		Boolean: &boolean,
+		Type:    typ,
+	}
+}
+
+func CreateItemsSkipChildrenItemsSkipChildren2(itemsSkipChildren2 ItemsSkipChildren2) ItemsSkipChildren {
+	typ := ItemsSkipChildrenTypeItemsSkipChildren2
+
+	return ItemsSkipChildren{
+		ItemsSkipChildren2: &itemsSkipChildren2,
+		Type:               typ,
+	}
+}
+
+func (u *ItemsSkipChildren) UnmarshalJSON(data []byte) error {
+
+	var boolean bool = false
+	if err := utils.UnmarshalJSON(data, &boolean, "", true, nil); err == nil {
+		u.Boolean = &boolean
+		u.Type = ItemsSkipChildrenTypeBoolean
+		return nil
+	}
+
+	var itemsSkipChildren2 ItemsSkipChildren2 = ItemsSkipChildren2("")
+	if err := utils.UnmarshalJSON(data, &itemsSkipChildren2, "", true, nil); err == nil {
+		u.ItemsSkipChildren2 = &itemsSkipChildren2
+		u.Type = ItemsSkipChildrenTypeItemsSkipChildren2
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for ItemsSkipChildren", string(data))
+}
+
+func (u ItemsSkipChildren) MarshalJSON() ([]byte, error) {
+	if u.Boolean != nil {
+		return utils.MarshalJSON(u.Boolean, "", true)
+	}
+
+	if u.ItemsSkipChildren2 != nil {
+		return utils.MarshalJSON(u.ItemsSkipChildren2, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type ItemsSkipChildren: all fields are null")
+}
+
+type ItemsSkipParent2 string
+
+const (
+	ItemsSkipParent2Zero ItemsSkipParent2 = "0"
+	ItemsSkipParent2One  ItemsSkipParent2 = "1"
+)
+
+func (e ItemsSkipParent2) ToPointer() *ItemsSkipParent2 {
+	return &e
+}
+func (e *ItemsSkipParent2) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "0":
+		fallthrough
+	case "1":
+		*e = ItemsSkipParent2(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ItemsSkipParent2: %v", v)
+	}
+}
+
+type ItemsSkipParentType string
+
+const (
+	ItemsSkipParentTypeBoolean          ItemsSkipParentType = "boolean"
+	ItemsSkipParentTypeItemsSkipParent2 ItemsSkipParentType = "Items_skipParent_2"
+)
+
+// ItemsSkipParent - When present on an episode or track item, indicates parent should be skipped in favor of grandparent (show).
+type ItemsSkipParent struct {
+	Boolean          *bool             `queryParam:"inline" union:"member"`
+	ItemsSkipParent2 *ItemsSkipParent2 `queryParam:"inline" union:"member"`
+
+	Type ItemsSkipParentType
+}
+
+func CreateItemsSkipParentBoolean(boolean bool) ItemsSkipParent {
+	typ := ItemsSkipParentTypeBoolean
+
+	return ItemsSkipParent{
+		Boolean: &boolean,
+		Type:    typ,
+	}
+}
+
+func CreateItemsSkipParentItemsSkipParent2(itemsSkipParent2 ItemsSkipParent2) ItemsSkipParent {
+	typ := ItemsSkipParentTypeItemsSkipParent2
+
+	return ItemsSkipParent{
+		ItemsSkipParent2: &itemsSkipParent2,
+		Type:             typ,
+	}
+}
+
+func (u *ItemsSkipParent) UnmarshalJSON(data []byte) error {
+
+	var boolean bool = false
+	if err := utils.UnmarshalJSON(data, &boolean, "", true, nil); err == nil {
+		u.Boolean = &boolean
+		u.Type = ItemsSkipParentTypeBoolean
+		return nil
+	}
+
+	var itemsSkipParent2 ItemsSkipParent2 = ItemsSkipParent2("")
+	if err := utils.UnmarshalJSON(data, &itemsSkipParent2, "", true, nil); err == nil {
+		u.ItemsSkipParent2 = &itemsSkipParent2
+		u.Type = ItemsSkipParentTypeItemsSkipParent2
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for ItemsSkipParent", string(data))
+}
+
+func (u ItemsSkipParent) MarshalJSON() ([]byte, error) {
+	if u.Boolean != nil {
+		return utils.MarshalJSON(u.Boolean, "", true)
+	}
+
+	if u.ItemsSkipParent2 != nil {
+		return utils.MarshalJSON(u.ItemsSkipParent2, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type ItemsSkipParent: all fields are null")
 }
 
 // Items in a library are referred to as "metadata items." These metadata items are distinct from "media items" which represent actual instances of media that can be consumed. Consider a TV library that has a single video file in it for a particular episode of a show. The library has a single media item, but it has three metadata items: one for the show, one for the season, and one for the episode. Consider a movie library that has two video files in it: the same movie, but two different resolutions. The library has a single metadata item for the movie, but that metadata item has two media items, one for each resolution. Additionally a "media item" will have one or more "media parts" where the the parts are intended to be watched together, such as a CD1 and CD2 parts of the same movie.
@@ -125,9 +308,9 @@ type Items struct {
 	// Used by old clients to provide nested menus allowing for primative (but structured) navigation.
 	Secondary *bool `json:"secondary,omitempty"`
 	// When found on a show item, indicates that the children (seasons) should be skipped in favor of the grandchildren (episodes). Useful for mini-series, etc.
-	SkipChildren *bool `json:"skipChildren,omitempty"`
+	SkipChildren *ItemsSkipChildren `json:"skipChildren,omitempty"`
 	// When present on an episode or track item, indicates parent should be skipped in favor of grandparent (show).
-	SkipParent *bool `json:"skipParent,omitempty"`
+	SkipParent *ItemsSkipParent `json:"skipParent,omitempty"`
 	// Typically only seen in metadata at a library's top level
 	Sort []Sort `json:"Sort,omitempty"`
 	// When present, the studio or label which produced an item (e.g. movie studio for movies, record label for albums).
@@ -550,14 +733,14 @@ func (i *Items) GetSecondary() *bool {
 	return i.Secondary
 }
 
-func (i *Items) GetSkipChildren() *bool {
+func (i *Items) GetSkipChildren() *ItemsSkipChildren {
 	if i == nil {
 		return nil
 	}
 	return i.SkipChildren
 }
 
-func (i *Items) GetSkipParent() *bool {
+func (i *Items) GetSkipParent() *ItemsSkipParent {
 	if i == nil {
 		return nil
 	}
