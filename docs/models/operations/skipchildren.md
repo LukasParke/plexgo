@@ -11,10 +11,10 @@ When found on a show item, indicates that the children (seasons) should be skipp
 skipChildren := operations.CreateSkipChildrenBoolean(bool{/* values here */})
 ```
 
-### Two
+### SkipChildren2
 
 ```go
-skipChildren := operations.CreateSkipChildrenTwo(operations.Two{/* values here */})
+skipChildren := operations.CreateSkipChildrenSkipChildren2(operations.SkipChildren2{/* values here */})
 ```
 
 ## Union Discrimination
@@ -25,7 +25,7 @@ Use the `Type` field to determine which variant is active, then access the corre
 switch skipChildren.Type {
 	case operations.SkipChildrenTypeBoolean:
 		// skipChildren.Boolean is populated
-	case operations.SkipChildrenTypeTwo:
-		// skipChildren.Two is populated
+	case operations.SkipChildrenTypeSkipChildren2:
+		// skipChildren.SkipChildren2 is populated
 }
 ```

@@ -261,6 +261,8 @@ func (s *Library) GetLibraryItems(ctx context.Context, request operations.GetLib
 
 // DeleteCaches - Delete library caches
 // Delete the hub caches so they are recomputed on next request
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) DeleteCaches(ctx context.Context, opts ...operations.Option) (*operations.DeleteCachesResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -313,7 +315,7 @@ func (s *Library) DeleteCaches(ctx context.Context, opts ...operations.Option) (
 	req.Header.Set("Accept", "*/*")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -447,6 +449,8 @@ func (s *Library) DeleteCaches(ctx context.Context, opts ...operations.Option) (
 
 // CleanBundles - Clean bundles
 // Clean out any now unused bundles. Bundles can become unused when media is deleted
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) CleanBundles(ctx context.Context, opts ...operations.Option) (*operations.CleanBundlesResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -499,7 +503,7 @@ func (s *Library) CleanBundles(ctx context.Context, opts ...operations.Option) (
 	req.Header.Set("Accept", "*/*")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -1092,6 +1096,8 @@ func (s *Library) GetLibraryMatches(ctx context.Context, request operations.GetL
 
 // OptimizeDatabase - Optimize the Database
 // Initiate optimize on the database.
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) OptimizeDatabase(ctx context.Context, request operations.OptimizeDatabaseRequest, opts ...operations.Option) (*operations.OptimizeDatabaseResponse, error) {
 	globals := operations.OptimizeDatabaseGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -1164,7 +1170,7 @@ func (s *Library) OptimizeDatabase(ctx context.Context, request operations.Optim
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -1733,6 +1739,8 @@ func (s *Library) GetSections(ctx context.Context, opts ...operations.Option) (*
 
 // AddSection - Add a library section
 // Add a new library section to the server
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) AddSection(ctx context.Context, request operations.AddSectionRequest, opts ...operations.Option) (*operations.AddSectionResponse, error) {
 	globals := operations.AddSectionGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -1805,7 +1813,7 @@ func (s *Library) AddSection(ctx context.Context, request operations.AddSectionR
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -1960,6 +1968,8 @@ func (s *Library) AddSection(ctx context.Context, request operations.AddSectionR
 
 // StopAllRefreshes - Stop refresh
 // Stop all refreshes across all sections
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) StopAllRefreshes(ctx context.Context, opts ...operations.Option) (*operations.StopAllRefreshesResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -2012,7 +2022,7 @@ func (s *Library) StopAllRefreshes(ctx context.Context, opts ...operations.Optio
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -2165,6 +2175,8 @@ func (s *Library) StopAllRefreshes(ctx context.Context, opts ...operations.Optio
 
 // GetSectionsPrefs - Get section prefs
 // Get a section's preferences for a metadata type
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) GetSectionsPrefs(ctx context.Context, request operations.GetSectionsPrefsRequest, opts ...operations.Option) (*operations.GetSectionsPrefsResponse, error) {
 	globals := operations.GetSectionsPrefsGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -2237,7 +2249,7 @@ func (s *Library) GetSectionsPrefs(ctx context.Context, request operations.GetSe
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -2392,6 +2404,8 @@ func (s *Library) GetSectionsPrefs(ctx context.Context, request operations.GetSe
 
 // RefreshSectionsMetadata - Refresh all sections
 // Tell PMS to refresh all section metadata
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) RefreshSectionsMetadata(ctx context.Context, request operations.RefreshSectionsMetadataRequest, opts ...operations.Option) (*operations.RefreshSectionsMetadataResponse, error) {
 	globals := operations.RefreshSectionsMetadataGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -2464,7 +2478,7 @@ func (s *Library) RefreshSectionsMetadata(ctx context.Context, request operation
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -2825,6 +2839,8 @@ func (s *Library) GetTags(ctx context.Context, request operations.GetTagsRequest
 
 // DeleteMetadataItem - Delete a metadata item
 // Delete a single metadata item from the library, deleting media as well
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) DeleteMetadataItem(ctx context.Context, request operations.DeleteMetadataItemRequest, opts ...operations.Option) (*operations.DeleteMetadataItemResponse, error) {
 	globals := operations.DeleteMetadataItemGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -2897,7 +2913,7 @@ func (s *Library) DeleteMetadataItem(ctx context.Context, request operations.Del
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -3033,6 +3049,8 @@ func (s *Library) DeleteMetadataItem(ctx context.Context, request operations.Del
 
 // EditMetadataItem - Edit a metadata item
 // Edit metadata items setting fields
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) EditMetadataItem(ctx context.Context, request operations.EditMetadataItemRequest, opts ...operations.Option) (*operations.EditMetadataItemResponse, error) {
 	globals := operations.EditMetadataItemGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -3105,7 +3123,7 @@ func (s *Library) EditMetadataItem(ctx context.Context, request operations.EditM
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -3241,6 +3259,8 @@ func (s *Library) EditMetadataItem(ctx context.Context, request operations.EditM
 
 // DetectAds - Ad-detect an item
 // Start the detection of ads in a metadata item
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) DetectAds(ctx context.Context, request operations.DetectAdsRequest, opts ...operations.Option) (*operations.DetectAdsResponse, error) {
 	globals := operations.DetectAdsGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -3309,7 +3329,7 @@ func (s *Library) DetectAds(ctx context.Context, request operations.DetectAdsReq
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -3666,6 +3686,8 @@ func (s *Library) GetAllItemLeaves(ctx context.Context, request operations.GetAl
 
 // AnalyzeMetadata - Analyze an item
 // Start the analysis of a metadata item
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) AnalyzeMetadata(ctx context.Context, request operations.AnalyzeMetadataRequest, opts ...operations.Option) (*operations.AnalyzeMetadataResponse, error) {
 	globals := operations.AnalyzeMetadataGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -3738,7 +3760,7 @@ func (s *Library) AnalyzeMetadata(ctx context.Context, request operations.Analyz
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -3872,6 +3894,8 @@ func (s *Library) AnalyzeMetadata(ctx context.Context, request operations.Analyz
 
 // GenerateThumbs - Generate thumbs of chapters for an item
 // Start the chapter thumb generation for an item
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) GenerateThumbs(ctx context.Context, request operations.GenerateThumbsRequest, opts ...operations.Option) (*operations.GenerateThumbsResponse, error) {
 	globals := operations.GenerateThumbsGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -3944,7 +3968,7 @@ func (s *Library) GenerateThumbs(ctx context.Context, request operations.Generat
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -4078,6 +4102,8 @@ func (s *Library) GenerateThumbs(ctx context.Context, request operations.Generat
 
 // DetectCredits - Credit detect a metadata item
 // Start credit detection on a metadata item
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) DetectCredits(ctx context.Context, request operations.DetectCreditsRequest, opts ...operations.Option) (*operations.DetectCreditsResponse, error) {
 	globals := operations.DetectCreditsGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -4150,7 +4176,7 @@ func (s *Library) DetectCredits(ctx context.Context, request operations.DetectCr
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -4942,6 +4968,8 @@ func (s *Library) GetFile(ctx context.Context, request operations.GetFileRequest
 
 // StartBifGeneration - Start BIF generation of an item
 // Start the indexing (BIF generation) of an item
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) StartBifGeneration(ctx context.Context, request operations.StartBifGenerationRequest, opts ...operations.Option) (*operations.StartBifGenerationResponse, error) {
 	globals := operations.StartBifGenerationGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -5014,7 +5042,7 @@ func (s *Library) StartBifGeneration(ctx context.Context, request operations.Sta
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -5148,6 +5176,8 @@ func (s *Library) StartBifGeneration(ctx context.Context, request operations.Sta
 
 // DetectIntros - Intro detect an item
 // Start the detection of intros in a metadata item
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) DetectIntros(ctx context.Context, request operations.DetectIntrosRequest, opts ...operations.Option) (*operations.DetectIntrosResponse, error) {
 	globals := operations.DetectIntrosGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -5220,7 +5250,7 @@ func (s *Library) DetectIntros(ctx context.Context, request operations.DetectInt
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -5581,6 +5611,8 @@ func (s *Library) CreateMarker(ctx context.Context, request operations.CreateMar
 
 // MatchItem - Match a metadata item
 // Match a metadata item to a guid
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) MatchItem(ctx context.Context, request operations.MatchItemRequest, opts ...operations.Option) (*operations.MatchItemResponse, error) {
 	globals := operations.MatchItemGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -5653,7 +5685,7 @@ func (s *Library) MatchItem(ctx context.Context, request operations.MatchItemReq
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -5787,6 +5819,8 @@ func (s *Library) MatchItem(ctx context.Context, request operations.MatchItemReq
 
 // ListMatches - Get metadata matches for an item
 // Get the list of metadata matches for a metadata item
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) ListMatches(ctx context.Context, request operations.ListMatchesRequest, opts ...operations.Option) (*operations.ListMatchesResponse, error) {
 	globals := operations.ListMatchesGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -5859,7 +5893,7 @@ func (s *Library) ListMatches(ctx context.Context, request operations.ListMatche
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -6012,6 +6046,8 @@ func (s *Library) ListMatches(ctx context.Context, request operations.ListMatche
 
 // MergeItems - Merge a metadata item
 // Merge a metadata item with other items
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) MergeItems(ctx context.Context, request operations.MergeItemsRequest, opts ...operations.Option) (*operations.MergeItemsResponse, error) {
 	globals := operations.MergeItemsGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -6084,7 +6120,7 @@ func (s *Library) MergeItems(ctx context.Context, request operations.MergeItemsR
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -6443,6 +6479,8 @@ func (s *Library) ListSonicallySimilar(ctx context.Context, request operations.L
 
 // SetItemPreferences - Set metadata preferences
 // Set the preferences on a metadata item
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) SetItemPreferences(ctx context.Context, request operations.SetItemPreferencesRequest, opts ...operations.Option) (*operations.SetItemPreferencesResponse, error) {
 	globals := operations.SetItemPreferencesGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -6515,7 +6553,7 @@ func (s *Library) SetItemPreferences(ctx context.Context, request operations.Set
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -6649,6 +6687,8 @@ func (s *Library) SetItemPreferences(ctx context.Context, request operations.Set
 
 // RefreshItemsMetadata - Refresh a metadata item
 // Refresh a metadata item from the agent
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) RefreshItemsMetadata(ctx context.Context, request operations.RefreshItemsMetadataRequest, opts ...operations.Option) (*operations.RefreshItemsMetadataResponse, error) {
 	globals := operations.RefreshItemsMetadataGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -6721,7 +6761,7 @@ func (s *Library) RefreshItemsMetadata(ctx context.Context, request operations.R
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -7301,6 +7341,8 @@ func (s *Library) ListSimilar(ctx context.Context, request operations.ListSimila
 
 // SplitItem - Split a metadata item
 // Split a metadata item into multiple items
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) SplitItem(ctx context.Context, request operations.SplitItemRequest, opts ...operations.Option) (*operations.SplitItemResponse, error) {
 	globals := operations.SplitItemGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -7369,7 +7411,7 @@ func (s *Library) SplitItem(ctx context.Context, request operations.SplitItemReq
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -7503,6 +7545,8 @@ func (s *Library) SplitItem(ctx context.Context, request operations.SplitItemReq
 
 // AddSubtitles - Add subtitles
 // Add a subtitle to a metadata item
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) AddSubtitles(ctx context.Context, request operations.AddSubtitlesRequest, opts ...operations.Option) (*operations.AddSubtitlesResponse, error) {
 	globals := operations.AddSubtitlesGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -7575,7 +7619,7 @@ func (s *Library) AddSubtitles(ctx context.Context, request operations.AddSubtit
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -7930,6 +7974,8 @@ func (s *Library) GetItemTree(ctx context.Context, request operations.GetItemTre
 
 // Unmatch a metadata item
 // Unmatch a metadata item to info fetched from the agent
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) Unmatch(ctx context.Context, request operations.UnmatchRequest, opts ...operations.Option) (*operations.UnmatchResponse, error) {
 	globals := operations.UnmatchGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -7998,7 +8044,7 @@ func (s *Library) Unmatch(ctx context.Context, request operations.UnmatchRequest
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -8132,6 +8178,8 @@ func (s *Library) Unmatch(ctx context.Context, request operations.UnmatchRequest
 
 // ListTopUsers - Get metadata top users
 // Get the list of users which have played this item starting with the most
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) ListTopUsers(ctx context.Context, request operations.ListTopUsersRequest, opts ...operations.Option) (*operations.ListTopUsersResponse, error) {
 	globals := operations.ListTopUsersGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -8200,7 +8248,7 @@ func (s *Library) ListTopUsers(ctx context.Context, request operations.ListTopUs
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -8353,6 +8401,8 @@ func (s *Library) ListTopUsers(ctx context.Context, request operations.ListTopUs
 
 // DetectVoiceActivity - Detect voice activity
 // Start the detection of voice in a metadata item
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) DetectVoiceActivity(ctx context.Context, request operations.DetectVoiceActivityRequest, opts ...operations.Option) (*operations.DetectVoiceActivityResponse, error) {
 	globals := operations.DetectVoiceActivityGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -8425,7 +8475,7 @@ func (s *Library) DetectVoiceActivity(ctx context.Context, request operations.De
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -9423,6 +9473,8 @@ func (s *Library) ListPersonMedia(ctx context.Context, request operations.ListPe
 
 // DeleteLibrarySection - Delete a library section
 // Delete a library section by id
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) DeleteLibrarySection(ctx context.Context, request operations.DeleteLibrarySectionRequest, opts ...operations.Option) (*operations.DeleteLibrarySectionResponse, error) {
 	globals := operations.DeleteLibrarySectionGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -9495,7 +9547,7 @@ func (s *Library) DeleteLibrarySection(ctx context.Context, request operations.D
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -9854,6 +9906,8 @@ func (s *Library) GetLibraryDetails(ctx context.Context, request operations.GetL
 
 // EditSection - Edit a library section
 // Edit a library section by id setting parameters
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) EditSection(ctx context.Context, request operations.EditSectionRequest, opts ...operations.Option) (*operations.EditSectionResponse, error) {
 	globals := operations.EditSectionGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -9926,7 +9980,7 @@ func (s *Library) EditSection(ctx context.Context, request operations.EditSectio
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -10318,6 +10372,8 @@ func (s *Library) UpdateItems(ctx context.Context, request operations.UpdateItem
 
 // StartAnalysis - Analyze a section
 // Start analysis of all items in a section.  If BIF generation is enabled, this will also be started on this section
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) StartAnalysis(ctx context.Context, request operations.StartAnalysisRequest, opts ...operations.Option) (*operations.StartAnalysisResponse, error) {
 	globals := operations.StartAnalysisGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -10386,7 +10442,7 @@ func (s *Library) StartAnalysis(ctx context.Context, request operations.StartAna
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -11209,6 +11265,8 @@ func (s *Library) GetCommon(ctx context.Context, request operations.GetCommonReq
 
 // EmptyTrash - Empty section trash
 // Empty trash in the section, permanently deleting media/metadata for missing media
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) EmptyTrash(ctx context.Context, request operations.EmptyTrashRequest, opts ...operations.Option) (*operations.EmptyTrashResponse, error) {
 	globals := operations.EmptyTrashGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -11277,7 +11335,7 @@ func (s *Library) EmptyTrash(ctx context.Context, request operations.EmptyTrashR
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -11411,6 +11469,8 @@ func (s *Library) EmptyTrash(ctx context.Context, request operations.EmptyTrashR
 
 // GetSectionFilters - Get section filters
 // Get common filters on a section
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) GetSectionFilters(ctx context.Context, request operations.GetSectionFiltersRequest, opts ...operations.Option) (*operations.GetSectionFiltersResponse, error) {
 	globals := operations.GetSectionFiltersGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -11479,7 +11539,7 @@ func (s *Library) GetSectionFilters(ctx context.Context, request operations.GetS
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -11857,6 +11917,8 @@ func (s *Library) GetFirstCharacters(ctx context.Context, request operations.Get
 
 // DeleteIndexes - Delete section indexes
 // Delete all the indexes in a section
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) DeleteIndexes(ctx context.Context, request operations.DeleteIndexesRequest, opts ...operations.Option) (*operations.DeleteIndexesResponse, error) {
 	globals := operations.DeleteIndexesGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -11925,7 +11987,7 @@ func (s *Library) DeleteIndexes(ctx context.Context, request operations.DeleteIn
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -12059,6 +12121,8 @@ func (s *Library) DeleteIndexes(ctx context.Context, request operations.DeleteIn
 
 // DeleteIntros - Delete section intro markers
 // Delete all the intro markers in a section
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) DeleteIntros(ctx context.Context, request operations.DeleteIntrosRequest, opts ...operations.Option) (*operations.DeleteIntrosResponse, error) {
 	globals := operations.DeleteIntrosGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -12127,7 +12191,7 @@ func (s *Library) DeleteIntros(ctx context.Context, request operations.DeleteInt
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -12486,6 +12550,8 @@ func (s *Library) GetSectionPreferences(ctx context.Context, request operations.
 
 // SetSectionPreferences - Set section prefs
 // Set the prefs for a section by id
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) SetSectionPreferences(ctx context.Context, request operations.SetSectionPreferencesRequest, opts ...operations.Option) (*operations.SetSectionPreferencesResponse, error) {
 	globals := operations.SetSectionPreferencesGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -12558,7 +12624,7 @@ func (s *Library) SetSectionPreferences(ctx context.Context, request operations.
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -12692,6 +12758,8 @@ func (s *Library) SetSectionPreferences(ctx context.Context, request operations.
 
 // CancelRefresh - Cancel section refresh
 // Cancel the refresh of a section
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) CancelRefresh(ctx context.Context, request operations.CancelRefreshRequest, opts ...operations.Option) (*operations.CancelRefreshResponse, error) {
 	globals := operations.CancelRefreshGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -12760,7 +12828,7 @@ func (s *Library) CancelRefresh(ctx context.Context, request operations.CancelRe
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -12894,6 +12962,8 @@ func (s *Library) CancelRefresh(ctx context.Context, request operations.CancelRe
 
 // RefreshSection - Refresh section
 // Start a refresh of this section
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) RefreshSection(ctx context.Context, request operations.RefreshSectionRequest, opts ...operations.Option) (*operations.RefreshSectionResponse, error) {
 	globals := operations.RefreshSectionGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -12966,7 +13036,7 @@ func (s *Library) RefreshSection(ctx context.Context, request operations.Refresh
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -14839,6 +14909,8 @@ func (s *Library) EditMarker(ctx context.Context, request operations.EditMarkerR
 
 // DeleteMediaItem - Delete a media item
 // Delete a single media from a metadata item in the library
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) DeleteMediaItem(ctx context.Context, request operations.DeleteMediaItemRequest, opts ...operations.Option) (*operations.DeleteMediaItemResponse, error) {
 	globals := operations.DeleteMediaItemGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -14911,7 +14983,7 @@ func (s *Library) DeleteMediaItem(ctx context.Context, request operations.Delete
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -15268,6 +15340,8 @@ func (s *Library) GetPartIndex(ctx context.Context, request operations.GetPartIn
 
 // DeleteCollection - Delete a collection
 // Delete a library collection from the PMS
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) DeleteCollection(ctx context.Context, request operations.DeleteCollectionRequest, opts ...operations.Option) (*operations.DeleteCollectionResponse, error) {
 	globals := operations.DeleteCollectionGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -15336,7 +15410,7 @@ func (s *Library) DeleteCollection(ctx context.Context, request operations.Delet
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -15472,6 +15546,8 @@ func (s *Library) DeleteCollection(ctx context.Context, request operations.Delet
 
 // GetSectionImage - Get a section composite image
 // Get a composite image of images in this section
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Library) GetSectionImage(ctx context.Context, request operations.GetSectionImageRequest, opts ...operations.Option) (*operations.GetSectionImageResponse, error) {
 	globals := operations.GetSectionImageGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -15544,7 +15620,7 @@ func (s *Library) GetSectionImage(ctx context.Context, request operations.GetSec
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 

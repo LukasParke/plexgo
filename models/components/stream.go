@@ -4,9 +4,100 @@ package components
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/LukeHagar/plexgo/internal/utils"
 )
+
+type CanAutoSync2 string
+
+const (
+	CanAutoSync2Zero CanAutoSync2 = "0"
+	CanAutoSync2One  CanAutoSync2 = "1"
+)
+
+func (e CanAutoSync2) ToPointer() *CanAutoSync2 {
+	return &e
+}
+func (e *CanAutoSync2) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "0":
+		fallthrough
+	case "1":
+		*e = CanAutoSync2(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CanAutoSync2: %v", v)
+	}
+}
+
+type CanAutoSyncType string
+
+const (
+	CanAutoSyncTypeBoolean      CanAutoSyncType = "boolean"
+	CanAutoSyncTypeCanAutoSync2 CanAutoSyncType = "canAutoSync_2"
+)
+
+// CanAutoSync - Indicates if the stream can auto-sync.
+type CanAutoSync struct {
+	Boolean      *bool         `queryParam:"inline" union:"member"`
+	CanAutoSync2 *CanAutoSync2 `queryParam:"inline" union:"member"`
+
+	Type CanAutoSyncType
+}
+
+func CreateCanAutoSyncBoolean(boolean bool) CanAutoSync {
+	typ := CanAutoSyncTypeBoolean
+
+	return CanAutoSync{
+		Boolean: &boolean,
+		Type:    typ,
+	}
+}
+
+func CreateCanAutoSyncCanAutoSync2(canAutoSync2 CanAutoSync2) CanAutoSync {
+	typ := CanAutoSyncTypeCanAutoSync2
+
+	return CanAutoSync{
+		CanAutoSync2: &canAutoSync2,
+		Type:         typ,
+	}
+}
+
+func (u *CanAutoSync) UnmarshalJSON(data []byte) error {
+
+	var boolean bool = false
+	if err := utils.UnmarshalJSON(data, &boolean, "", true, nil); err == nil {
+		u.Boolean = &boolean
+		u.Type = CanAutoSyncTypeBoolean
+		return nil
+	}
+
+	var canAutoSync2 CanAutoSync2 = CanAutoSync2("")
+	if err := utils.UnmarshalJSON(data, &canAutoSync2, "", true, nil); err == nil {
+		u.CanAutoSync2 = &canAutoSync2
+		u.Type = CanAutoSyncTypeCanAutoSync2
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for CanAutoSync", string(data))
+}
+
+func (u CanAutoSync) MarshalJSON() ([]byte, error) {
+	if u.Boolean != nil {
+		return utils.MarshalJSON(u.Boolean, "", true)
+	}
+
+	if u.CanAutoSync2 != nil {
+		return utils.MarshalJSON(u.CanAutoSync2, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type CanAutoSync: all fields are null")
+}
 
 // StreamType - Stream type:
 //   - VIDEO = 1 (Video stream)
@@ -70,7 +161,7 @@ type Stream struct {
 	// Bitrate of the stream.
 	Bitrate *int `json:"bitrate,omitempty"`
 	// Indicates if the stream can auto-sync.
-	CanAutoSync *bool `json:"canAutoSync,omitempty"`
+	CanAutoSync *CanAutoSync `json:"canAutoSync,omitempty"`
 	// Chroma sample location.
 	ChromaLocation *string `json:"chromaLocation,omitempty"`
 	// Chroma subsampling format.
@@ -245,7 +336,7 @@ func (s *Stream) GetBitrate() *int {
 	return s.Bitrate
 }
 
-func (s *Stream) GetCanAutoSync() *bool {
+func (s *Stream) GetCanAutoSync() *CanAutoSync {
 	if s == nil {
 		return nil
 	}

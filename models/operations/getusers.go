@@ -321,18 +321,18 @@ func (e *AllowTuners) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// AllowSync - Indicates if the user is allowed to sync media.
-type AllowSync int
+// GetUsersAllowSync - Indicates if the user is allowed to sync media.
+type GetUsersAllowSync int
 
 const (
-	AllowSyncDisable AllowSync = 0
-	AllowSyncEnable  AllowSync = 1
+	GetUsersAllowSyncDisable GetUsersAllowSync = 0
+	GetUsersAllowSyncEnable  GetUsersAllowSync = 1
 )
 
-func (e AllowSync) ToPointer() *AllowSync {
+func (e GetUsersAllowSync) ToPointer() *GetUsersAllowSync {
 	return &e
 }
-func (e *AllowSync) UnmarshalJSON(data []byte) error {
+func (e *GetUsersAllowSync) UnmarshalJSON(data []byte) error {
 	var v int
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -341,10 +341,10 @@ func (e *AllowSync) UnmarshalJSON(data []byte) error {
 	case 0:
 		fallthrough
 	case 1:
-		*e = AllowSync(v)
+		*e = GetUsersAllowSync(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for AllowSync: %v", v)
+		return fmt.Errorf("invalid value for GetUsersAllowSync: %v", v)
 	}
 }
 
@@ -645,7 +645,7 @@ type User struct {
 	Protected          *Protected          `default:"0" json:"protected"`
 	Home               *Home               `default:"0" json:"home"`
 	AllowTuners        *AllowTuners        `default:"0" json:"allowTuners"`
-	AllowSync          *AllowSync          `default:"0" json:"allowSync"`
+	AllowSync          *GetUsersAllowSync  `default:"0" json:"allowSync"`
 	AllowCameraUpload  *AllowCameraUpload  `default:"0" json:"allowCameraUpload"`
 	AllowChannels      *AllowChannels      `default:"0" json:"allowChannels"`
 	AllowSubtitleAdmin *AllowSubtitleAdmin `default:"0" json:"allowSubtitleAdmin"`
@@ -738,7 +738,7 @@ func (u *User) GetAllowTuners() *AllowTuners {
 	return u.AllowTuners
 }
 
-func (u *User) GetAllowSync() *AllowSync {
+func (u *User) GetAllowSync() *GetUsersAllowSync {
 	if u == nil {
 		return nil
 	}

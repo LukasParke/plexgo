@@ -19,7 +19,7 @@ type GetSectionsMediaContainer struct {
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
 	//
 	TotalSize *int64                      `json:"totalSize,omitempty"`
-	AllowSync *bool                       `json:"allowSync,omitempty"`
+	AllowSync *components.AllowSync       `json:"allowSync,omitempty"`
 	Directory []components.LibrarySection `json:"Directory,omitempty"`
 	// Typically just "Plex Library"
 	Title1 *string `json:"title1,omitempty"`
@@ -53,7 +53,7 @@ func (g *GetSectionsMediaContainer) GetTotalSize() *int64 {
 	return g.TotalSize
 }
 
-func (g *GetSectionsMediaContainer) GetAllowSync() *bool {
+func (g *GetSectionsMediaContainer) GetAllowSync() *components.AllowSync {
 	if g == nil {
 		return nil
 	}

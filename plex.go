@@ -33,6 +33,8 @@ func newPlex(rootSDK *PlexAPI, sdkConfig config.SDKConfiguration, hooks *hooks.H
 
 // GetServerResources - Get Server Resources
 // Get Plex server access tokens and server connections
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Plex) GetServerResources(ctx context.Context, request operations.GetServerResourcesRequest, opts ...operations.Option) (*operations.GetServerResourcesResponse, error) {
 	globals := operations.GetServerResourcesGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -95,7 +97,7 @@ func (s *Plex) GetServerResources(ctx context.Context, request operations.GetSer
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 

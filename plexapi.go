@@ -2,7 +2,7 @@
 
 package plexgo
 
-// Generated from OpenAPI doc version 1.1.1 and generator version 2.859.2
+// Generated from OpenAPI doc version 1.1.1 and generator version 2.879.1
 
 import (
 	"context"
@@ -395,9 +395,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *PlexAPI {
 	sdk := &PlexAPI{
-		SDKVersion: "0.28.4",
+		SDKVersion: "0.28.5",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/go 0.28.4 2.859.2 1.1.1 github.com/LukeHagar/plexgo",
+			UserAgent:  "speakeasy-sdk/go 0.28.5 2.879.1 1.1.1 github.com/LukeHagar/plexgo",
 			Globals:    globals.Globals{},
 			ServerList: ServerList,
 			ServerVariables: []map[string]string{

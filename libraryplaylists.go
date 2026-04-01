@@ -261,6 +261,8 @@ func (s *LibraryPlaylists) CreatePlaylist(ctx context.Context, request operation
 
 // UploadPlaylist - Upload
 // Imports m3u playlists by passing a path on the server to scan for m3u-formatted playlist files, or a path to a single playlist file.
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *LibraryPlaylists) UploadPlaylist(ctx context.Context, request operations.UploadPlaylistRequest, opts ...operations.Option) (*operations.UploadPlaylistResponse, error) {
 	globals := operations.UploadPlaylistGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -333,7 +335,7 @@ func (s *LibraryPlaylists) UploadPlaylist(ctx context.Context, request operation
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 

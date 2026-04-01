@@ -241,6 +241,8 @@ func (s *DVRs) ListDVRs(ctx context.Context, opts ...operations.Option) (*operat
 
 // CreateDVR - Create a DVR
 // Creation of a DVR, after creation of a devcie and a lineup is selected
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *DVRs) CreateDVR(ctx context.Context, request operations.CreateDVRRequest, opts ...operations.Option) (*operations.CreateDVRResponse, error) {
 	globals := operations.CreateDVRGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -313,7 +315,7 @@ func (s *DVRs) CreateDVR(ctx context.Context, request operations.CreateDVRReques
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -468,6 +470,8 @@ func (s *DVRs) CreateDVR(ctx context.Context, request operations.CreateDVRReques
 
 // DeleteDVR - Delete a single DVR
 // Delete a single DVR by its id (key)
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *DVRs) DeleteDVR(ctx context.Context, request operations.DeleteDVRRequest, opts ...operations.Option) (*operations.DeleteDVRResponse, error) {
 	globals := operations.DeleteDVRGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -536,7 +540,7 @@ func (s *DVRs) DeleteDVR(ctx context.Context, request operations.DeleteDVRReques
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -893,6 +897,8 @@ func (s *DVRs) GetDVR(ctx context.Context, request operations.GetDVRRequest, opt
 
 // DeleteLineup - Delete a DVR Lineup
 // Deletes a DVR device's lineup.
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *DVRs) DeleteLineup(ctx context.Context, request operations.DeleteLineupRequest, opts ...operations.Option) (*operations.DeleteLineupResponse, error) {
 	globals := operations.DeleteLineupGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -965,7 +971,7 @@ func (s *DVRs) DeleteLineup(ctx context.Context, request operations.DeleteLineup
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -1120,6 +1126,8 @@ func (s *DVRs) DeleteLineup(ctx context.Context, request operations.DeleteLineup
 
 // AddLineup - Add a DVR Lineup
 // Add a lineup to a DVR device's set of lineups.
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *DVRs) AddLineup(ctx context.Context, request operations.AddLineupRequest, opts ...operations.Option) (*operations.AddLineupResponse, error) {
 	globals := operations.AddLineupGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -1192,7 +1200,7 @@ func (s *DVRs) AddLineup(ctx context.Context, request operations.AddLineupReques
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -1347,6 +1355,8 @@ func (s *DVRs) AddLineup(ctx context.Context, request operations.AddLineupReques
 
 // SetDVRPreferences - Set DVR preferences
 // Set DVR preferences by name avd value
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *DVRs) SetDVRPreferences(ctx context.Context, request operations.SetDVRPreferencesRequest, opts ...operations.Option) (*operations.SetDVRPreferencesResponse, error) {
 	globals := operations.SetDVRPreferencesGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -1419,7 +1429,7 @@ func (s *DVRs) SetDVRPreferences(ctx context.Context, request operations.SetDVRP
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -1574,6 +1584,8 @@ func (s *DVRs) SetDVRPreferences(ctx context.Context, request operations.SetDVRP
 
 // StopDVRReload - Tell a DVR to stop reloading program guide
 // Tell a DVR to stop reloading program guide
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *DVRs) StopDVRReload(ctx context.Context, request operations.StopDVRReloadRequest, opts ...operations.Option) (*operations.StopDVRReloadResponse, error) {
 	globals := operations.StopDVRReloadGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -1642,7 +1654,7 @@ func (s *DVRs) StopDVRReload(ctx context.Context, request operations.StopDVRRelo
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -1776,6 +1788,8 @@ func (s *DVRs) StopDVRReload(ctx context.Context, request operations.StopDVRRelo
 
 // ReloadGuide - Tell a DVR to reload program guide
 // Tell a DVR to reload program guide
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *DVRs) ReloadGuide(ctx context.Context, request operations.ReloadGuideRequest, opts ...operations.Option) (*operations.ReloadGuideResponse, error) {
 	globals := operations.ReloadGuideGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -1844,7 +1858,7 @@ func (s *DVRs) ReloadGuide(ctx context.Context, request operations.ReloadGuideRe
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -2205,6 +2219,8 @@ func (s *DVRs) TuneChannel(ctx context.Context, request operations.TuneChannelRe
 
 // RemoveDeviceFromDVR - Remove a device from an existing DVR
 // Remove a device from an existing DVR
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *DVRs) RemoveDeviceFromDVR(ctx context.Context, request operations.RemoveDeviceFromDVRRequest, opts ...operations.Option) (*operations.RemoveDeviceFromDVRResponse, error) {
 	globals := operations.RemoveDeviceFromDVRGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -2273,7 +2289,7 @@ func (s *DVRs) RemoveDeviceFromDVR(ctx context.Context, request operations.Remov
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -2428,6 +2444,8 @@ func (s *DVRs) RemoveDeviceFromDVR(ctx context.Context, request operations.Remov
 
 // AddDeviceToDVR - Add a device to an existing DVR
 // Add a device to an existing DVR
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *DVRs) AddDeviceToDVR(ctx context.Context, request operations.AddDeviceToDVRRequest, opts ...operations.Option) (*operations.AddDeviceToDVRResponse, error) {
 	globals := operations.AddDeviceToDVRGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -2496,7 +2514,7 @@ func (s *DVRs) AddDeviceToDVR(ctx context.Context, request operations.AddDeviceT
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 

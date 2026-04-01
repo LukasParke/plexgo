@@ -33,6 +33,8 @@ func newAuthentication(rootSDK *PlexAPI, sdkConfig config.SDKConfiguration, hook
 
 // GetTokenDetails - Get Token Details
 // Get the User data from the provided X-Plex-Token
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Authentication) GetTokenDetails(ctx context.Context, request operations.GetTokenDetailsRequest, opts ...operations.Option) (*operations.GetTokenDetailsResponse, error) {
 	globals := operations.GetTokenDetailsGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -100,7 +102,7 @@ func (s *Authentication) GetTokenDetails(ctx context.Context, request operations
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 

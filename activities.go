@@ -242,6 +242,8 @@ func (s *Activities) ListActivities(ctx context.Context, opts ...operations.Opti
 
 // CancelActivity - Cancel a running activity
 // Cancel a running activity.  Admins can cancel all activities but other users can only cancel their own
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Activities) CancelActivity(ctx context.Context, request operations.CancelActivityRequest, opts ...operations.Option) (*operations.CancelActivityResponse, error) {
 	globals := operations.CancelActivityGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -310,7 +312,7 @@ func (s *Activities) CancelActivity(ctx context.Context, request operations.Canc
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 

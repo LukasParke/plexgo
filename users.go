@@ -32,6 +32,8 @@ func newUsers(rootSDK *PlexAPI, sdkConfig config.SDKConfiguration, hooks *hooks.
 
 // GetUsers - Get list of all connected users
 // Get list of all users that are friends and have library access with the provided Plex authentication token
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Users) GetUsers(ctx context.Context, request operations.GetUsersRequest, opts ...operations.Option) (*operations.GetUsersResponse, error) {
 	globals := operations.GetUsersGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -99,7 +101,7 @@ func (s *Users) GetUsers(ctx context.Context, request operations.GetUsersRequest
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 

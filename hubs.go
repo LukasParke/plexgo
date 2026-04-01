@@ -1860,6 +1860,8 @@ func (s *Hubs) GetSectionHubs(ctx context.Context, request operations.GetSection
 
 // ResetSectionDefaults - Reset hubs to defaults
 // Reset hubs for this section to defaults and delete custom hubs
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Hubs) ResetSectionDefaults(ctx context.Context, request operations.ResetSectionDefaultsRequest, opts ...operations.Option) (*operations.ResetSectionDefaultsResponse, error) {
 	globals := operations.ResetSectionDefaultsGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -1928,7 +1930,7 @@ func (s *Hubs) ResetSectionDefaults(ctx context.Context, request operations.Rese
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -2066,6 +2068,8 @@ func (s *Hubs) ResetSectionDefaults(ctx context.Context, request operations.Rese
 
 // ListHubs - Get hubs
 // Get the list of hubs including both built-in and custom
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Hubs) ListHubs(ctx context.Context, request operations.ListHubsRequest, opts ...operations.Option) (*operations.ListHubsResponse, error) {
 	globals := operations.ListHubsGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -2138,7 +2142,7 @@ func (s *Hubs) ListHubs(ctx context.Context, request operations.ListHubsRequest,
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -2297,6 +2301,8 @@ func (s *Hubs) ListHubs(ctx context.Context, request operations.ListHubsRequest,
 
 // CreateCustomHub - Create a custom hub
 // Create a custom hub based on a metadata item
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Hubs) CreateCustomHub(ctx context.Context, request operations.CreateCustomHubRequest, opts ...operations.Option) (*operations.CreateCustomHubResponse, error) {
 	globals := operations.CreateCustomHubGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -2369,7 +2375,7 @@ func (s *Hubs) CreateCustomHub(ctx context.Context, request operations.CreateCus
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -2509,6 +2515,8 @@ func (s *Hubs) CreateCustomHub(ctx context.Context, request operations.CreateCus
 
 // MoveHub - Move Hub
 // Changed the ordering of a hub among others hubs
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Hubs) MoveHub(ctx context.Context, request operations.MoveHubRequest, opts ...operations.Option) (*operations.MoveHubResponse, error) {
 	globals := operations.MoveHubGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -2581,7 +2589,7 @@ func (s *Hubs) MoveHub(ctx context.Context, request operations.MoveHubRequest, o
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -2740,6 +2748,8 @@ func (s *Hubs) MoveHub(ctx context.Context, request operations.MoveHubRequest, o
 
 // DeleteCustomHub - Delete a custom hub
 // Delete a custom hub from the server
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Hubs) DeleteCustomHub(ctx context.Context, request operations.DeleteCustomHubRequest, opts ...operations.Option) (*operations.DeleteCustomHubResponse, error) {
 	globals := operations.DeleteCustomHubGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -2808,7 +2818,7 @@ func (s *Hubs) DeleteCustomHub(ctx context.Context, request operations.DeleteCus
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -2948,6 +2958,8 @@ func (s *Hubs) DeleteCustomHub(ctx context.Context, request operations.DeleteCus
 
 // UpdateHubVisibility - Change hub visibility
 // Changed the visibility of a hub for both the admin and shared users
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Hubs) UpdateHubVisibility(ctx context.Context, request operations.UpdateHubVisibilityRequest, opts ...operations.Option) (*operations.UpdateHubVisibilityResponse, error) {
 	globals := operations.UpdateHubVisibilityGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -3020,7 +3032,7 @@ func (s *Hubs) UpdateHubVisibility(ctx context.Context, request operations.Updat
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 

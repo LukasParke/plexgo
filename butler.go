@@ -33,6 +33,8 @@ func newButler(rootSDK *PlexAPI, sdkConfig config.SDKConfiguration, hooks *hooks
 
 // StopTasks - Stop all Butler tasks
 // This endpoint will stop all currently running tasks and remove any scheduled tasks from the queue.
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Butler) StopTasks(ctx context.Context, opts ...operations.Option) (*operations.StopTasksResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -85,7 +87,7 @@ func (s *Butler) StopTasks(ctx context.Context, opts ...operations.Option) (*ope
 	req.Header.Set("Accept", "*/*")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -219,6 +221,8 @@ func (s *Butler) StopTasks(ctx context.Context, opts ...operations.Option) (*ope
 
 // GetTasks - Get all Butler tasks
 // Get the list of butler tasks and their scheduling
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Butler) GetTasks(ctx context.Context, opts ...operations.Option) (*operations.GetTasksResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -271,7 +275,7 @@ func (s *Butler) GetTasks(ctx context.Context, opts ...operations.Option) (*oper
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -429,6 +433,8 @@ func (s *Butler) GetTasks(ctx context.Context, opts ...operations.Option) (*oper
 //  2. If a task is configured to run at a random time during the configured window and we are outside that window, the task will start immediately.
 //  3. If a task is configured to run at a random time during the configured window and we are within that window, the task will be scheduled at a random time within the window.
 //  4. If we are outside the configured window, the task will start immediately.
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Butler) StartTasks(ctx context.Context, opts ...operations.Option) (*operations.StartTasksResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -481,7 +487,7 @@ func (s *Butler) StartTasks(ctx context.Context, opts ...operations.Option) (*op
 	req.Header.Set("Accept", "*/*")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -615,6 +621,8 @@ func (s *Butler) StartTasks(ctx context.Context, opts ...operations.Option) (*op
 
 // StopTask - Stop a single Butler task
 // This endpoint will stop a currently running task by name, or remove it from the list of scheduled tasks if it exists
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Butler) StopTask(ctx context.Context, request operations.StopTaskRequest, opts ...operations.Option) (*operations.StopTaskResponse, error) {
 	globals := operations.StopTaskGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -683,7 +691,7 @@ func (s *Butler) StopTask(ctx context.Context, request operations.StopTaskReques
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -819,6 +827,8 @@ func (s *Butler) StopTask(ctx context.Context, request operations.StopTaskReques
 
 // StartTask - Start a single Butler task
 // This endpoint will attempt to start a specific Butler task by name.
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Butler) StartTask(ctx context.Context, request operations.StartTaskRequest, opts ...operations.Option) (*operations.StartTaskResponse, error) {
 	globals := operations.StartTaskGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -887,7 +897,7 @@ func (s *Butler) StartTask(ctx context.Context, request operations.StartTaskRequ
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 

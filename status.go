@@ -34,6 +34,8 @@ func newStatus(rootSDK *PlexAPI, sdkConfig config.SDKConfiguration, hooks *hooks
 
 // ListSessions - List Sessions
 // List all current playbacks on this server
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Status) ListSessions(ctx context.Context, opts ...operations.Option) (*operations.ListSessionsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -86,7 +88,7 @@ func (s *Status) ListSessions(ctx context.Context, opts ...operations.Option) (*
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -241,6 +243,8 @@ func (s *Status) ListSessions(ctx context.Context, opts ...operations.Option) (*
 
 // GetBackgroundTasks - Get background tasks
 // Get the list of all background tasks
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Status) GetBackgroundTasks(ctx context.Context, opts ...operations.Option) (*operations.GetBackgroundTasksResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -293,7 +297,7 @@ func (s *Status) GetBackgroundTasks(ctx context.Context, opts ...operations.Opti
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -674,6 +678,8 @@ func (s *Status) ListPlaybackHistory(ctx context.Context, request operations.Lis
 
 // TerminateSession - Terminate a session
 // Terminate a playback session kicking off the user
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Status) TerminateSession(ctx context.Context, request operations.TerminateSessionRequest, opts ...operations.Option) (*operations.TerminateSessionResponse, error) {
 	globals := operations.TerminateSessionGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -746,7 +752,7 @@ func (s *Status) TerminateSession(ctx context.Context, request operations.Termin
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -886,6 +892,8 @@ func (s *Status) TerminateSession(ctx context.Context, request operations.Termin
 
 // DeleteHistory - Delete Single History Item
 // Delete a single history item by id
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Status) DeleteHistory(ctx context.Context, request operations.DeleteHistoryRequest, opts ...operations.Option) (*operations.DeleteHistoryResponse, error) {
 	globals := operations.DeleteHistoryGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -954,7 +962,7 @@ func (s *Status) DeleteHistory(ctx context.Context, request operations.DeleteHis
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -1111,6 +1119,8 @@ func (s *Status) DeleteHistory(ctx context.Context, request operations.DeleteHis
 
 // GetHistoryItem - Get Single History Item
 // Get a single history item by id
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Status) GetHistoryItem(ctx context.Context, request operations.GetHistoryItemRequest, opts ...operations.Option) (*operations.GetHistoryItemResponse, error) {
 	globals := operations.GetHistoryItemGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -1179,7 +1189,7 @@ func (s *Status) GetHistoryItem(ctx context.Context, request operations.GetHisto
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 

@@ -34,6 +34,8 @@ func newUpdater(rootSDK *PlexAPI, sdkConfig config.SDKConfiguration, hooks *hook
 
 // ApplyUpdates - Applying updates
 // Apply any downloaded updates.  Note that the two parameters `tonight` and `skip` are effectively mutually exclusive. The `tonight` parameter takes precedence and `skip` will be ignored if `tonight` is also passed.
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Updater) ApplyUpdates(ctx context.Context, request operations.ApplyUpdatesRequest, opts ...operations.Option) (*operations.ApplyUpdatesResponse, error) {
 	globals := operations.ApplyUpdatesGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -106,7 +108,7 @@ func (s *Updater) ApplyUpdates(ctx context.Context, request operations.ApplyUpda
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -244,6 +246,8 @@ func (s *Updater) ApplyUpdates(ctx context.Context, request operations.ApplyUpda
 
 // CheckUpdates - Checking for updates
 // Perform an update check and potentially download
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Updater) CheckUpdates(ctx context.Context, request operations.CheckUpdatesRequest, opts ...operations.Option) (*operations.CheckUpdatesResponse, error) {
 	globals := operations.CheckUpdatesGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -316,7 +320,7 @@ func (s *Updater) CheckUpdates(ctx context.Context, request operations.CheckUpda
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -450,6 +454,8 @@ func (s *Updater) CheckUpdates(ctx context.Context, request operations.CheckUpda
 
 // GetUpdatesStatus - Querying status of updates
 // Get the status of updating the server
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Updater) GetUpdatesStatus(ctx context.Context, opts ...operations.Option) (*operations.GetUpdatesStatusResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -502,7 +508,7 @@ func (s *Updater) GetUpdatesStatus(ctx context.Context, opts ...operations.Optio
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 

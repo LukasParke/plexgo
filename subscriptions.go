@@ -2001,6 +2001,8 @@ func (s *Subscriptions) EditSubscriptionPreferences(ctx context.Context, request
 
 // ReorderSubscription - Re-order a subscription
 // Re-order a subscription to change its priority
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Subscriptions) ReorderSubscription(ctx context.Context, request operations.ReorderSubscriptionRequest, opts ...operations.Option) (*operations.ReorderSubscriptionResponse, error) {
 	globals := operations.ReorderSubscriptionGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -2073,7 +2075,7 @@ func (s *Subscriptions) ReorderSubscription(ctx context.Context, request operati
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 

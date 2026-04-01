@@ -269,17 +269,17 @@ func (g *GetPlaylistGeneratorItemsGuids) GetID() string {
 	return g.ID
 }
 
-type SkipChildren2 string
+type GetPlaylistGeneratorItemsSkipChildren2 string
 
 const (
-	SkipChildren2Zero SkipChildren2 = "0"
-	SkipChildren2One  SkipChildren2 = "1"
+	GetPlaylistGeneratorItemsSkipChildren2Zero GetPlaylistGeneratorItemsSkipChildren2 = "0"
+	GetPlaylistGeneratorItemsSkipChildren2One  GetPlaylistGeneratorItemsSkipChildren2 = "1"
 )
 
-func (e SkipChildren2) ToPointer() *SkipChildren2 {
+func (e GetPlaylistGeneratorItemsSkipChildren2) ToPointer() *GetPlaylistGeneratorItemsSkipChildren2 {
 	return &e
 }
-func (e *SkipChildren2) UnmarshalJSON(data []byte) error {
+func (e *GetPlaylistGeneratorItemsSkipChildren2) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -288,24 +288,24 @@ func (e *SkipChildren2) UnmarshalJSON(data []byte) error {
 	case "0":
 		fallthrough
 	case "1":
-		*e = SkipChildren2(v)
+		*e = GetPlaylistGeneratorItemsSkipChildren2(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for SkipChildren2: %v", v)
+		return fmt.Errorf("invalid value for GetPlaylistGeneratorItemsSkipChildren2: %v", v)
 	}
 }
 
 type GetPlaylistGeneratorItemsSkipChildrenType string
 
 const (
-	GetPlaylistGeneratorItemsSkipChildrenTypeBoolean       GetPlaylistGeneratorItemsSkipChildrenType = "boolean"
-	GetPlaylistGeneratorItemsSkipChildrenTypeSkipChildren2 GetPlaylistGeneratorItemsSkipChildrenType = "skipChildren_2"
+	GetPlaylistGeneratorItemsSkipChildrenTypeBoolean                                GetPlaylistGeneratorItemsSkipChildrenType = "boolean"
+	GetPlaylistGeneratorItemsSkipChildrenTypeGetPlaylistGeneratorItemsSkipChildren2 GetPlaylistGeneratorItemsSkipChildrenType = "getPlaylistGeneratorItems_skipChildren_2"
 )
 
 // GetPlaylistGeneratorItemsSkipChildren - When found on a show item, indicates that the children (seasons) should be skipped in favor of the grandchildren (episodes). Useful for mini-series, etc.
 type GetPlaylistGeneratorItemsSkipChildren struct {
-	Boolean       *bool          `queryParam:"inline" union:"member"`
-	SkipChildren2 *SkipChildren2 `queryParam:"inline" union:"member"`
+	Boolean                                *bool                                   `queryParam:"inline" union:"member"`
+	GetPlaylistGeneratorItemsSkipChildren2 *GetPlaylistGeneratorItemsSkipChildren2 `queryParam:"inline" union:"member"`
 
 	Type GetPlaylistGeneratorItemsSkipChildrenType
 }
@@ -319,12 +319,12 @@ func CreateGetPlaylistGeneratorItemsSkipChildrenBoolean(boolean bool) GetPlaylis
 	}
 }
 
-func CreateGetPlaylistGeneratorItemsSkipChildrenSkipChildren2(skipChildren2 SkipChildren2) GetPlaylistGeneratorItemsSkipChildren {
-	typ := GetPlaylistGeneratorItemsSkipChildrenTypeSkipChildren2
+func CreateGetPlaylistGeneratorItemsSkipChildrenGetPlaylistGeneratorItemsSkipChildren2(getPlaylistGeneratorItemsSkipChildren2 GetPlaylistGeneratorItemsSkipChildren2) GetPlaylistGeneratorItemsSkipChildren {
+	typ := GetPlaylistGeneratorItemsSkipChildrenTypeGetPlaylistGeneratorItemsSkipChildren2
 
 	return GetPlaylistGeneratorItemsSkipChildren{
-		SkipChildren2: &skipChildren2,
-		Type:          typ,
+		GetPlaylistGeneratorItemsSkipChildren2: &getPlaylistGeneratorItemsSkipChildren2,
+		Type:                                   typ,
 	}
 }
 
@@ -337,10 +337,10 @@ func (u *GetPlaylistGeneratorItemsSkipChildren) UnmarshalJSON(data []byte) error
 		return nil
 	}
 
-	var skipChildren2 SkipChildren2 = SkipChildren2("")
-	if err := utils.UnmarshalJSON(data, &skipChildren2, "", true, nil); err == nil {
-		u.SkipChildren2 = &skipChildren2
-		u.Type = GetPlaylistGeneratorItemsSkipChildrenTypeSkipChildren2
+	var getPlaylistGeneratorItemsSkipChildren2 GetPlaylistGeneratorItemsSkipChildren2 = GetPlaylistGeneratorItemsSkipChildren2("")
+	if err := utils.UnmarshalJSON(data, &getPlaylistGeneratorItemsSkipChildren2, "", true, nil); err == nil {
+		u.GetPlaylistGeneratorItemsSkipChildren2 = &getPlaylistGeneratorItemsSkipChildren2
+		u.Type = GetPlaylistGeneratorItemsSkipChildrenTypeGetPlaylistGeneratorItemsSkipChildren2
 		return nil
 	}
 
@@ -352,8 +352,8 @@ func (u GetPlaylistGeneratorItemsSkipChildren) MarshalJSON() ([]byte, error) {
 		return utils.MarshalJSON(u.Boolean, "", true)
 	}
 
-	if u.SkipChildren2 != nil {
-		return utils.MarshalJSON(u.SkipChildren2, "", true)
+	if u.GetPlaylistGeneratorItemsSkipChildren2 != nil {
+		return utils.MarshalJSON(u.GetPlaylistGeneratorItemsSkipChildren2, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type GetPlaylistGeneratorItemsSkipChildren: all fields are null")

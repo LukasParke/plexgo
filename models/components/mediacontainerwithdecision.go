@@ -114,6 +114,96 @@ func (u MediaContainerWithDecisionHasVoiceActivity) MarshalJSON() ([]byte, error
 	return nil, errors.New("could not marshal union type MediaContainerWithDecisionHasVoiceActivity: all fields are null")
 }
 
+type MediaContainerWithDecisionCanAutoSync2 string
+
+const (
+	MediaContainerWithDecisionCanAutoSync2Zero MediaContainerWithDecisionCanAutoSync2 = "0"
+	MediaContainerWithDecisionCanAutoSync2One  MediaContainerWithDecisionCanAutoSync2 = "1"
+)
+
+func (e MediaContainerWithDecisionCanAutoSync2) ToPointer() *MediaContainerWithDecisionCanAutoSync2 {
+	return &e
+}
+func (e *MediaContainerWithDecisionCanAutoSync2) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "0":
+		fallthrough
+	case "1":
+		*e = MediaContainerWithDecisionCanAutoSync2(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for MediaContainerWithDecisionCanAutoSync2: %v", v)
+	}
+}
+
+type MediaContainerWithDecisionCanAutoSyncType string
+
+const (
+	MediaContainerWithDecisionCanAutoSyncTypeBoolean                                MediaContainerWithDecisionCanAutoSyncType = "boolean"
+	MediaContainerWithDecisionCanAutoSyncTypeMediaContainerWithDecisionCanAutoSync2 MediaContainerWithDecisionCanAutoSyncType = "MediaContainerWithDecision_canAutoSync_2"
+)
+
+// MediaContainerWithDecisionCanAutoSync - Indicates if the stream can auto-sync.
+type MediaContainerWithDecisionCanAutoSync struct {
+	Boolean                                *bool                                   `queryParam:"inline" union:"member"`
+	MediaContainerWithDecisionCanAutoSync2 *MediaContainerWithDecisionCanAutoSync2 `queryParam:"inline" union:"member"`
+
+	Type MediaContainerWithDecisionCanAutoSyncType
+}
+
+func CreateMediaContainerWithDecisionCanAutoSyncBoolean(boolean bool) MediaContainerWithDecisionCanAutoSync {
+	typ := MediaContainerWithDecisionCanAutoSyncTypeBoolean
+
+	return MediaContainerWithDecisionCanAutoSync{
+		Boolean: &boolean,
+		Type:    typ,
+	}
+}
+
+func CreateMediaContainerWithDecisionCanAutoSyncMediaContainerWithDecisionCanAutoSync2(mediaContainerWithDecisionCanAutoSync2 MediaContainerWithDecisionCanAutoSync2) MediaContainerWithDecisionCanAutoSync {
+	typ := MediaContainerWithDecisionCanAutoSyncTypeMediaContainerWithDecisionCanAutoSync2
+
+	return MediaContainerWithDecisionCanAutoSync{
+		MediaContainerWithDecisionCanAutoSync2: &mediaContainerWithDecisionCanAutoSync2,
+		Type:                                   typ,
+	}
+}
+
+func (u *MediaContainerWithDecisionCanAutoSync) UnmarshalJSON(data []byte) error {
+
+	var boolean bool = false
+	if err := utils.UnmarshalJSON(data, &boolean, "", true, nil); err == nil {
+		u.Boolean = &boolean
+		u.Type = MediaContainerWithDecisionCanAutoSyncTypeBoolean
+		return nil
+	}
+
+	var mediaContainerWithDecisionCanAutoSync2 MediaContainerWithDecisionCanAutoSync2 = MediaContainerWithDecisionCanAutoSync2("")
+	if err := utils.UnmarshalJSON(data, &mediaContainerWithDecisionCanAutoSync2, "", true, nil); err == nil {
+		u.MediaContainerWithDecisionCanAutoSync2 = &mediaContainerWithDecisionCanAutoSync2
+		u.Type = MediaContainerWithDecisionCanAutoSyncTypeMediaContainerWithDecisionCanAutoSync2
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for MediaContainerWithDecisionCanAutoSync", string(data))
+}
+
+func (u MediaContainerWithDecisionCanAutoSync) MarshalJSON() ([]byte, error) {
+	if u.Boolean != nil {
+		return utils.MarshalJSON(u.Boolean, "", true)
+	}
+
+	if u.MediaContainerWithDecisionCanAutoSync2 != nil {
+		return utils.MarshalJSON(u.MediaContainerWithDecisionCanAutoSync2, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type MediaContainerWithDecisionCanAutoSync: all fields are null")
+}
+
 // MediaContainerWithDecisionStreamType - Stream type:
 //   - VIDEO = 1 (Video stream)
 //   - AUDIO = 2 (Audio stream)
@@ -258,7 +348,7 @@ type MediaContainerWithDecisionStream struct {
 	// Bitrate of the stream.
 	Bitrate *int `json:"bitrate,omitempty"`
 	// Indicates if the stream can auto-sync.
-	CanAutoSync *bool `json:"canAutoSync,omitempty"`
+	CanAutoSync *MediaContainerWithDecisionCanAutoSync `json:"canAutoSync,omitempty"`
 	// Chroma sample location.
 	ChromaLocation *string `json:"chromaLocation,omitempty"`
 	// Chroma subsampling format.
@@ -435,7 +525,7 @@ func (m *MediaContainerWithDecisionStream) GetBitrate() *int {
 	return m.Bitrate
 }
 
-func (m *MediaContainerWithDecisionStream) GetCanAutoSync() *bool {
+func (m *MediaContainerWithDecisionStream) GetCanAutoSync() *MediaContainerWithDecisionCanAutoSync {
 	if m == nil {
 		return nil
 	}

@@ -296,6 +296,8 @@ func (s *Devices) GetAvailableGrabbers(ctx context.Context, request operations.G
 
 // ListDevices - Get all devices
 // Get the list of all devices present
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Devices) ListDevices(ctx context.Context, opts ...operations.Option) (*operations.ListDevicesResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -348,7 +350,7 @@ func (s *Devices) ListDevices(ctx context.Context, opts ...operations.Option) (*
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -503,6 +505,8 @@ func (s *Devices) ListDevices(ctx context.Context, opts ...operations.Option) (*
 
 // AddDevice - Add a device
 // This endpoint adds a device to an existing grabber. The device is identified, and added to the correct grabber.
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Devices) AddDevice(ctx context.Context, request operations.AddDeviceRequest, opts ...operations.Option) (*operations.AddDeviceResponse, error) {
 	globals := operations.AddDeviceGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -575,7 +579,7 @@ func (s *Devices) AddDevice(ctx context.Context, request operations.AddDeviceReq
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -730,6 +734,8 @@ func (s *Devices) AddDevice(ctx context.Context, request operations.AddDeviceReq
 
 // DiscoverDevices - Tell grabbers to discover devices
 // Tell grabbers to discover devices
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Devices) DiscoverDevices(ctx context.Context, opts ...operations.Option) (*operations.DiscoverDevicesResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -782,7 +788,7 @@ func (s *Devices) DiscoverDevices(ctx context.Context, opts ...operations.Option
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -935,6 +941,8 @@ func (s *Devices) DiscoverDevices(ctx context.Context, opts ...operations.Option
 
 // RemoveDevice - Remove a device
 // Remove a devices by its id along with its channel mappings
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Devices) RemoveDevice(ctx context.Context, request operations.RemoveDeviceRequest, opts ...operations.Option) (*operations.RemoveDeviceResponse, error) {
 	globals := operations.RemoveDeviceGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -1003,7 +1011,7 @@ func (s *Devices) RemoveDevice(ctx context.Context, request operations.RemoveDev
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -1160,6 +1168,8 @@ func (s *Devices) RemoveDevice(ctx context.Context, request operations.RemoveDev
 
 // GetDeviceDetails - Get device details
 // Get a device's details by its id
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Devices) GetDeviceDetails(ctx context.Context, request operations.GetDeviceDetailsRequest, opts ...operations.Option) (*operations.GetDeviceDetailsResponse, error) {
 	globals := operations.GetDeviceDetailsGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -1228,7 +1238,7 @@ func (s *Devices) GetDeviceDetails(ctx context.Context, request operations.GetDe
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -1383,6 +1393,8 @@ func (s *Devices) GetDeviceDetails(ctx context.Context, request operations.GetDe
 
 // ModifyDevice - Enable or disable a device
 // Enable or disable a device by its id
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Devices) ModifyDevice(ctx context.Context, request operations.ModifyDeviceRequest, opts ...operations.Option) (*operations.ModifyDeviceResponse, error) {
 	globals := operations.ModifyDeviceGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -1455,7 +1467,7 @@ func (s *Devices) ModifyDevice(ctx context.Context, request operations.ModifyDev
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -1837,6 +1849,8 @@ func (s *Devices) SetChannelmap(ctx context.Context, request operations.SetChann
 
 // GetDevicesChannels - Get a device's channels
 // Get a device's channels by its id
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Devices) GetDevicesChannels(ctx context.Context, request operations.GetDevicesChannelsRequest, opts ...operations.Option) (*operations.GetDevicesChannelsResponse, error) {
 	globals := operations.GetDevicesChannelsGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -1905,7 +1919,7 @@ func (s *Devices) GetDevicesChannels(ctx context.Context, request operations.Get
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -2062,6 +2076,8 @@ func (s *Devices) GetDevicesChannels(ctx context.Context, request operations.Get
 
 // SetDevicePreferences - Set device preferences
 // Set device preferences by its id
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Devices) SetDevicePreferences(ctx context.Context, request operations.SetDevicePreferencesRequest, opts ...operations.Option) (*operations.SetDevicePreferencesResponse, error) {
 	globals := operations.SetDevicePreferencesGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -2134,7 +2150,7 @@ func (s *Devices) SetDevicePreferences(ctx context.Context, request operations.S
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -2716,6 +2732,8 @@ func (s *Devices) Scan(ctx context.Context, request operations.ScanRequest, opts
 
 // GetThumb - Get device thumb
 // Get a device's thumb for display to the user
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Devices) GetThumb(ctx context.Context, request operations.GetThumbRequest, opts ...operations.Option) (*operations.GetThumbResponse, error) {
 	globals := operations.GetThumbGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -2784,7 +2802,7 @@ func (s *Devices) GetThumb(ctx context.Context, request operations.GetThumbReque
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 

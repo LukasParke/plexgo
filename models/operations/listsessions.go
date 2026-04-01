@@ -25,17 +25,17 @@ func (g *Guids) GetID() string {
 	return g.ID
 }
 
-type Two string
+type SkipChildren2 string
 
 const (
-	TwoZero Two = "0"
-	TwoOne  Two = "1"
+	SkipChildren2Zero SkipChildren2 = "0"
+	SkipChildren2One  SkipChildren2 = "1"
 )
 
-func (e Two) ToPointer() *Two {
+func (e SkipChildren2) ToPointer() *SkipChildren2 {
 	return &e
 }
-func (e *Two) UnmarshalJSON(data []byte) error {
+func (e *SkipChildren2) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -44,24 +44,24 @@ func (e *Two) UnmarshalJSON(data []byte) error {
 	case "0":
 		fallthrough
 	case "1":
-		*e = Two(v)
+		*e = SkipChildren2(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Two: %v", v)
+		return fmt.Errorf("invalid value for SkipChildren2: %v", v)
 	}
 }
 
 type SkipChildrenType string
 
 const (
-	SkipChildrenTypeBoolean SkipChildrenType = "boolean"
-	SkipChildrenTypeTwo     SkipChildrenType = "2"
+	SkipChildrenTypeBoolean       SkipChildrenType = "boolean"
+	SkipChildrenTypeSkipChildren2 SkipChildrenType = "skipChildren_2"
 )
 
 // SkipChildren - When found on a show item, indicates that the children (seasons) should be skipped in favor of the grandchildren (episodes). Useful for mini-series, etc.
 type SkipChildren struct {
-	Boolean *bool `queryParam:"inline" union:"member"`
-	Two     *Two  `queryParam:"inline" union:"member"`
+	Boolean       *bool          `queryParam:"inline" union:"member"`
+	SkipChildren2 *SkipChildren2 `queryParam:"inline" union:"member"`
 
 	Type SkipChildrenType
 }
@@ -75,12 +75,12 @@ func CreateSkipChildrenBoolean(boolean bool) SkipChildren {
 	}
 }
 
-func CreateSkipChildrenTwo(two Two) SkipChildren {
-	typ := SkipChildrenTypeTwo
+func CreateSkipChildrenSkipChildren2(skipChildren2 SkipChildren2) SkipChildren {
+	typ := SkipChildrenTypeSkipChildren2
 
 	return SkipChildren{
-		Two:  &two,
-		Type: typ,
+		SkipChildren2: &skipChildren2,
+		Type:          typ,
 	}
 }
 
@@ -93,10 +93,10 @@ func (u *SkipChildren) UnmarshalJSON(data []byte) error {
 		return nil
 	}
 
-	var two Two = Two("")
-	if err := utils.UnmarshalJSON(data, &two, "", true, nil); err == nil {
-		u.Two = &two
-		u.Type = SkipChildrenTypeTwo
+	var skipChildren2 SkipChildren2 = SkipChildren2("")
+	if err := utils.UnmarshalJSON(data, &skipChildren2, "", true, nil); err == nil {
+		u.SkipChildren2 = &skipChildren2
+		u.Type = SkipChildrenTypeSkipChildren2
 		return nil
 	}
 
@@ -108,8 +108,8 @@ func (u SkipChildren) MarshalJSON() ([]byte, error) {
 		return utils.MarshalJSON(u.Boolean, "", true)
 	}
 
-	if u.Two != nil {
-		return utils.MarshalJSON(u.Two, "", true)
+	if u.SkipChildren2 != nil {
+		return utils.MarshalJSON(u.SkipChildren2, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type SkipChildren: all fields are null")

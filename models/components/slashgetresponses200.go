@@ -2,25 +2,121 @@
 
 package components
 
+import (
+	"encoding/json"
+	"errors"
+	"fmt"
+	"github.com/LukeHagar/plexgo/internal/utils"
+)
+
+type SlashGetResponses200AllowSync2 string
+
+const (
+	SlashGetResponses200AllowSync2Zero SlashGetResponses200AllowSync2 = "0"
+	SlashGetResponses200AllowSync2One  SlashGetResponses200AllowSync2 = "1"
+)
+
+func (e SlashGetResponses200AllowSync2) ToPointer() *SlashGetResponses200AllowSync2 {
+	return &e
+}
+func (e *SlashGetResponses200AllowSync2) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "0":
+		fallthrough
+	case "1":
+		*e = SlashGetResponses200AllowSync2(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for SlashGetResponses200AllowSync2: %v", v)
+	}
+}
+
+type SlashGetResponses200AllowSyncType string
+
+const (
+	SlashGetResponses200AllowSyncTypeBoolean                        SlashGetResponses200AllowSyncType = "boolean"
+	SlashGetResponses200AllowSyncTypeSlashGetResponses200AllowSync2 SlashGetResponses200AllowSyncType = "slash-get-responses-200_allowSync_2"
+)
+
+type SlashGetResponses200AllowSync struct {
+	Boolean                        *bool                           `queryParam:"inline" union:"member"`
+	SlashGetResponses200AllowSync2 *SlashGetResponses200AllowSync2 `queryParam:"inline" union:"member"`
+
+	Type SlashGetResponses200AllowSyncType
+}
+
+func CreateSlashGetResponses200AllowSyncBoolean(boolean bool) SlashGetResponses200AllowSync {
+	typ := SlashGetResponses200AllowSyncTypeBoolean
+
+	return SlashGetResponses200AllowSync{
+		Boolean: &boolean,
+		Type:    typ,
+	}
+}
+
+func CreateSlashGetResponses200AllowSyncSlashGetResponses200AllowSync2(slashGetResponses200AllowSync2 SlashGetResponses200AllowSync2) SlashGetResponses200AllowSync {
+	typ := SlashGetResponses200AllowSyncTypeSlashGetResponses200AllowSync2
+
+	return SlashGetResponses200AllowSync{
+		SlashGetResponses200AllowSync2: &slashGetResponses200AllowSync2,
+		Type:                           typ,
+	}
+}
+
+func (u *SlashGetResponses200AllowSync) UnmarshalJSON(data []byte) error {
+
+	var boolean bool = false
+	if err := utils.UnmarshalJSON(data, &boolean, "", true, nil); err == nil {
+		u.Boolean = &boolean
+		u.Type = SlashGetResponses200AllowSyncTypeBoolean
+		return nil
+	}
+
+	var slashGetResponses200AllowSync2 SlashGetResponses200AllowSync2 = SlashGetResponses200AllowSync2("")
+	if err := utils.UnmarshalJSON(data, &slashGetResponses200AllowSync2, "", true, nil); err == nil {
+		u.SlashGetResponses200AllowSync2 = &slashGetResponses200AllowSync2
+		u.Type = SlashGetResponses200AllowSyncTypeSlashGetResponses200AllowSync2
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for SlashGetResponses200AllowSync", string(data))
+}
+
+func (u SlashGetResponses200AllowSync) MarshalJSON() ([]byte, error) {
+	if u.Boolean != nil {
+		return utils.MarshalJSON(u.Boolean, "", true)
+	}
+
+	if u.SlashGetResponses200AllowSync2 != nil {
+		return utils.MarshalJSON(u.SlashGetResponses200AllowSync2, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type SlashGetResponses200AllowSync: all fields are null")
+}
+
 type SlashGetResponses200MediaContainer struct {
 	// The flavors of directory found here:
 	//   - Primary: (e.g. all, On Deck) These are still used in some clients to provide "shortcuts" to subsets of media. However, with the exception of On Deck, all of them can be created by media queries, and the desire is to allow these to be customized by users.
 	//   - Secondary: These are marked with `"secondary": true` and were used by old clients to provide nested menus allowing for primative (but structured) navigation.
 	//   - Special: There is a By Folder entry which allows browsing the media by the underlying filesystem structure, and there's a completely obsolete entry marked `"search": true` which used to be used to allow clients to build search dialogs on the fly.
-	Content          *string    `json:"content,omitempty"`
-	AllowSync        *bool      `json:"allowSync,omitempty"`
-	Art              *string    `json:"art,omitempty"`
-	Directory        []Metadata `json:"Directory,omitempty"`
-	Identifier       *string    `json:"identifier,omitempty"`
-	LibrarySectionID *int64     `json:"librarySectionID,omitempty"`
-	MediaTagPrefix   *string    `json:"mediaTagPrefix,omitempty"`
-	MediaTagVersion  *int64     `json:"mediaTagVersion,omitempty"`
-	Size             *int64     `json:"size,omitempty"`
-	SortAsc          *bool      `json:"sortAsc,omitempty"`
-	Thumb            *string    `json:"thumb,omitempty"`
-	Title1           *string    `json:"title1,omitempty"`
-	ViewGroup        *string    `json:"viewGroup,omitempty"`
-	ViewMode         *int64     `json:"viewMode,omitempty"`
+	Content          *string                        `json:"content,omitempty"`
+	AllowSync        *SlashGetResponses200AllowSync `json:"allowSync,omitempty"`
+	Art              *string                        `json:"art,omitempty"`
+	Directory        []Metadata                     `json:"Directory,omitempty"`
+	Identifier       *string                        `json:"identifier,omitempty"`
+	LibrarySectionID *int64                         `json:"librarySectionID,omitempty"`
+	MediaTagPrefix   *string                        `json:"mediaTagPrefix,omitempty"`
+	MediaTagVersion  *int64                         `json:"mediaTagVersion,omitempty"`
+	Size             *int64                         `json:"size,omitempty"`
+	SortAsc          *bool                          `json:"sortAsc,omitempty"`
+	Thumb            *string                        `json:"thumb,omitempty"`
+	Title1           *string                        `json:"title1,omitempty"`
+	ViewGroup        *string                        `json:"viewGroup,omitempty"`
+	ViewMode         *int64                         `json:"viewMode,omitempty"`
 }
 
 func (s *SlashGetResponses200MediaContainer) GetContent() *string {
@@ -30,7 +126,7 @@ func (s *SlashGetResponses200MediaContainer) GetContent() *string {
 	return s.Content
 }
 
-func (s *SlashGetResponses200MediaContainer) GetAllowSync() *bool {
+func (s *SlashGetResponses200MediaContainer) GetAllowSync() *SlashGetResponses200AllowSync {
 	if s == nil {
 		return nil
 	}

@@ -2,6 +2,102 @@
 
 package components
 
+import (
+	"encoding/json"
+	"errors"
+	"fmt"
+	"github.com/LukeHagar/plexgo/internal/utils"
+)
+
+type AllowSync2 string
+
+const (
+	AllowSync2Zero AllowSync2 = "0"
+	AllowSync2One  AllowSync2 = "1"
+)
+
+func (e AllowSync2) ToPointer() *AllowSync2 {
+	return &e
+}
+func (e *AllowSync2) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "0":
+		fallthrough
+	case "1":
+		*e = AllowSync2(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AllowSync2: %v", v)
+	}
+}
+
+type LibrarySectionAllowSyncType string
+
+const (
+	LibrarySectionAllowSyncTypeBoolean    LibrarySectionAllowSyncType = "boolean"
+	LibrarySectionAllowSyncTypeAllowSync2 LibrarySectionAllowSyncType = "allowSync_2"
+)
+
+type LibrarySectionAllowSync struct {
+	Boolean    *bool       `queryParam:"inline" union:"member"`
+	AllowSync2 *AllowSync2 `queryParam:"inline" union:"member"`
+
+	Type LibrarySectionAllowSyncType
+}
+
+func CreateLibrarySectionAllowSyncBoolean(boolean bool) LibrarySectionAllowSync {
+	typ := LibrarySectionAllowSyncTypeBoolean
+
+	return LibrarySectionAllowSync{
+		Boolean: &boolean,
+		Type:    typ,
+	}
+}
+
+func CreateLibrarySectionAllowSyncAllowSync2(allowSync2 AllowSync2) LibrarySectionAllowSync {
+	typ := LibrarySectionAllowSyncTypeAllowSync2
+
+	return LibrarySectionAllowSync{
+		AllowSync2: &allowSync2,
+		Type:       typ,
+	}
+}
+
+func (u *LibrarySectionAllowSync) UnmarshalJSON(data []byte) error {
+
+	var boolean bool = false
+	if err := utils.UnmarshalJSON(data, &boolean, "", true, nil); err == nil {
+		u.Boolean = &boolean
+		u.Type = LibrarySectionAllowSyncTypeBoolean
+		return nil
+	}
+
+	var allowSync2 AllowSync2 = AllowSync2("")
+	if err := utils.UnmarshalJSON(data, &allowSync2, "", true, nil); err == nil {
+		u.AllowSync2 = &allowSync2
+		u.Type = LibrarySectionAllowSyncTypeAllowSync2
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for LibrarySectionAllowSync", string(data))
+}
+
+func (u LibrarySectionAllowSync) MarshalJSON() ([]byte, error) {
+	if u.Boolean != nil {
+		return utils.MarshalJSON(u.Boolean, "", true)
+	}
+
+	if u.AllowSync2 != nil {
+		return utils.MarshalJSON(u.AllowSync2, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type LibrarySectionAllowSync: all fields are null")
+}
+
 // LibrarySectionLocation - Represents a top-level location on disk where media in this library section is stored
 type LibrarySectionLocation struct {
 	ID *int64 `json:"id,omitempty"`
@@ -28,15 +124,15 @@ type LibrarySection struct {
 	Title *string `json:"title,omitempty"`
 	// The type of media content in the Plex library. This can represent videos, music, or photos.
 	//
-	Type             MediaTypeString `json:"type"`
-	Agent            *string         `json:"agent,omitempty"`
-	AllowSync        *bool           `json:"allowSync,omitempty"`
-	Art              *string         `json:"art,omitempty"`
-	Composite        *string         `json:"composite,omitempty"`
-	Content          *bool           `json:"content,omitempty"`
-	ContentChangedAt *int64          `json:"contentChangedAt,omitempty"`
-	CreatedAt        *int64          `json:"createdAt,omitempty"`
-	Directory        *bool           `json:"directory,omitempty"`
+	Type             MediaTypeString          `json:"type"`
+	Agent            *string                  `json:"agent,omitempty"`
+	AllowSync        *LibrarySectionAllowSync `json:"allowSync,omitempty"`
+	Art              *string                  `json:"art,omitempty"`
+	Composite        *string                  `json:"composite,omitempty"`
+	Content          *bool                    `json:"content,omitempty"`
+	ContentChangedAt *int64                   `json:"contentChangedAt,omitempty"`
+	CreatedAt        *int64                   `json:"createdAt,omitempty"`
+	Directory        *bool                    `json:"directory,omitempty"`
 	// Indicates whether this section has filtering capabilities
 	Filters  *bool   `json:"filters,omitempty"`
 	Hidden   *bool   `json:"hidden,omitempty"`
@@ -74,7 +170,7 @@ func (l *LibrarySection) GetAgent() *string {
 	return l.Agent
 }
 
-func (l *LibrarySection) GetAllowSync() *bool {
+func (l *LibrarySection) GetAllowSync() *LibrarySectionAllowSync {
 	if l == nil {
 		return nil
 	}

@@ -33,6 +33,8 @@ func newLibraryCollections(rootSDK *PlexAPI, sdkConfig config.SDKConfiguration, 
 
 // AddCollectionItems - Add items to a collection
 // Add items to a collection by uri
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *LibraryCollections) AddCollectionItems(ctx context.Context, request operations.AddCollectionItemsRequest, opts ...operations.Option) (*operations.AddCollectionItemsResponse, error) {
 	globals := operations.AddCollectionItemsGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -105,7 +107,7 @@ func (s *LibraryCollections) AddCollectionItems(ctx context.Context, request ope
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -260,6 +262,8 @@ func (s *LibraryCollections) AddCollectionItems(ctx context.Context, request ope
 
 // DeleteCollectionItem - Delete an item from a collection
 // Delete an item from a collection
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *LibraryCollections) DeleteCollectionItem(ctx context.Context, request operations.DeleteCollectionItemRequest, opts ...operations.Option) (*operations.DeleteCollectionItemResponse, error) {
 	globals := operations.DeleteCollectionItemGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -328,7 +332,7 @@ func (s *LibraryCollections) DeleteCollectionItem(ctx context.Context, request o
 
 	utils.PopulateHeaders(ctx, req, request, globals)
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -485,6 +489,8 @@ func (s *LibraryCollections) DeleteCollectionItem(ctx context.Context, request o
 
 // MoveCollectionItem - Reorder an item in the collection
 // Reorder items in a collection with one item after another
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *LibraryCollections) MoveCollectionItem(ctx context.Context, request operations.MoveCollectionItemRequest, opts ...operations.Option) (*operations.MoveCollectionItemResponse, error) {
 	globals := operations.MoveCollectionItemGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -557,7 +563,7 @@ func (s *LibraryCollections) MoveCollectionItem(ctx context.Context, request ope
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 

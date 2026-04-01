@@ -32,6 +32,8 @@ func newLog(rootSDK *PlexAPI, sdkConfig config.SDKConfiguration, hooks *hooks.Ho
 
 // WriteLog - Logging a multi-line message to the Plex Media Server log
 // This endpoint will write multiple lines to the main Plex Media Server log in a single request. It takes a set of query strings as would normally sent to the above PUT endpoint as a linefeed-separated block of POST data. The parameters for each query string match as above.
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Log) WriteLog(ctx context.Context, request any, opts ...operations.Option) (*operations.WriteLogResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -91,7 +93,7 @@ func (s *Log) WriteLog(ctx context.Context, request any, opts ...operations.Opti
 		req.Header.Set("Content-Type", reqContentType)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -229,6 +231,8 @@ func (s *Log) WriteLog(ctx context.Context, request any, opts ...operations.Opti
 // This endpoint will write a single-line log message, including a level and source to the main Plex Media Server log.
 //
 // Note: This endpoint responds to all HTTP verbs **except POST** but PUT is preferred
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Log) WriteMessage(ctx context.Context, request operations.WriteMessageRequest, opts ...operations.Option) (*operations.WriteMessageResponse, error) {
 	globals := operations.WriteMessageGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -301,7 +305,7 @@ func (s *Log) WriteMessage(ctx context.Context, request operations.WriteMessageR
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
@@ -437,6 +441,8 @@ func (s *Log) WriteMessage(ctx context.Context, request operations.WriteMessageR
 // This endpoint will enable all Plex Media Server logs to be sent to the Papertrail networked logging site for a period of time
 //
 // Note: This endpoint responds to all HTTP verbs but POST is preferred
+//
+// If set, this operation will use [Security.Token] from the global security.
 func (s *Log) EnablePapertrail(ctx context.Context, request operations.EnablePapertrailRequest, opts ...operations.Option) (*operations.EnablePapertrailResponse, error) {
 	globals := operations.EnablePapertrailGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -509,7 +515,7 @@ func (s *Log) EnablePapertrail(ctx context.Context, request operations.EnablePap
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
 		return nil, err
 	}
 
