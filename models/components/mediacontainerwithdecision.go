@@ -114,6 +114,32 @@ func (u MediaContainerWithDecisionHasVoiceActivity) MarshalJSON() ([]byte, error
 	return nil, errors.New("could not marshal union type MediaContainerWithDecisionHasVoiceActivity: all fields are null")
 }
 
+type MediaContainerWithDecisionOptimizedForStreaming int
+
+const (
+	MediaContainerWithDecisionOptimizedForStreamingZero MediaContainerWithDecisionOptimizedForStreaming = 0
+	MediaContainerWithDecisionOptimizedForStreamingOne  MediaContainerWithDecisionOptimizedForStreaming = 1
+)
+
+func (e MediaContainerWithDecisionOptimizedForStreaming) ToPointer() *MediaContainerWithDecisionOptimizedForStreaming {
+	return &e
+}
+func (e *MediaContainerWithDecisionOptimizedForStreaming) UnmarshalJSON(data []byte) error {
+	var v int
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case 0:
+		fallthrough
+	case 1:
+		*e = MediaContainerWithDecisionOptimizedForStreaming(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for MediaContainerWithDecisionOptimizedForStreaming: %v", v)
+	}
+}
+
 type MediaContainerWithDecisionCanAutoSync2 string
 
 const (
@@ -1019,20 +1045,20 @@ type MediaContainerWithDecisionMedia struct {
 	// Voice activity detection availability flag returned by PMS.
 	// PMS may return this as a boolean or as string values (`"0"` or `"1"`).
 	//
-	HasVoiceActivity      *MediaContainerWithDecisionHasVoiceActivity `json:"hasVoiceActivity,omitempty"`
-	Height                *int                                        `json:"height,omitempty"`
-	ID                    int64                                       `json:"id"`
-	OptimizedForStreaming *bool                                       `json:"optimizedForStreaming,omitempty"`
-	Part                  []MediaContainerWithDecisionPart            `json:"Part,omitempty"`
-	VideoCodec            *string                                     `json:"videoCodec,omitempty"`
-	VideoFrameRate        *string                                     `json:"videoFrameRate,omitempty"`
-	VideoProfile          *string                                     `json:"videoProfile,omitempty"`
-	VideoResolution       *string                                     `json:"videoResolution,omitempty"`
-	Width                 *int                                        `json:"width,omitempty"`
-	Abr                   *bool                                       `json:"abr,omitempty"`
-	ResourceSession       *string                                     `json:"resourceSession,omitempty"`
-	Selected              *bool                                       `json:"selected,omitempty"`
-	AdditionalProperties  map[string]any                              `additionalProperties:"true" json:"-"`
+	HasVoiceActivity      *MediaContainerWithDecisionHasVoiceActivity      `json:"hasVoiceActivity,omitempty"`
+	Height                *int                                             `json:"height,omitempty"`
+	ID                    int64                                            `json:"id"`
+	OptimizedForStreaming *MediaContainerWithDecisionOptimizedForStreaming `json:"optimizedForStreaming,omitempty"`
+	Part                  []MediaContainerWithDecisionPart                 `json:"Part,omitempty"`
+	VideoCodec            *string                                          `json:"videoCodec,omitempty"`
+	VideoFrameRate        *string                                          `json:"videoFrameRate,omitempty"`
+	VideoProfile          *string                                          `json:"videoProfile,omitempty"`
+	VideoResolution       *string                                          `json:"videoResolution,omitempty"`
+	Width                 *int                                             `json:"width,omitempty"`
+	Abr                   *bool                                            `json:"abr,omitempty"`
+	ResourceSession       *string                                          `json:"resourceSession,omitempty"`
+	Selected              *bool                                            `json:"selected,omitempty"`
+	AdditionalProperties  map[string]any                                   `additionalProperties:"true" json:"-"`
 }
 
 func (m MediaContainerWithDecisionMedia) MarshalJSON() ([]byte, error) {
@@ -1123,7 +1149,7 @@ func (m *MediaContainerWithDecisionMedia) GetID() int64 {
 	return m.ID
 }
 
-func (m *MediaContainerWithDecisionMedia) GetOptimizedForStreaming() *bool {
+func (m *MediaContainerWithDecisionMedia) GetOptimizedForStreaming() *MediaContainerWithDecisionOptimizedForStreaming {
 	if m == nil {
 		return nil
 	}
