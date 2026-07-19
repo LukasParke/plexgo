@@ -339,6 +339,9 @@ type StartTaskResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	Body        []byte
+	// Task is already running
+	Res *string
 }
 
 func (s *StartTaskResponse) GetContentType() string {
@@ -360,4 +363,18 @@ func (s *StartTaskResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return s.RawResponse
+}
+
+func (s *StartTaskResponse) GetBody() []byte {
+	if s == nil {
+		return nil
+	}
+	return s.Body
+}
+
+func (s *StartTaskResponse) GetRes() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Res
 }

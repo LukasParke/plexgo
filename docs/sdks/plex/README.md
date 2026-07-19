@@ -2,6 +2,8 @@
 
 ## Overview
 
+Plex Plex operations
+
 ### Available Operations
 
 * [GetServerResources](#getserverresources) - Get Server Resources
@@ -12,7 +14,7 @@ Get Plex server access tokens and server connections
 
 ### Example Usage
 
-<!-- UsageSnippet language="go" operationID="get-server-resources" method="get" path="/resources" -->
+<!-- UsageSnippet language="go" operationID="getServerResources" method="get" path="/resources" -->
 ```go
 package main
 
@@ -29,7 +31,7 @@ func main() {
 
     s := plexgo.New(
         plexgo.WithAccepts(components.AcceptsApplicationXML),
-        plexgo.WithClientIdentifier("3381b62b-9ab7-4e37-827b-203e9809eb58"),
+        plexgo.WithClientIdentifier("abc123"),
         plexgo.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
@@ -61,7 +63,7 @@ func main() {
 
 ### Errors
 
-| Error Type                               | Status Code                              | Content Type                             |
-| ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
-| sdkerrors.GetServerResourcesUnauthorized | 401                                      | application/json                         |
-| sdkerrors.SDKError                       | 4XX, 5XX                                 | \*/\*                                    |
+| Error Type             | Status Code            | Content Type           |
+| ---------------------- | ---------------------- | ---------------------- |
+| sdkerrors.Unauthorized | 401                    | application/json       |
+| sdkerrors.SDKError     | 4XX, 5XX               | \*/\*                  |

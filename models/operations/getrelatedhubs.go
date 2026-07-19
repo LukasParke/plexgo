@@ -144,10 +144,10 @@ type GetRelatedHubsRequest struct {
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	// The metadata ID for the hubs to fetch
-	MetadataID int64 `pathParam:"style=simple,explode=false,name=metadataId"`
 	// Limit results to count items
 	Count *int64 `queryParam:"style=form,explode=true,name=count"`
+	// The metadata ID for the hubs to fetch
+	MetadataID int64 `pathParam:"style=simple,explode=false,name=metadataId"`
 	// Only return hubs which are "transient", meaning those which are prone to changing after media playback or addition (e.g. On Deck, or Recently Added)
 	OnlyTransient *components.BoolInt `default:"0" queryParam:"style=form,explode=true,name=onlyTransient"`
 }
@@ -240,18 +240,18 @@ func (g *GetRelatedHubsRequest) GetMarketplace() *string {
 	return g.Marketplace
 }
 
-func (g *GetRelatedHubsRequest) GetMetadataID() int64 {
-	if g == nil {
-		return 0
-	}
-	return g.MetadataID
-}
-
 func (g *GetRelatedHubsRequest) GetCount() *int64 {
 	if g == nil {
 		return nil
 	}
 	return g.Count
+}
+
+func (g *GetRelatedHubsRequest) GetMetadataID() int64 {
+	if g == nil {
+		return 0
+	}
+	return g.MetadataID
 }
 
 func (g *GetRelatedHubsRequest) GetOnlyTransient() *components.BoolInt {
@@ -268,7 +268,7 @@ type GetRelatedHubsResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// OK
+	// Successfully retrieved get related hubs
 	MediaContainerWithHubs *components.MediaContainerWithHubs
 	Headers                map[string][]string
 }

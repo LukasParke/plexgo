@@ -1,9 +1,0 @@
-# SetDVRPreferencesMediaContainer
-
-
-## Fields
-
-| Field                                                                                                             | Type                                                                                                              | Required                                                                                                          | Description                                                                                                       |
-| ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `MediaContainer`                                                                                                  | [*operations.SetDVRPreferencesDVRsMediaContainer](../../models/operations/setdvrpreferencesdvrsmediacontainer.md) | :heavy_minus_sign:                                                                                                | N/A                                                                                                               |
-| `Dvr`                                                                                                             | [][operations.SetDVRPreferencesDVR](../../models/operations/setdvrpreferencesdvr.md)                              | :heavy_minus_sign:                                                                                                | N/A                                                                                                               |

@@ -8,6 +8,36 @@ import (
 	"github.com/LukeHagar/plexgo/internal/utils"
 )
 
+// AutoSelectSubtitle - The auto-select subtitle mode (0 = Manually selected, 1 = Shown with foreign audio, 2 = Always enabled)
+type AutoSelectSubtitle int
+
+const (
+	AutoSelectSubtitleManuallySelected      AutoSelectSubtitle = 0
+	AutoSelectSubtitleShownWithForeignAudio AutoSelectSubtitle = 1
+	AutoSelectSubtitleAlwaysEnabled         AutoSelectSubtitle = 2
+)
+
+func (e AutoSelectSubtitle) ToPointer() *AutoSelectSubtitle {
+	return &e
+}
+func (e *AutoSelectSubtitle) UnmarshalJSON(data []byte) error {
+	var v int
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case 0:
+		fallthrough
+	case 1:
+		fallthrough
+	case 2:
+		*e = AutoSelectSubtitle(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AutoSelectSubtitle: %v", v)
+	}
+}
+
 // DefaultAudioAccessibility - The audio accessibility mode (0 = Prefer non-accessibility audio, 1 = Prefer accessibility audio, 2 = Only show accessibility audio, 3 = Only show non-accessibility audio)
 type DefaultAudioAccessibility int
 
@@ -38,36 +68,6 @@ func (e *DefaultAudioAccessibility) UnmarshalJSON(data []byte) error {
 		return nil
 	default:
 		return fmt.Errorf("invalid value for DefaultAudioAccessibility: %v", v)
-	}
-}
-
-// AutoSelectSubtitle - The auto-select subtitle mode (0 = Manually selected, 1 = Shown with foreign audio, 2 = Always enabled)
-type AutoSelectSubtitle int
-
-const (
-	AutoSelectSubtitleManuallySelected      AutoSelectSubtitle = 0
-	AutoSelectSubtitleShownWithForeignAudio AutoSelectSubtitle = 1
-	AutoSelectSubtitleAlwaysEnabled         AutoSelectSubtitle = 2
-)
-
-func (e AutoSelectSubtitle) ToPointer() *AutoSelectSubtitle {
-	return &e
-}
-func (e *AutoSelectSubtitle) UnmarshalJSON(data []byte) error {
-	var v int
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case 0:
-		fallthrough
-	case 1:
-		fallthrough
-	case 2:
-		*e = AutoSelectSubtitle(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AutoSelectSubtitle: %v", v)
 	}
 }
 
@@ -137,39 +137,6 @@ func (e *DefaultSubtitleForced) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// WatchedIndicator - Whether or not media watched indicators are enabled (little orange dot on media)
-type WatchedIndicator int
-
-const (
-	WatchedIndicatorNone             WatchedIndicator = 0
-	WatchedIndicatorMoviesAndTvShows WatchedIndicator = 1
-	WatchedIndicatorMovies           WatchedIndicator = 2
-	WatchedIndicatorTvShows          WatchedIndicator = 3
-)
-
-func (e WatchedIndicator) ToPointer() *WatchedIndicator {
-	return &e
-}
-func (e *WatchedIndicator) UnmarshalJSON(data []byte) error {
-	var v int
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case 0:
-		fallthrough
-	case 1:
-		fallthrough
-	case 2:
-		fallthrough
-	case 3:
-		*e = WatchedIndicator(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for WatchedIndicator: %v", v)
-	}
-}
-
 // MediaReviewsVisibility - Whether or not the account has media reviews visibility enabled
 type MediaReviewsVisibility int
 
@@ -203,25 +170,58 @@ func (e *MediaReviewsVisibility) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// WatchedIndicator - Whether or not media watched indicators are enabled (little orange dot on media)
+type WatchedIndicator int
+
+const (
+	WatchedIndicatorNone             WatchedIndicator = 0
+	WatchedIndicatorMoviesAndTvShows WatchedIndicator = 1
+	WatchedIndicatorMovies           WatchedIndicator = 2
+	WatchedIndicatorTvShows          WatchedIndicator = 3
+)
+
+func (e WatchedIndicator) ToPointer() *WatchedIndicator {
+	return &e
+}
+func (e *WatchedIndicator) UnmarshalJSON(data []byte) error {
+	var v int
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case 0:
+		fallthrough
+	case 1:
+		fallthrough
+	case 2:
+		fallthrough
+	case 3:
+		*e = WatchedIndicator(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for WatchedIndicator: %v", v)
+	}
+}
+
 type UserProfile struct {
 	// If the account has automatically select audio and subtitle tracks enabled
-	AutoSelectAudio *bool `default:"true" json:"autoSelectAudio"`
-	// The preferred audio language for the account
-	DefaultAudioLanguage      *string                    `json:"defaultAudioLanguage"`
+	AutoSelectAudio           *bool                      `default:"true" json:"autoSelectAudio"`
+	AutoSelectSubtitle        *AutoSelectSubtitle        `default:"0" json:"autoSelectSubtitle"`
 	DefaultAudioAccessibility *DefaultAudioAccessibility `default:"0" json:"defaultAudioAccessibility"`
+	// The preferred audio language for the account
+	DefaultAudioLanguage *string `json:"defaultAudioLanguage"`
 	// The preferred audio languages for the account
-	DefaultAudioLanguages []string `json:"defaultAudioLanguages,omitempty"`
+	DefaultAudioLanguages        []string                      `json:"defaultAudioLanguages,omitempty"`
+	DefaultSubtitleAccessibility *DefaultSubtitleAccessibility `default:"0" json:"defaultSubtitleAccessibility"`
+	DefaultSubtitleForced        *DefaultSubtitleForced        `default:"0" json:"defaultSubtitleForced"`
 	// The preferred subtitle language for the account
 	DefaultSubtitleLanguage *string `json:"defaultSubtitleLanguage"`
 	// The preferred subtitle languages for the account
-	DefaultSubtitleLanguages     []string                      `json:"defaultSubtitleLanguages,omitempty"`
-	AutoSelectSubtitle           *AutoSelectSubtitle           `default:"0" json:"autoSelectSubtitle"`
-	DefaultSubtitleAccessibility *DefaultSubtitleAccessibility `default:"0" json:"defaultSubtitleAccessibility"`
-	DefaultSubtitleForced        *DefaultSubtitleForced        `default:"0" json:"defaultSubtitleForced"`
-	WatchedIndicator             *WatchedIndicator             `default:"0" json:"watchedIndicator"`
-	MediaReviewsVisibility       *MediaReviewsVisibility       `default:"0" json:"mediaReviewsVisibility"`
+	DefaultSubtitleLanguages []string `json:"defaultSubtitleLanguages,omitempty"`
 	// The languages for media reviews visibility
-	MediaReviewsLanguages []string `json:"mediaReviewsLanguages,omitempty"`
+	MediaReviewsLanguages  []string                `json:"mediaReviewsLanguages,omitempty"`
+	MediaReviewsVisibility *MediaReviewsVisibility `default:"0" json:"mediaReviewsVisibility"`
+	WatchedIndicator       *WatchedIndicator       `default:"0" json:"watchedIndicator"`
 }
 
 func (u UserProfile) MarshalJSON() ([]byte, error) {
@@ -242,11 +242,11 @@ func (u *UserProfile) GetAutoSelectAudio() *bool {
 	return u.AutoSelectAudio
 }
 
-func (u *UserProfile) GetDefaultAudioLanguage() *string {
+func (u *UserProfile) GetAutoSelectSubtitle() *AutoSelectSubtitle {
 	if u == nil {
 		return nil
 	}
-	return u.DefaultAudioLanguage
+	return u.AutoSelectSubtitle
 }
 
 func (u *UserProfile) GetDefaultAudioAccessibility() *DefaultAudioAccessibility {
@@ -256,32 +256,18 @@ func (u *UserProfile) GetDefaultAudioAccessibility() *DefaultAudioAccessibility 
 	return u.DefaultAudioAccessibility
 }
 
+func (u *UserProfile) GetDefaultAudioLanguage() *string {
+	if u == nil {
+		return nil
+	}
+	return u.DefaultAudioLanguage
+}
+
 func (u *UserProfile) GetDefaultAudioLanguages() []string {
 	if u == nil {
 		return nil
 	}
 	return u.DefaultAudioLanguages
-}
-
-func (u *UserProfile) GetDefaultSubtitleLanguage() *string {
-	if u == nil {
-		return nil
-	}
-	return u.DefaultSubtitleLanguage
-}
-
-func (u *UserProfile) GetDefaultSubtitleLanguages() []string {
-	if u == nil {
-		return nil
-	}
-	return u.DefaultSubtitleLanguages
-}
-
-func (u *UserProfile) GetAutoSelectSubtitle() *AutoSelectSubtitle {
-	if u == nil {
-		return nil
-	}
-	return u.AutoSelectSubtitle
 }
 
 func (u *UserProfile) GetDefaultSubtitleAccessibility() *DefaultSubtitleAccessibility {
@@ -298,11 +284,25 @@ func (u *UserProfile) GetDefaultSubtitleForced() *DefaultSubtitleForced {
 	return u.DefaultSubtitleForced
 }
 
-func (u *UserProfile) GetWatchedIndicator() *WatchedIndicator {
+func (u *UserProfile) GetDefaultSubtitleLanguage() *string {
 	if u == nil {
 		return nil
 	}
-	return u.WatchedIndicator
+	return u.DefaultSubtitleLanguage
+}
+
+func (u *UserProfile) GetDefaultSubtitleLanguages() []string {
+	if u == nil {
+		return nil
+	}
+	return u.DefaultSubtitleLanguages
+}
+
+func (u *UserProfile) GetMediaReviewsLanguages() []string {
+	if u == nil {
+		return nil
+	}
+	return u.MediaReviewsLanguages
 }
 
 func (u *UserProfile) GetMediaReviewsVisibility() *MediaReviewsVisibility {
@@ -312,9 +312,9 @@ func (u *UserProfile) GetMediaReviewsVisibility() *MediaReviewsVisibility {
 	return u.MediaReviewsVisibility
 }
 
-func (u *UserProfile) GetMediaReviewsLanguages() []string {
+func (u *UserProfile) GetWatchedIndicator() *WatchedIndicator {
 	if u == nil {
 		return nil
 	}
-	return u.MediaReviewsLanguages
+	return u.WatchedIndicator
 }

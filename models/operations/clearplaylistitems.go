@@ -250,7 +250,7 @@ type ClearPlaylistItemsResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// OK
+	// Successfully deleted clearing a playlist
 	MediaContainerWithPlaylistMetadata *components.MediaContainerWithPlaylistMetadata
 }
 

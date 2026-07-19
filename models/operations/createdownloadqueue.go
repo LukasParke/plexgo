@@ -3,85 +3,9 @@
 package operations
 
 import (
-	"encoding/json"
-	"fmt"
+	"github.com/LukeHagar/plexgo/models/components"
 	"net/http"
 )
-
-// CreateDownloadQueueStatus - The state of this queue
-//   - deciding: At least one item is still being decided
-//   - waiting: At least one item is waiting for transcode and none are currently transcoding
-//   - processing: At least one item is being transcoded
-//   - done: All items are available (or potentially expired)
-//   - error: At least one item has encountered an error
-type CreateDownloadQueueStatus string
-
-const (
-	CreateDownloadQueueStatusDeciding   CreateDownloadQueueStatus = "deciding"
-	CreateDownloadQueueStatusWaiting    CreateDownloadQueueStatus = "waiting"
-	CreateDownloadQueueStatusProcessing CreateDownloadQueueStatus = "processing"
-	CreateDownloadQueueStatusDone       CreateDownloadQueueStatus = "done"
-	CreateDownloadQueueStatusError      CreateDownloadQueueStatus = "error"
-)
-
-func (e CreateDownloadQueueStatus) ToPointer() *CreateDownloadQueueStatus {
-	return &e
-}
-func (e *CreateDownloadQueueStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "deciding":
-		fallthrough
-	case "waiting":
-		fallthrough
-	case "processing":
-		fallthrough
-	case "done":
-		fallthrough
-	case "error":
-		*e = CreateDownloadQueueStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CreateDownloadQueueStatus: %v", v)
-	}
-}
-
-type DownloadQueue struct {
-	ID        *int64 `json:"id,omitempty"`
-	ItemCount *int64 `json:"itemCount,omitempty"`
-	// The state of this queue
-	//   - deciding: At least one item is still being decided
-	//   - waiting: At least one item is waiting for transcode and none are currently transcoding
-	//   - processing: At least one item is being transcoded
-	//   - done: All items are available (or potentially expired)
-	//   - error: At least one item has encountered an error
-	//
-	Status *CreateDownloadQueueStatus `json:"status,omitempty"`
-}
-
-func (d *DownloadQueue) GetID() *int64 {
-	if d == nil {
-		return nil
-	}
-	return d.ID
-}
-
-func (d *DownloadQueue) GetItemCount() *int64 {
-	if d == nil {
-		return nil
-	}
-	return d.ItemCount
-}
-
-func (d *DownloadQueue) GetStatus() *CreateDownloadQueueStatus {
-	if d == nil {
-		return nil
-	}
-	return d.Status
-}
 
 // CreateDownloadQueueMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
 // Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
@@ -89,13 +13,11 @@ func (d *DownloadQueue) GetStatus() *CreateDownloadQueueStatus {
 type CreateDownloadQueueMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize     *int64          `json:"totalSize,omitempty"`
-	DownloadQueue []DownloadQueue `json:"DownloadQueue,omitempty"`
+	TotalSize     *int64                     `json:"totalSize,omitempty"`
+	DownloadQueue []components.DownloadQueue `json:"DownloadQueue,omitempty"`
 }
 
 func (c *CreateDownloadQueueMediaContainer) GetIdentifier() *string {
@@ -126,7 +48,7 @@ func (c *CreateDownloadQueueMediaContainer) GetTotalSize() *int64 {
 	return c.TotalSize
 }
 
-func (c *CreateDownloadQueueMediaContainer) GetDownloadQueue() []DownloadQueue {
+func (c *CreateDownloadQueueMediaContainer) GetDownloadQueue() []components.DownloadQueue {
 	if c == nil {
 		return nil
 	}

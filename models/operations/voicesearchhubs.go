@@ -144,8 +144,6 @@ type VoiceSearchHubsRequest struct {
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	// The query term
-	Query string `queryParam:"style=form,explode=true,name=query"`
 	// The type of media to retrieve or filter by.
 	//
 	// 1 = movie
@@ -159,10 +157,13 @@ type VoiceSearchHubsRequest struct {
 	// 9 = photo
 	//
 	// E.g. A movie library will not return anything with type 3 as there are no seasons for movie libraries
-	//
 	Type *components.MediaType `queryParam:"style=form,explode=true,name=type"`
+	// The query term
+	Query string `queryParam:"style=form,explode=true,name=query"`
 	// The number of items to return per hub.  3 if not specified
 	Limit *int64 `queryParam:"style=form,explode=true,name=limit"`
+	// Include collection results in search hubs
+	IncludeCollections *bool `queryParam:"style=form,explode=true,name=includeCollections"`
 }
 
 func (v VoiceSearchHubsRequest) MarshalJSON() ([]byte, error) {
@@ -253,18 +254,18 @@ func (v *VoiceSearchHubsRequest) GetMarketplace() *string {
 	return v.Marketplace
 }
 
-func (v *VoiceSearchHubsRequest) GetQuery() string {
-	if v == nil {
-		return ""
-	}
-	return v.Query
-}
-
 func (v *VoiceSearchHubsRequest) GetType() *components.MediaType {
 	if v == nil {
 		return nil
 	}
 	return v.Type
+}
+
+func (v *VoiceSearchHubsRequest) GetQuery() string {
+	if v == nil {
+		return ""
+	}
+	return v.Query
 }
 
 func (v *VoiceSearchHubsRequest) GetLimit() *int64 {
@@ -274,66 +275,11 @@ func (v *VoiceSearchHubsRequest) GetLimit() *int64 {
 	return v.Limit
 }
 
-// VoiceSearchHubsMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
-// Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
-// The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
-type VoiceSearchHubsMediaContainer struct {
-	Identifier *string `json:"identifier,omitempty"`
-	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
-	Offset *int64 `json:"offset,omitempty"`
-	Size   *int64 `json:"size,omitempty"`
-	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize *int64           `json:"totalSize,omitempty"`
-	Hub       []components.Hub `json:"Hub,omitempty"`
-}
-
-func (v *VoiceSearchHubsMediaContainer) GetIdentifier() *string {
+func (v *VoiceSearchHubsRequest) GetIncludeCollections() *bool {
 	if v == nil {
 		return nil
 	}
-	return v.Identifier
-}
-
-func (v *VoiceSearchHubsMediaContainer) GetOffset() *int64 {
-	if v == nil {
-		return nil
-	}
-	return v.Offset
-}
-
-func (v *VoiceSearchHubsMediaContainer) GetSize() *int64 {
-	if v == nil {
-		return nil
-	}
-	return v.Size
-}
-
-func (v *VoiceSearchHubsMediaContainer) GetTotalSize() *int64 {
-	if v == nil {
-		return nil
-	}
-	return v.TotalSize
-}
-
-func (v *VoiceSearchHubsMediaContainer) GetHub() []components.Hub {
-	if v == nil {
-		return nil
-	}
-	return v.Hub
-}
-
-// VoiceSearchHubsResponseBody - OK
-type VoiceSearchHubsResponseBody struct {
-	MediaContainer *VoiceSearchHubsMediaContainer `json:"MediaContainer,omitempty"`
-}
-
-func (v *VoiceSearchHubsResponseBody) GetMediaContainer() *VoiceSearchHubsMediaContainer {
-	if v == nil {
-		return nil
-	}
-	return v.MediaContainer
+	return v.IncludeCollections
 }
 
 type VoiceSearchHubsResponse struct {
@@ -344,8 +290,8 @@ type VoiceSearchHubsResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// OK
-	Object  *VoiceSearchHubsResponseBody
-	Headers map[string][]string
+	MediaContainerWithHubs *components.MediaContainerWithHubs
+	Headers                map[string][]string
 }
 
 func (v *VoiceSearchHubsResponse) GetContentType() string {
@@ -369,11 +315,11 @@ func (v *VoiceSearchHubsResponse) GetRawResponse() *http.Response {
 	return v.RawResponse
 }
 
-func (v *VoiceSearchHubsResponse) GetObject() *VoiceSearchHubsResponseBody {
+func (v *VoiceSearchHubsResponse) GetMediaContainerWithHubs() *components.MediaContainerWithHubs {
 	if v == nil {
 		return nil
 	}
-	return v.Object
+	return v.MediaContainerWithHubs
 }
 
 func (v *VoiceSearchHubsResponse) GetHeaders() map[string][]string {

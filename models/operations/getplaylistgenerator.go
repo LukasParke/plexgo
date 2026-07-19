@@ -254,15 +254,42 @@ func (g *GetPlaylistGeneratorRequest) GetGeneratorID() int64 {
 	return g.GeneratorID
 }
 
-type GetPlaylistGeneratorDevice struct {
+// GetPlaylistGeneratorType - The type of this generator
+type GetPlaylistGeneratorType int64
+
+const (
+	GetPlaylistGeneratorTypeMinus1   GetPlaylistGeneratorType = -1
+	GetPlaylistGeneratorTypeFortyTwo GetPlaylistGeneratorType = 42
+)
+
+func (e GetPlaylistGeneratorType) ToPointer() *GetPlaylistGeneratorType {
+	return &e
+}
+func (e *GetPlaylistGeneratorType) UnmarshalJSON(data []byte) error {
+	var v int64
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case -1:
+		fallthrough
+	case 42:
+		*e = GetPlaylistGeneratorType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for GetPlaylistGeneratorType: %v", v)
+	}
+}
+
+type Device struct {
 	Profile *string `json:"profile,omitempty"`
 }
 
-func (g *GetPlaylistGeneratorDevice) GetProfile() *string {
-	if g == nil {
+func (d *Device) GetProfile() *string {
+	if d == nil {
 		return nil
 	}
-	return g.Profile
+	return d.Profile
 }
 
 type GetPlaylistGeneratorLocation struct {
@@ -650,37 +677,13 @@ func (g *GetPlaylistGeneratorStatus) GetTotalSize() *int64 {
 	return g.TotalSize
 }
 
-// GetPlaylistGeneratorType - The type of this generator
-type GetPlaylistGeneratorType int64
-
-const (
-	GetPlaylistGeneratorTypeMinus1   GetPlaylistGeneratorType = -1
-	GetPlaylistGeneratorTypeFortyTwo GetPlaylistGeneratorType = 42
-)
-
-func (e GetPlaylistGeneratorType) ToPointer() *GetPlaylistGeneratorType {
-	return &e
-}
-func (e *GetPlaylistGeneratorType) UnmarshalJSON(data []byte) error {
-	var v int64
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case -1:
-		fallthrough
-	case 42:
-		*e = GetPlaylistGeneratorType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GetPlaylistGeneratorType: %v", v)
-	}
-}
-
 type GetPlaylistGeneratorItem struct {
+	Title *string `json:"title,omitempty"`
+	// The type of this generator
+	Type *GetPlaylistGeneratorType `json:"type,omitempty"`
 	// The composite thumbnail image path
 	Composite     *string                       `json:"composite,omitempty"`
-	Device        *GetPlaylistGeneratorDevice   `json:"Device,omitempty"`
+	Device        *Device                       `json:"Device,omitempty"`
 	ID            *int64                        `json:"id,omitempty"`
 	Location      *GetPlaylistGeneratorLocation `json:"Location,omitempty"`
 	MediaSettings *MediaSettings                `json:"MediaSettings,omitempty"`
@@ -688,10 +691,21 @@ type GetPlaylistGeneratorItem struct {
 	Status        *GetPlaylistGeneratorStatus   `json:"Status,omitempty"`
 	Target        *string                       `json:"target,omitempty"`
 	// The tag of this generator's settings
-	TargetTagID *int64  `json:"targetTagID,omitempty"`
-	Title       *string `json:"title,omitempty"`
-	// The type of this generator
-	Type *GetPlaylistGeneratorType `json:"type,omitempty"`
+	TargetTagID *int64 `json:"targetTagID,omitempty"`
+}
+
+func (g *GetPlaylistGeneratorItem) GetTitle() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Title
+}
+
+func (g *GetPlaylistGeneratorItem) GetType() *GetPlaylistGeneratorType {
+	if g == nil {
+		return nil
+	}
+	return g.Type
 }
 
 func (g *GetPlaylistGeneratorItem) GetComposite() *string {
@@ -701,7 +715,7 @@ func (g *GetPlaylistGeneratorItem) GetComposite() *string {
 	return g.Composite
 }
 
-func (g *GetPlaylistGeneratorItem) GetDevice() *GetPlaylistGeneratorDevice {
+func (g *GetPlaylistGeneratorItem) GetDevice() *Device {
 	if g == nil {
 		return nil
 	}
@@ -757,31 +771,15 @@ func (g *GetPlaylistGeneratorItem) GetTargetTagID() *int64 {
 	return g.TargetTagID
 }
 
-func (g *GetPlaylistGeneratorItem) GetTitle() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Title
-}
-
-func (g *GetPlaylistGeneratorItem) GetType() *GetPlaylistGeneratorType {
-	if g == nil {
-		return nil
-	}
-	return g.Type
-}
-
 // GetPlaylistGeneratorMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
 // Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
 // The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
 type GetPlaylistGeneratorMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
 	TotalSize *int64                     `json:"totalSize,omitempty"`
 	Item      []GetPlaylistGeneratorItem `json:"Item,omitempty"`
 }

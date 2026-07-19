@@ -145,8 +145,9 @@ type GetSectionPreferencesRequest struct {
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
 	// Section identifier
-	SectionID int64   `pathParam:"style=simple,explode=false,name=sectionId"`
-	Agent     *string `queryParam:"style=form,explode=true,name=agent"`
+	SectionID int64 `pathParam:"style=simple,explode=false,name=sectionId"`
+	// The identifier of the metadata agent to use
+	Agent *string `queryParam:"style=form,explode=true,name=agent"`
 }
 
 func (g GetSectionPreferencesRequest) MarshalJSON() ([]byte, error) {

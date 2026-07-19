@@ -7,23 +7,23 @@ import (
 	"fmt"
 )
 
-type Status string
+type MediaGrabOperationStatus string
 
 const (
-	StatusInactive       Status = "inactive"
-	StatusScheduled      Status = "scheduled"
-	StatusInprogress     Status = "inprogress"
-	StatusComplete       Status = "complete"
-	StatusCancelled      Status = "cancelled"
-	StatusError          Status = "error"
-	StatusPostprocessing Status = "postprocessing"
-	StatusPaused         Status = "paused"
+	MediaGrabOperationStatusInactive       MediaGrabOperationStatus = "inactive"
+	MediaGrabOperationStatusScheduled      MediaGrabOperationStatus = "scheduled"
+	MediaGrabOperationStatusInprogress     MediaGrabOperationStatus = "inprogress"
+	MediaGrabOperationStatusComplete       MediaGrabOperationStatus = "complete"
+	MediaGrabOperationStatusCancelled      MediaGrabOperationStatus = "cancelled"
+	MediaGrabOperationStatusError          MediaGrabOperationStatus = "error"
+	MediaGrabOperationStatusPostprocessing MediaGrabOperationStatus = "postprocessing"
+	MediaGrabOperationStatusPaused         MediaGrabOperationStatus = "paused"
 )
 
-func (e Status) ToPointer() *Status {
+func (e MediaGrabOperationStatus) ToPointer() *MediaGrabOperationStatus {
 	return &e
 }
-func (e *Status) UnmarshalJSON(data []byte) error {
+func (e *MediaGrabOperationStatus) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -44,14 +44,14 @@ func (e *Status) UnmarshalJSON(data []byte) error {
 	case "postprocessing":
 		fallthrough
 	case "paused":
-		*e = Status(v)
+		*e = MediaGrabOperationStatus(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Status: %v", v)
+		return fmt.Errorf("invalid value for MediaGrabOperationStatus: %v", v)
 	}
 }
 
-// MediaGrabOperation - A media grab opration represents a scheduled or active recording of media
+// MediaGrabOperation - A media grab operation represents a scheduled or active recording of media
 type MediaGrabOperation struct {
 	CurrentSize         *int64  `json:"currentSize,omitempty"`
 	GrabberIdentifier   *string `json:"grabberIdentifier,omitempty"`
@@ -65,11 +65,10 @@ type MediaGrabOperation struct {
 	// Note that when a metadata item has multiple media items, those media items should be isomorphic. That is, a 4K version and 1080p version of a movie are different versions of the same movie. They have the same duration, same summary, same rating, etc. and they can generally be considered interchangeable. A theatrical release vs. director's cut vs. unrated version on the other hand would be separate metadata items.
 	//
 	// Metadata items can often live in a hierarchy with relationships between them.  For example, the metadata item for an episodes is associated with a season metadata item which is associated with a show metadata item.  A similar hierarchy exists with track, album, and artist and photos and photo album.  The relationships may be expressed via relative terms and absolute terms.  For example, "leaves" refer to metadata items which has associated media (there is no media for a season nor show).  A show will have "children" in the form of seasons and a season will have "children" in the form of episodes and episodes have "parent" in the form of a season which has a "parent" in the form of a show.  Similarly, a show has "grandchildren" in the form of episodse and an episode has a "grandparent" in the form of a show.
-	//
-	Metadata *Metadata `json:"Metadata,omitempty"`
-	Percent  *float64  `json:"percent,omitempty"`
-	Provider *string   `json:"provider,omitempty"`
-	Status   *Status   `json:"status,omitempty"`
+	Metadata *Metadata                 `json:"Metadata,omitempty"`
+	Percent  *float64                  `json:"percent,omitempty"`
+	Provider *string                   `json:"provider,omitempty"`
+	Status   *MediaGrabOperationStatus `json:"status,omitempty"`
 }
 
 func (m *MediaGrabOperation) GetCurrentSize() *int64 {
@@ -142,7 +141,7 @@ func (m *MediaGrabOperation) GetProvider() *string {
 	return m.Provider
 }
 
-func (m *MediaGrabOperation) GetStatus() *Status {
+func (m *MediaGrabOperation) GetStatus() *MediaGrabOperationStatus {
 	if m == nil {
 		return nil
 	}

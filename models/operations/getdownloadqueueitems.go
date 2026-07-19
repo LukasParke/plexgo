@@ -3,8 +3,6 @@
 package operations
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/LukeHagar/plexgo/internal/utils"
 	"github.com/LukeHagar/plexgo/models/components"
 	"net/http"
@@ -254,224 +252,17 @@ func (g *GetDownloadQueueItemsRequest) GetItemID() []int64 {
 	return g.ItemID
 }
 
-type GetDownloadQueueItemsDecisionResult struct {
-	// The maximum bitrate set when item was added
-	AvailableBandwidth     *int64  `json:"availableBandwidth,omitempty"`
-	DirectPlayDecisionCode *int64  `json:"directPlayDecisionCode,omitempty"`
-	DirectPlayDecisionText *string `json:"directPlayDecisionText,omitempty"`
-	GeneralDecisionCode    *int64  `json:"generalDecisionCode,omitempty"`
-	GeneralDecisionText    *string `json:"generalDecisionText,omitempty"`
-	// The code indicating the status of evaluation of playback when client indicates `hasMDE=1`
-	MdeDecisionCode *int64 `json:"mdeDecisionCode,omitempty"`
-	// Descriptive text for the above code
-	MdeDecisionText       *string `json:"mdeDecisionText,omitempty"`
-	TranscodeDecisionCode *int64  `json:"transcodeDecisionCode,omitempty"`
-	TranscodeDecisionText *string `json:"transcodeDecisionText,omitempty"`
-}
-
-func (g *GetDownloadQueueItemsDecisionResult) GetAvailableBandwidth() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.AvailableBandwidth
-}
-
-func (g *GetDownloadQueueItemsDecisionResult) GetDirectPlayDecisionCode() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.DirectPlayDecisionCode
-}
-
-func (g *GetDownloadQueueItemsDecisionResult) GetDirectPlayDecisionText() *string {
-	if g == nil {
-		return nil
-	}
-	return g.DirectPlayDecisionText
-}
-
-func (g *GetDownloadQueueItemsDecisionResult) GetGeneralDecisionCode() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.GeneralDecisionCode
-}
-
-func (g *GetDownloadQueueItemsDecisionResult) GetGeneralDecisionText() *string {
-	if g == nil {
-		return nil
-	}
-	return g.GeneralDecisionText
-}
-
-func (g *GetDownloadQueueItemsDecisionResult) GetMdeDecisionCode() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.MdeDecisionCode
-}
-
-func (g *GetDownloadQueueItemsDecisionResult) GetMdeDecisionText() *string {
-	if g == nil {
-		return nil
-	}
-	return g.MdeDecisionText
-}
-
-func (g *GetDownloadQueueItemsDecisionResult) GetTranscodeDecisionCode() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.TranscodeDecisionCode
-}
-
-func (g *GetDownloadQueueItemsDecisionResult) GetTranscodeDecisionText() *string {
-	if g == nil {
-		return nil
-	}
-	return g.TranscodeDecisionText
-}
-
-// GetDownloadQueueItemsStatus - The state of the item:
-//   - deciding: The item decision is pending
-//   - waiting: The item is waiting for transcode
-//   - processing: The item is being transcoded
-//   - available: The item is available for download
-//   - error: The item encountered an error in the decision or transcode
-//   - expired: The transcoded item has timed out and is no longer available
-type GetDownloadQueueItemsStatus string
-
-const (
-	GetDownloadQueueItemsStatusDeciding   GetDownloadQueueItemsStatus = "deciding"
-	GetDownloadQueueItemsStatusWaiting    GetDownloadQueueItemsStatus = "waiting"
-	GetDownloadQueueItemsStatusProcessing GetDownloadQueueItemsStatus = "processing"
-	GetDownloadQueueItemsStatusAvailable  GetDownloadQueueItemsStatus = "available"
-	GetDownloadQueueItemsStatusError      GetDownloadQueueItemsStatus = "error"
-	GetDownloadQueueItemsStatusExpired    GetDownloadQueueItemsStatus = "expired"
-)
-
-func (e GetDownloadQueueItemsStatus) ToPointer() *GetDownloadQueueItemsStatus {
-	return &e
-}
-func (e *GetDownloadQueueItemsStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "deciding":
-		fallthrough
-	case "waiting":
-		fallthrough
-	case "processing":
-		fallthrough
-	case "available":
-		fallthrough
-	case "error":
-		fallthrough
-	case "expired":
-		*e = GetDownloadQueueItemsStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GetDownloadQueueItemsStatus: %v", v)
-	}
-}
-
-// GetDownloadQueueItemsTranscode - The transcode session object which is not yet documented otherwise it'd be a $ref here.
-type GetDownloadQueueItemsTranscode struct {
-}
-
-type GetDownloadQueueItemsDownloadQueueItem struct {
-	DecisionResult *GetDownloadQueueItemsDecisionResult `json:"DecisionResult,omitempty"`
-	// The error encountered in transcoding or decision
-	Error   *string `json:"error,omitempty"`
-	ID      *int64  `json:"id,omitempty"`
-	Key     *string `json:"key,omitempty"`
-	QueueID *int64  `json:"queueId,omitempty"`
-	// The state of the item:
-	//   - deciding: The item decision is pending
-	//   - waiting: The item is waiting for transcode
-	//   - processing: The item is being transcoded
-	//   - available: The item is available for download
-	//   - error: The item encountered an error in the decision or transcode
-	//   - expired: The transcoded item has timed out and is no longer available
-	//
-	Status *GetDownloadQueueItemsStatus `json:"status,omitempty"`
-	// The transcode session object which is not yet documented otherwise it'd be a $ref here.
-	Transcode *GetDownloadQueueItemsTranscode `json:"transcode,omitempty"`
-	// The transcode session if item is currently being transcoded
-	TranscodeSession *components.TranscodeSession `json:"TranscodeSession,omitempty"`
-}
-
-func (g *GetDownloadQueueItemsDownloadQueueItem) GetDecisionResult() *GetDownloadQueueItemsDecisionResult {
-	if g == nil {
-		return nil
-	}
-	return g.DecisionResult
-}
-
-func (g *GetDownloadQueueItemsDownloadQueueItem) GetError() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Error
-}
-
-func (g *GetDownloadQueueItemsDownloadQueueItem) GetID() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.ID
-}
-
-func (g *GetDownloadQueueItemsDownloadQueueItem) GetKey() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Key
-}
-
-func (g *GetDownloadQueueItemsDownloadQueueItem) GetQueueID() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.QueueID
-}
-
-func (g *GetDownloadQueueItemsDownloadQueueItem) GetStatus() *GetDownloadQueueItemsStatus {
-	if g == nil {
-		return nil
-	}
-	return g.Status
-}
-
-func (g *GetDownloadQueueItemsDownloadQueueItem) GetTranscode() *GetDownloadQueueItemsTranscode {
-	if g == nil {
-		return nil
-	}
-	return g.Transcode
-}
-
-func (g *GetDownloadQueueItemsDownloadQueueItem) GetTranscodeSession() *components.TranscodeSession {
-	if g == nil {
-		return nil
-	}
-	return g.TranscodeSession
-}
-
 // GetDownloadQueueItemsMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
 // Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
 // The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
 type GetDownloadQueueItemsMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize         *int64                                   `json:"totalSize,omitempty"`
-	DownloadQueueItem []GetDownloadQueueItemsDownloadQueueItem `json:"DownloadQueueItem,omitempty"`
+	TotalSize         *int64                         `json:"totalSize,omitempty"`
+	DownloadQueueItem []components.DownloadQueueItem `json:"DownloadQueueItem,omitempty"`
 }
 
 func (g *GetDownloadQueueItemsMediaContainer) GetIdentifier() *string {
@@ -502,7 +293,7 @@ func (g *GetDownloadQueueItemsMediaContainer) GetTotalSize() *int64 {
 	return g.TotalSize
 }
 
-func (g *GetDownloadQueueItemsMediaContainer) GetDownloadQueueItem() []GetDownloadQueueItemsDownloadQueueItem {
+func (g *GetDownloadQueueItemsMediaContainer) GetDownloadQueueItem() []components.DownloadQueueItem {
 	if g == nil {
 		return nil
 	}

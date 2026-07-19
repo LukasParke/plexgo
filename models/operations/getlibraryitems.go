@@ -160,7 +160,6 @@ type GetLibraryItemsRequest struct {
 	// - Complex: `push=1&index=1&or=1&rating=2&pop=1&duration=10` - (index = 1 OR rating = 2) AND duration = 10
 	//
 	// See [API Info section](#section/API-Info/Media-Queries) for detailed information on building media queries.
-	//
 	MediaQuery *components.MediaQuery `queryParam:"style=form,explode=true,name=mediaQuery"`
 }
 

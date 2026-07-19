@@ -3,8 +3,6 @@
 package operations
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/LukeHagar/plexgo/internal/utils"
 	"github.com/LukeHagar/plexgo/models/components"
 	"net/http"
@@ -245,224 +243,17 @@ func (l *ListDownloadQueueItemsRequest) GetQueueID() int64 {
 	return l.QueueID
 }
 
-type DecisionResult struct {
-	// The maximum bitrate set when item was added
-	AvailableBandwidth     *int64  `json:"availableBandwidth,omitempty"`
-	DirectPlayDecisionCode *int64  `json:"directPlayDecisionCode,omitempty"`
-	DirectPlayDecisionText *string `json:"directPlayDecisionText,omitempty"`
-	GeneralDecisionCode    *int64  `json:"generalDecisionCode,omitempty"`
-	GeneralDecisionText    *string `json:"generalDecisionText,omitempty"`
-	// The code indicating the status of evaluation of playback when client indicates `hasMDE=1`
-	MdeDecisionCode *int64 `json:"mdeDecisionCode,omitempty"`
-	// Descriptive text for the above code
-	MdeDecisionText       *string `json:"mdeDecisionText,omitempty"`
-	TranscodeDecisionCode *int64  `json:"transcodeDecisionCode,omitempty"`
-	TranscodeDecisionText *string `json:"transcodeDecisionText,omitempty"`
-}
-
-func (d *DecisionResult) GetAvailableBandwidth() *int64 {
-	if d == nil {
-		return nil
-	}
-	return d.AvailableBandwidth
-}
-
-func (d *DecisionResult) GetDirectPlayDecisionCode() *int64 {
-	if d == nil {
-		return nil
-	}
-	return d.DirectPlayDecisionCode
-}
-
-func (d *DecisionResult) GetDirectPlayDecisionText() *string {
-	if d == nil {
-		return nil
-	}
-	return d.DirectPlayDecisionText
-}
-
-func (d *DecisionResult) GetGeneralDecisionCode() *int64 {
-	if d == nil {
-		return nil
-	}
-	return d.GeneralDecisionCode
-}
-
-func (d *DecisionResult) GetGeneralDecisionText() *string {
-	if d == nil {
-		return nil
-	}
-	return d.GeneralDecisionText
-}
-
-func (d *DecisionResult) GetMdeDecisionCode() *int64 {
-	if d == nil {
-		return nil
-	}
-	return d.MdeDecisionCode
-}
-
-func (d *DecisionResult) GetMdeDecisionText() *string {
-	if d == nil {
-		return nil
-	}
-	return d.MdeDecisionText
-}
-
-func (d *DecisionResult) GetTranscodeDecisionCode() *int64 {
-	if d == nil {
-		return nil
-	}
-	return d.TranscodeDecisionCode
-}
-
-func (d *DecisionResult) GetTranscodeDecisionText() *string {
-	if d == nil {
-		return nil
-	}
-	return d.TranscodeDecisionText
-}
-
-// ListDownloadQueueItemsStatus - The state of the item:
-//   - deciding: The item decision is pending
-//   - waiting: The item is waiting for transcode
-//   - processing: The item is being transcoded
-//   - available: The item is available for download
-//   - error: The item encountered an error in the decision or transcode
-//   - expired: The transcoded item has timed out and is no longer available
-type ListDownloadQueueItemsStatus string
-
-const (
-	ListDownloadQueueItemsStatusDeciding   ListDownloadQueueItemsStatus = "deciding"
-	ListDownloadQueueItemsStatusWaiting    ListDownloadQueueItemsStatus = "waiting"
-	ListDownloadQueueItemsStatusProcessing ListDownloadQueueItemsStatus = "processing"
-	ListDownloadQueueItemsStatusAvailable  ListDownloadQueueItemsStatus = "available"
-	ListDownloadQueueItemsStatusError      ListDownloadQueueItemsStatus = "error"
-	ListDownloadQueueItemsStatusExpired    ListDownloadQueueItemsStatus = "expired"
-)
-
-func (e ListDownloadQueueItemsStatus) ToPointer() *ListDownloadQueueItemsStatus {
-	return &e
-}
-func (e *ListDownloadQueueItemsStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "deciding":
-		fallthrough
-	case "waiting":
-		fallthrough
-	case "processing":
-		fallthrough
-	case "available":
-		fallthrough
-	case "error":
-		fallthrough
-	case "expired":
-		*e = ListDownloadQueueItemsStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ListDownloadQueueItemsStatus: %v", v)
-	}
-}
-
-// Transcode - The transcode session object which is not yet documented otherwise it'd be a $ref here.
-type Transcode struct {
-}
-
-type DownloadQueueItem struct {
-	DecisionResult *DecisionResult `json:"DecisionResult,omitempty"`
-	// The error encountered in transcoding or decision
-	Error   *string `json:"error,omitempty"`
-	ID      *int64  `json:"id,omitempty"`
-	Key     *string `json:"key,omitempty"`
-	QueueID *int64  `json:"queueId,omitempty"`
-	// The state of the item:
-	//   - deciding: The item decision is pending
-	//   - waiting: The item is waiting for transcode
-	//   - processing: The item is being transcoded
-	//   - available: The item is available for download
-	//   - error: The item encountered an error in the decision or transcode
-	//   - expired: The transcoded item has timed out and is no longer available
-	//
-	Status *ListDownloadQueueItemsStatus `json:"status,omitempty"`
-	// The transcode session object which is not yet documented otherwise it'd be a $ref here.
-	Transcode *Transcode `json:"transcode,omitempty"`
-	// The transcode session if item is currently being transcoded
-	TranscodeSession *components.TranscodeSession `json:"TranscodeSession,omitempty"`
-}
-
-func (d *DownloadQueueItem) GetDecisionResult() *DecisionResult {
-	if d == nil {
-		return nil
-	}
-	return d.DecisionResult
-}
-
-func (d *DownloadQueueItem) GetError() *string {
-	if d == nil {
-		return nil
-	}
-	return d.Error
-}
-
-func (d *DownloadQueueItem) GetID() *int64 {
-	if d == nil {
-		return nil
-	}
-	return d.ID
-}
-
-func (d *DownloadQueueItem) GetKey() *string {
-	if d == nil {
-		return nil
-	}
-	return d.Key
-}
-
-func (d *DownloadQueueItem) GetQueueID() *int64 {
-	if d == nil {
-		return nil
-	}
-	return d.QueueID
-}
-
-func (d *DownloadQueueItem) GetStatus() *ListDownloadQueueItemsStatus {
-	if d == nil {
-		return nil
-	}
-	return d.Status
-}
-
-func (d *DownloadQueueItem) GetTranscode() *Transcode {
-	if d == nil {
-		return nil
-	}
-	return d.Transcode
-}
-
-func (d *DownloadQueueItem) GetTranscodeSession() *components.TranscodeSession {
-	if d == nil {
-		return nil
-	}
-	return d.TranscodeSession
-}
-
 // ListDownloadQueueItemsMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
 // Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
 // The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
 type ListDownloadQueueItemsMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize         *int64              `json:"totalSize,omitempty"`
-	DownloadQueueItem []DownloadQueueItem `json:"DownloadQueueItem,omitempty"`
+	TotalSize         *int64                         `json:"totalSize,omitempty"`
+	DownloadQueueItem []components.DownloadQueueItem `json:"DownloadQueueItem,omitempty"`
 }
 
 func (l *ListDownloadQueueItemsMediaContainer) GetIdentifier() *string {
@@ -493,7 +284,7 @@ func (l *ListDownloadQueueItemsMediaContainer) GetTotalSize() *int64 {
 	return l.TotalSize
 }
 
-func (l *ListDownloadQueueItemsMediaContainer) GetDownloadQueueItem() []DownloadQueueItem {
+func (l *ListDownloadQueueItemsMediaContainer) GetDownloadQueueItem() []components.DownloadQueueItem {
 	if l == nil {
 		return nil
 	}

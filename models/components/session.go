@@ -5,6 +5,7 @@ package components
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/LukeHagar/plexgo/internal/utils"
 )
 
 // SessionLocation - The location of the client
@@ -36,12 +37,39 @@ func (e *SessionLocation) UnmarshalJSON(data []byte) error {
 
 // Session - Information about the playback session
 type Session struct {
+	// Title of the media being played.
+	Title *string `json:"title,omitempty"`
 	// The bandwidth used by this client's playback in kbps
 	Bandwidth *int64 `json:"bandwidth,omitempty"`
 	// The id of the playback session
 	ID *string `json:"id,omitempty"`
 	// The location of the client
 	Location *SessionLocation `json:"location,omitempty"`
+	// Unique session key for this playback session.
+	SessionKey *string `json:"sessionKey,omitempty"`
+	// ID of the user owning this session.
+	UserID *int64 `json:"userID,omitempty"`
+	// UUID of the playback session.
+	UUID                 *string        `json:"uuid,omitempty"`
+	AdditionalProperties map[string]any `additionalProperties:"true" json:"-"`
+}
+
+func (s Session) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *Session) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *Session) GetTitle() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Title
 }
 
 func (s *Session) GetBandwidth() *int64 {
@@ -63,4 +91,32 @@ func (s *Session) GetLocation() *SessionLocation {
 		return nil
 	}
 	return s.Location
+}
+
+func (s *Session) GetSessionKey() *string {
+	if s == nil {
+		return nil
+	}
+	return s.SessionKey
+}
+
+func (s *Session) GetUserID() *int64 {
+	if s == nil {
+		return nil
+	}
+	return s.UserID
+}
+
+func (s *Session) GetUUID() *string {
+	if s == nil {
+		return nil
+	}
+	return s.UUID
+}
+
+func (s *Session) GetAdditionalProperties() map[string]any {
+	if s == nil {
+		return nil
+	}
+	return s.AdditionalProperties
 }

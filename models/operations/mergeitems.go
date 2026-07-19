@@ -143,8 +143,10 @@ type MergeItemsRequest struct {
 	// A friendly name for the client
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
-	Marketplace       *string  `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	IdsPathParameter  string   `pathParam:"style=simple,explode=false,name=ids"`
+	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
+	// Comma-separated list of IDs
+	IdsPathParameter string `pathParam:"style=simple,explode=false,name=ids"`
+	// Comma-separated list of item identifiers
 	IdsQueryParameter []string `queryParam:"style=form,explode=false,name=ids"`
 }
 

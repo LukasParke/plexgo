@@ -5,6 +5,7 @@ package operations
 import (
 	"github.com/LukeHagar/plexgo/internal/utils"
 	"github.com/LukeHagar/plexgo/models/components"
+	"io"
 	"net/http"
 )
 
@@ -268,6 +269,9 @@ type GetSessionSegmentResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// MPEG-TS segment for playing HLS content
+	// The Close method must be called on this field, even if it is not used, to prevent resource leaks.
+	BinaryResponse io.ReadCloser
 }
 
 func (g *GetSessionSegmentResponse) GetContentType() string {
@@ -289,4 +293,11 @@ func (g *GetSessionSegmentResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return g.RawResponse
+}
+
+func (g *GetSessionSegmentResponse) GetBinaryResponse() io.ReadCloser {
+	if g == nil {
+		return nil
+	}
+	return g.BinaryResponse
 }

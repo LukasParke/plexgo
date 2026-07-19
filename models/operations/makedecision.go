@@ -153,19 +153,19 @@ func (e *Location) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// Protocol - Indicates the network streaming protocol to be used for the transcode session: * 'http' - include the file in the http response such as MKV streaming * 'hls' - hls stream (RFC 8216) * 'dash' - dash stream (ISO/IEC 23009-1:2022)
-type Protocol string
+// QueryParamProtocol - Indicates the network streaming protocol to be used for the transcode session: * 'http' - include the file in the http response such as MKV streaming * 'hls' - hls stream (RFC 8216) * 'dash' - dash stream (ISO/IEC 23009-1:2022)
+type QueryParamProtocol string
 
 const (
-	ProtocolHTTP Protocol = "http"
-	ProtocolHls  Protocol = "hls"
-	ProtocolDash Protocol = "dash"
+	QueryParamProtocolHTTP QueryParamProtocol = "http"
+	QueryParamProtocolHls  QueryParamProtocol = "hls"
+	QueryParamProtocolDash QueryParamProtocol = "dash"
 )
 
-func (e Protocol) ToPointer() *Protocol {
+func (e QueryParamProtocol) ToPointer() *QueryParamProtocol {
 	return &e
 }
-func (e *Protocol) UnmarshalJSON(data []byte) error {
+func (e *QueryParamProtocol) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -176,10 +176,10 @@ func (e *Protocol) UnmarshalJSON(data []byte) error {
 	case "hls":
 		fallthrough
 	case "dash":
-		*e = Protocol(v)
+		*e = QueryParamProtocol(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Protocol: %v", v)
+		return fmt.Errorf("invalid value for QueryParamProtocol: %v", v)
 	}
 }
 
@@ -253,8 +253,9 @@ type MakeDecisionRequest struct {
 	// Transcode session UUID
 	TranscodeSessionID *string `queryParam:"style=form,explode=true,name=transcodeSessionId"`
 	// Indicates how incompatible advanced subtitles (such as ass/ssa) should be included: * 'burn' - Burn incompatible advanced text subtitles into the video stream * 'text' - Transcode incompatible advanced text subtitles to a compatible text format, even if some markup is lost
-	//
 	AdvancedSubtitles *components.AdvancedSubtitles `queryParam:"style=form,explode=true,name=advancedSubtitles"`
+	// Client platform (some clients send this in addition to headers).
+	PlatformQueryParameter *string `queryParam:"style=form,explode=true,name=platform"`
 	// Percentage of original audio loudness to use when transcoding (100 is equivalent to original volume, 50 is half, 200 is double, etc)
 	AudioBoost *int64 `queryParam:"style=form,explode=true,name=audioBoost"`
 	// Target video number of audio channels.
@@ -292,21 +293,23 @@ type MakeDecisionRequest struct {
 	// Target photo resolution.
 	PhotoResolution *string `queryParam:"style=form,explode=true,name=photoResolution"`
 	// Indicates the network streaming protocol to be used for the transcode session: * 'http' - include the file in the http response such as MKV streaming * 'hls' - hls stream (RFC 8216) * 'dash' - dash stream (ISO/IEC 23009-1:2022)
-	//
-	Protocol *Protocol `queryParam:"style=form,explode=true,name=protocol"`
+	Protocol *QueryParamProtocol `queryParam:"style=form,explode=true,name=protocol"`
 	// Number of seconds to include in each transcoded segment
 	SecondsPerSegment *int64 `queryParam:"style=form,explode=true,name=secondsPerSegment"`
 	// Percentage of original subtitle size to use when burning subtitles (100 is equivalent to original size, 50 is half, ect)
 	SubtitleSize *int64 `queryParam:"style=form,explode=true,name=subtitleSize"`
 	// Indicates how subtitles should be included: * 'auto' - Compute the appropriate subtitle setting automatically * 'burn' - Burn the selected subtitle; auto if no selected subtitle * 'none' - Ignore all subtitle streams * 'sidecar' - The selected subtitle should be provided as a sidecar * 'embedded' - The selected subtitle should be provided as an embedded stream * 'segmented' - The selected subtitle should be provided as a segmented stream
-	//
 	Subtitles *Subtitles `queryParam:"style=form,explode=true,name=subtitles"`
+	// Client-side maximum video bitrate cap in kbps
+	MaxVideoBitrate *int64 `queryParam:"style=form,explode=true,name=maxVideoBitrate"`
+	// Cap resolution string (e.g. 1920x1080)
+	VideoResolution *string `queryParam:"style=form,explode=true,name=videoResolution"`
+	// Copy timestamps instead of re-encoding them
+	Copyts *components.BoolInt `default:"0" queryParam:"style=form,explode=true,name=copyts"`
 	// Target video bitrate (in kbps).
 	VideoBitrate *int64 `queryParam:"style=form,explode=true,name=videoBitrate"`
 	// Target photo quality.
 	VideoQuality *int64 `queryParam:"style=form,explode=true,name=videoQuality"`
-	// Target maximum video resolution.
-	VideoResolution *string `queryParam:"style=form,explode=true,name=videoResolution"`
 	// See [Profile Augmentations](#section/API-Info/Profile-Augmentations) .
 	XPlexClientProfileExtra *string `header:"style=simple,explode=false,name=X-Plex-Client-Profile-Extra"`
 	// Which built in Client Profile to use in the decision. Generally should only be used to specify the Generic profile.
@@ -422,6 +425,13 @@ func (m *MakeDecisionRequest) GetAdvancedSubtitles() *components.AdvancedSubtitl
 		return nil
 	}
 	return m.AdvancedSubtitles
+}
+
+func (m *MakeDecisionRequest) GetPlatformQueryParameter() *string {
+	if m == nil {
+		return nil
+	}
+	return m.PlatformQueryParameter
 }
 
 func (m *MakeDecisionRequest) GetAudioBoost() *int64 {
@@ -550,7 +560,7 @@ func (m *MakeDecisionRequest) GetPhotoResolution() *string {
 	return m.PhotoResolution
 }
 
-func (m *MakeDecisionRequest) GetProtocol() *Protocol {
+func (m *MakeDecisionRequest) GetProtocol() *QueryParamProtocol {
 	if m == nil {
 		return nil
 	}
@@ -578,6 +588,27 @@ func (m *MakeDecisionRequest) GetSubtitles() *Subtitles {
 	return m.Subtitles
 }
 
+func (m *MakeDecisionRequest) GetMaxVideoBitrate() *int64 {
+	if m == nil {
+		return nil
+	}
+	return m.MaxVideoBitrate
+}
+
+func (m *MakeDecisionRequest) GetVideoResolution() *string {
+	if m == nil {
+		return nil
+	}
+	return m.VideoResolution
+}
+
+func (m *MakeDecisionRequest) GetCopyts() *components.BoolInt {
+	if m == nil {
+		return nil
+	}
+	return m.Copyts
+}
+
 func (m *MakeDecisionRequest) GetVideoBitrate() *int64 {
 	if m == nil {
 		return nil
@@ -590,13 +621,6 @@ func (m *MakeDecisionRequest) GetVideoQuality() *int64 {
 		return nil
 	}
 	return m.VideoQuality
-}
-
-func (m *MakeDecisionRequest) GetVideoResolution() *string {
-	if m == nil {
-		return nil
-	}
-	return m.VideoResolution
 }
 
 func (m *MakeDecisionRequest) GetXPlexClientProfileExtra() *string {

@@ -7,7 +7,7 @@ Endpoints for manipulating collections.  In addition to these endpoints, `/libra
 ### Available Operations
 
 * [AddCollectionItems](#addcollectionitems) - Add items to a collection
-* [DeleteCollectionItem](#deletecollectionitem) - Delete an item from a collection
+* [UpdateCollectionItem](#updatecollectionitem) - Update an item in a collection
 * [MoveCollectionItem](#movecollectionitem) - Reorder an item in the collection
 
 ## AddCollectionItems
@@ -77,13 +77,13 @@ func main() {
 | ------------------ | ------------------ | ------------------ |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
-## DeleteCollectionItem
+## UpdateCollectionItem
 
 Delete an item from a collection
 
 ### Example Usage
 
-<!-- UsageSnippet language="go" operationID="deleteCollectionItem" method="put" path="/library/collections/{collectionId}/items/{itemId}" -->
+<!-- UsageSnippet language="go" operationID="updateCollectionItem" method="put" path="/library/collections/{collectionId}/items/{itemId}" -->
 ```go
 package main
 
@@ -113,9 +113,9 @@ func main() {
         plexgo.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.LibraryCollections.DeleteCollectionItem(ctx, operations.DeleteCollectionItemRequest{
-        CollectionID: 320928,
-        ItemID: 406983,
+    res, err := s.LibraryCollections.UpdateCollectionItem(ctx, operations.UpdateCollectionItemRequest{
+        CollectionID: 640014,
+        ItemID: 2136,
     })
     if err != nil {
         log.Fatal(err)
@@ -131,12 +131,12 @@ func main() {
 | Parameter                                                                                        | Type                                                                                             | Required                                                                                         | Description                                                                                      |
 | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
 | `ctx`                                                                                            | [context.Context](https://pkg.go.dev/context#Context)                                            | :heavy_check_mark:                                                                               | The context to use for the request.                                                              |
-| `request`                                                                                        | [operations.DeleteCollectionItemRequest](../../models/operations/deletecollectionitemrequest.md) | :heavy_check_mark:                                                                               | The request object to use for the request.                                                       |
+| `request`                                                                                        | [operations.UpdateCollectionItemRequest](../../models/operations/updatecollectionitemrequest.md) | :heavy_check_mark:                                                                               | The request object to use for the request.                                                       |
 | `opts`                                                                                           | [][operations.Option](../../models/operations/option.md)                                         | :heavy_minus_sign:                                                                               | The options for this request.                                                                    |
 
 ### Response
 
-**[*operations.DeleteCollectionItemResponse](../../models/operations/deletecollectionitemresponse.md), error**
+**[*operations.UpdateCollectionItemResponse](../../models/operations/updatecollectionitemresponse.md), error**
 
 ### Errors
 

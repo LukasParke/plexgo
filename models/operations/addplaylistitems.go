@@ -268,7 +268,7 @@ type AddPlaylistItemsResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// OK
+	// Successfully updated adding to  a playlist
 	MediaContainerWithPlaylistMetadata *components.MediaContainerWithPlaylistMetadata
 }
 

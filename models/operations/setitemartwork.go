@@ -123,6 +123,7 @@ func (s *SetItemArtworkGlobals) GetMarketplace() *string {
 	return s.Marketplace
 }
 
+// Element - The type of artwork element (e.g., art, poster, thumb)
 type Element string
 
 const (
@@ -184,8 +185,10 @@ type SetItemArtworkRequest struct {
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	Ids         string  `pathParam:"style=simple,explode=false,name=ids"`
-	Element     Element `pathParam:"style=simple,explode=false,name=element"`
+	// Comma-separated list of IDs
+	Ids string `pathParam:"style=simple,explode=false,name=ids"`
+	// The type of artwork element (e.g., art, poster, thumb)
+	Element Element `pathParam:"style=simple,explode=false,name=element"`
 	// The url of the new asset.  If not provided, the binary of the asset must be provided in the post body.
 	URL *string `queryParam:"style=form,explode=true,name=url"`
 }

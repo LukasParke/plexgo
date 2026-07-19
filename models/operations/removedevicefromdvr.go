@@ -258,11 +258,9 @@ func (r *RemoveDeviceFromDVRRequest) GetDeviceID() int64 {
 type RemoveDeviceFromDVRDVRsMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
 	TotalSize *int64 `json:"totalSize,omitempty"`
 	// A status indicator. If present and non-zero, indicates an error
 	Status *int64 `json:"status,omitempty"`
@@ -303,52 +301,9 @@ func (r *RemoveDeviceFromDVRDVRsMediaContainer) GetStatus() *int64 {
 	return r.Status
 }
 
-type RemoveDeviceFromDVRDVR struct {
-	Device   []components.Device `json:"Device,omitempty"`
-	Key      *string             `json:"key,omitempty"`
-	Language *string             `json:"language,omitempty"`
-	Lineup   *string             `json:"lineup,omitempty"`
-	UUID     *string             `json:"uuid,omitempty"`
-}
-
-func (r *RemoveDeviceFromDVRDVR) GetDevice() []components.Device {
-	if r == nil {
-		return nil
-	}
-	return r.Device
-}
-
-func (r *RemoveDeviceFromDVRDVR) GetKey() *string {
-	if r == nil {
-		return nil
-	}
-	return r.Key
-}
-
-func (r *RemoveDeviceFromDVRDVR) GetLanguage() *string {
-	if r == nil {
-		return nil
-	}
-	return r.Language
-}
-
-func (r *RemoveDeviceFromDVRDVR) GetLineup() *string {
-	if r == nil {
-		return nil
-	}
-	return r.Lineup
-}
-
-func (r *RemoveDeviceFromDVRDVR) GetUUID() *string {
-	if r == nil {
-		return nil
-	}
-	return r.UUID
-}
-
 type RemoveDeviceFromDVRMediaContainer struct {
 	MediaContainer *RemoveDeviceFromDVRDVRsMediaContainer `json:"MediaContainer,omitempty"`
-	Dvr            []RemoveDeviceFromDVRDVR               `json:"DVR,omitempty"`
+	Dvr            []components.Dvr                       `json:"DVR,omitempty"`
 }
 
 func (r *RemoveDeviceFromDVRMediaContainer) GetMediaContainer() *RemoveDeviceFromDVRDVRsMediaContainer {
@@ -358,7 +313,7 @@ func (r *RemoveDeviceFromDVRMediaContainer) GetMediaContainer() *RemoveDeviceFro
 	return r.MediaContainer
 }
 
-func (r *RemoveDeviceFromDVRMediaContainer) GetDvr() []RemoveDeviceFromDVRDVR {
+func (r *RemoveDeviceFromDVRMediaContainer) GetDvr() []components.Dvr {
 	if r == nil {
 		return nil
 	}

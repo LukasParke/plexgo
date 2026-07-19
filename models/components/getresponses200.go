@@ -2,177 +2,17 @@
 
 package components
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
-// HomeVisibility - Whether this hub is visible on the home screen
-//   - all: Visible to all users
-//   - none: Visible to no users
-//   - admin: Visible to only admin users
-//   - shared: Visible to shared users
-type HomeVisibility string
-
-const (
-	HomeVisibilityAll    HomeVisibility = "all"
-	HomeVisibilityNone   HomeVisibility = "none"
-	HomeVisibilityAdmin  HomeVisibility = "admin"
-	HomeVisibilityShared HomeVisibility = "shared"
-)
-
-func (e HomeVisibility) ToPointer() *HomeVisibility {
-	return &e
-}
-func (e *HomeVisibility) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "all":
-		fallthrough
-	case "none":
-		fallthrough
-	case "admin":
-		fallthrough
-	case "shared":
-		*e = HomeVisibility(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for HomeVisibility: %v", v)
-	}
-}
-
-// RecommendationsVisibility - The visibility of this hub in recommendations:
-//   - all: Visible to all users
-//   - none: Visible to no users
-//   - admin: Visible to only admin users
-//   - shared: Visible to shared users
-type RecommendationsVisibility string
-
-const (
-	RecommendationsVisibilityAll    RecommendationsVisibility = "all"
-	RecommendationsVisibilityNone   RecommendationsVisibility = "none"
-	RecommendationsVisibilityAdmin  RecommendationsVisibility = "admin"
-	RecommendationsVisibilityShared RecommendationsVisibility = "shared"
-)
-
-func (e RecommendationsVisibility) ToPointer() *RecommendationsVisibility {
-	return &e
-}
-func (e *RecommendationsVisibility) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "all":
-		fallthrough
-	case "none":
-		fallthrough
-	case "admin":
-		fallthrough
-	case "shared":
-		*e = RecommendationsVisibility(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RecommendationsVisibility: %v", v)
-	}
-}
-
-type GetResponses200Hub struct {
-	// Whether this hub is visible on the home screen
-	//   - all: Visible to all users
-	//   - none: Visible to no users
-	//   - admin: Visible to only admin users
-	//   - shared: Visible to shared users
-	//
-	HomeVisibility *HomeVisibility `json:"homeVisibility,omitempty"`
-	// The identifier for this hub
-	Identifier *string `json:"identifier,omitempty"`
-	// Whether this hub is visible to admin user home
-	PromotedToOwnHome *bool `json:"promotedToOwnHome,omitempty"`
-	// Whether this hub is promoted to all for recommendations
-	PromotedToRecommended *bool `json:"promotedToRecommended,omitempty"`
-	// Whether this hub is visible to shared user's home
-	PromotedToSharedHome *bool `json:"promotedToSharedHome,omitempty"`
-	// The visibility of this hub in recommendations:
-	//   - all: Visible to all users
-	//   - none: Visible to no users
-	//   - admin: Visible to only admin users
-	//   - shared: Visible to shared users
-	//
-	RecommendationsVisibility *RecommendationsVisibility `json:"recommendationsVisibility,omitempty"`
-	// The title of this hub
-	Title *string `json:"title,omitempty"`
-}
-
-func (g *GetResponses200Hub) GetHomeVisibility() *HomeVisibility {
-	if g == nil {
-		return nil
-	}
-	return g.HomeVisibility
-}
-
-func (g *GetResponses200Hub) GetIdentifier() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Identifier
-}
-
-func (g *GetResponses200Hub) GetPromotedToOwnHome() *bool {
-	if g == nil {
-		return nil
-	}
-	return g.PromotedToOwnHome
-}
-
-func (g *GetResponses200Hub) GetPromotedToRecommended() *bool {
-	if g == nil {
-		return nil
-	}
-	return g.PromotedToRecommended
-}
-
-func (g *GetResponses200Hub) GetPromotedToSharedHome() *bool {
-	if g == nil {
-		return nil
-	}
-	return g.PromotedToSharedHome
-}
-
-func (g *GetResponses200Hub) GetRecommendationsVisibility() *RecommendationsVisibility {
-	if g == nil {
-		return nil
-	}
-	return g.RecommendationsVisibility
-}
-
-func (g *GetResponses200Hub) GetTitle() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Title
-}
-
-// #region class-body-getresponses200hub
-// #endregion class-body-getresponses200hub
-
 // GetResponses200MediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
 // Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
 // The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
 type GetResponses200MediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize *int64               `json:"totalSize,omitempty"`
-	Hub       []GetResponses200Hub `json:"Hub,omitempty"`
+	TotalSize *int64       `json:"totalSize,omitempty"`
+	Hub       []ManagedHub `json:"Hub,omitempty"`
 }
 
 func (g *GetResponses200MediaContainer) GetIdentifier() *string {
@@ -203,7 +43,7 @@ func (g *GetResponses200MediaContainer) GetTotalSize() *int64 {
 	return g.TotalSize
 }
 
-func (g *GetResponses200MediaContainer) GetHub() []GetResponses200Hub {
+func (g *GetResponses200MediaContainer) GetHub() []ManagedHub {
 	if g == nil {
 		return nil
 	}

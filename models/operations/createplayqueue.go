@@ -181,7 +181,7 @@ type CreatePlayQueueRequest struct {
 	// the ID of the playlist we're playing.
 	PlaylistID *int64 `queryParam:"style=form,explode=true,name=playlistID"`
 	// The type of play queue to create
-	Type Type `queryParam:"style=form,explode=true,name=type"`
+	MediaType Type `queryParam:"style=form,explode=true,name=type"`
 	// The key of the first item to play, defaults to the first in the play queue.
 	Key *string `queryParam:"style=form,explode=true,name=key"`
 	// Whether to shuffle the playlist, defaults to 0.
@@ -300,11 +300,11 @@ func (c *CreatePlayQueueRequest) GetPlaylistID() *int64 {
 	return c.PlaylistID
 }
 
-func (c *CreatePlayQueueRequest) GetType() Type {
+func (c *CreatePlayQueueRequest) GetMediaType() Type {
 	if c == nil {
 		return Type("")
 	}
-	return c.Type
+	return c.MediaType
 }
 
 func (c *CreatePlayQueueRequest) GetKey() *string {
@@ -356,141 +356,6 @@ func (c *CreatePlayQueueRequest) GetOnDeck() *components.BoolInt {
 	return c.OnDeck
 }
 
-// CreatePlayQueueMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
-// Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
-// The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
-type CreatePlayQueueMediaContainer struct {
-	Identifier *string `json:"identifier,omitempty"`
-	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
-	Offset *int64 `json:"offset,omitempty"`
-	Size   *int64 `json:"size,omitempty"`
-	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize *int64 `json:"totalSize,omitempty"`
-	// The ID of the play queue, which is used in subsequent requests.
-	PlayQueueID *int64 `json:"playQueueID,omitempty"`
-	// Defines where the "Up Next" region starts
-	PlayQueueLastAddedItemID *string `json:"playQueueLastAddedItemID,omitempty"`
-	// The queue item ID of the currently selected  item.
-	PlayQueueSelectedItemID *int64 `json:"playQueueSelectedItemID,omitempty"`
-	// The offset of the selected item in the play queue, from the beginning of the queue.
-	PlayQueueSelectedItemOffset *int64 `json:"playQueueSelectedItemOffset,omitempty"`
-	// The metadata item ID of the currently selected item (matches `ratingKey` attribute in metadata item if the media provider is a library).
-	PlayQueueSelectedMetadataItemID *int64 `json:"playQueueSelectedMetadataItemID,omitempty"`
-	// Whether or not the queue is shuffled.
-	PlayQueueShuffled *bool `json:"playQueueShuffled,omitempty"`
-	// The original URI used to create the play queue.
-	PlayQueueSourceURI *string `json:"playQueueSourceURI,omitempty"`
-	// The total number of items in the play queue.
-	PlayQueueTotalCount *int64 `json:"playQueueTotalCount,omitempty"`
-	// The version of the play queue. It increments every time a change is made to the play queue to assist clients in knowing when to refresh.
-	PlayQueueVersion *int64 `json:"playQueueVersion,omitempty"`
-}
-
-func (c *CreatePlayQueueMediaContainer) GetIdentifier() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Identifier
-}
-
-func (c *CreatePlayQueueMediaContainer) GetOffset() *int64 {
-	if c == nil {
-		return nil
-	}
-	return c.Offset
-}
-
-func (c *CreatePlayQueueMediaContainer) GetSize() *int64 {
-	if c == nil {
-		return nil
-	}
-	return c.Size
-}
-
-func (c *CreatePlayQueueMediaContainer) GetTotalSize() *int64 {
-	if c == nil {
-		return nil
-	}
-	return c.TotalSize
-}
-
-func (c *CreatePlayQueueMediaContainer) GetPlayQueueID() *int64 {
-	if c == nil {
-		return nil
-	}
-	return c.PlayQueueID
-}
-
-func (c *CreatePlayQueueMediaContainer) GetPlayQueueLastAddedItemID() *string {
-	if c == nil {
-		return nil
-	}
-	return c.PlayQueueLastAddedItemID
-}
-
-func (c *CreatePlayQueueMediaContainer) GetPlayQueueSelectedItemID() *int64 {
-	if c == nil {
-		return nil
-	}
-	return c.PlayQueueSelectedItemID
-}
-
-func (c *CreatePlayQueueMediaContainer) GetPlayQueueSelectedItemOffset() *int64 {
-	if c == nil {
-		return nil
-	}
-	return c.PlayQueueSelectedItemOffset
-}
-
-func (c *CreatePlayQueueMediaContainer) GetPlayQueueSelectedMetadataItemID() *int64 {
-	if c == nil {
-		return nil
-	}
-	return c.PlayQueueSelectedMetadataItemID
-}
-
-func (c *CreatePlayQueueMediaContainer) GetPlayQueueShuffled() *bool {
-	if c == nil {
-		return nil
-	}
-	return c.PlayQueueShuffled
-}
-
-func (c *CreatePlayQueueMediaContainer) GetPlayQueueSourceURI() *string {
-	if c == nil {
-		return nil
-	}
-	return c.PlayQueueSourceURI
-}
-
-func (c *CreatePlayQueueMediaContainer) GetPlayQueueTotalCount() *int64 {
-	if c == nil {
-		return nil
-	}
-	return c.PlayQueueTotalCount
-}
-
-func (c *CreatePlayQueueMediaContainer) GetPlayQueueVersion() *int64 {
-	if c == nil {
-		return nil
-	}
-	return c.PlayQueueVersion
-}
-
-// CreatePlayQueueResponseBody - OK
-type CreatePlayQueueResponseBody struct {
-	MediaContainer *CreatePlayQueueMediaContainer `json:"MediaContainer,omitempty"`
-}
-
-func (c *CreatePlayQueueResponseBody) GetMediaContainer() *CreatePlayQueueMediaContainer {
-	if c == nil {
-		return nil
-	}
-	return c.MediaContainer
-}
-
 type CreatePlayQueueResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -499,8 +364,8 @@ type CreatePlayQueueResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// OK
-	Object  *CreatePlayQueueResponseBody
-	Headers map[string][]string
+	MediaContainerWithPlayQueue *components.MediaContainerWithPlayQueue
+	Headers                     map[string][]string
 }
 
 func (c *CreatePlayQueueResponse) GetContentType() string {
@@ -524,11 +389,11 @@ func (c *CreatePlayQueueResponse) GetRawResponse() *http.Response {
 	return c.RawResponse
 }
 
-func (c *CreatePlayQueueResponse) GetObject() *CreatePlayQueueResponseBody {
+func (c *CreatePlayQueueResponse) GetMediaContainerWithPlayQueue() *components.MediaContainerWithPlayQueue {
 	if c == nil {
 		return nil
 	}
-	return c.Object
+	return c.MediaContainerWithPlayQueue
 }
 
 func (c *CreatePlayQueueResponse) GetHeaders() map[string][]string {

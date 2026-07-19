@@ -45,13 +45,13 @@ func main() {
     )
 
     res, err := s.Collections.CreateCollection(ctx, operations.CreateCollectionRequest{
-        SectionID: "<id>",
         Type: components.MediaTypeTvShow.ToPointer(),
+        SectionID: "<id>",
     })
     if err != nil {
         log.Fatal(err)
     }
-    if res.MediaContainerWithMetadata != nil {
+    if res.Collection != nil {
         // handle response
     }
 }

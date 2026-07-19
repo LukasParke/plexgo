@@ -249,11 +249,9 @@ func (r *RemoveDeviceRequest) GetDeviceID() int64 {
 type RemoveDeviceMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
 	TotalSize *int64  `json:"totalSize,omitempty"`
 	Message   *string `json:"message,omitempty"`
 	Status    *int64  `json:"status,omitempty"`

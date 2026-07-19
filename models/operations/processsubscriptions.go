@@ -13,6 +13,7 @@ type ProcessSubscriptionsResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	Body        []byte
 	Headers     map[string][]string
 }
 
@@ -35,6 +36,13 @@ func (p *ProcessSubscriptionsResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return p.RawResponse
+}
+
+func (p *ProcessSubscriptionsResponse) GetBody() []byte {
+	if p == nil {
+		return nil
+	}
+	return p.Body
 }
 
 func (p *ProcessSubscriptionsResponse) GetHeaders() map[string][]string {

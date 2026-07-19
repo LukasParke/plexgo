@@ -148,8 +148,8 @@ type UnscrobbleRequest struct {
 	Identifier string `queryParam:"style=form,explode=true,name=identifier"`
 	// The key of the item to rate.  This is the `ratingKey` found in metadata items
 	Key *string `queryParam:"style=form,explode=true,name=key"`
-	// The URI of the item to mark as played.  See intro for description of the URIs
-	URI *string `queryParam:"style=form,explode=true,name=uri"`
+	// URI of the item to scrobble. Format is `library://<section-uuid>/item/<url-encoded-key>` or `plex://movie/<guid>` or `plex://episode/<guid>`.
+	URI string `queryParam:"style=form,explode=true,name=uri"`
 }
 
 func (u UnscrobbleRequest) MarshalJSON() ([]byte, error) {
@@ -254,9 +254,9 @@ func (u *UnscrobbleRequest) GetKey() *string {
 	return u.Key
 }
 
-func (u *UnscrobbleRequest) GetURI() *string {
+func (u *UnscrobbleRequest) GetURI() string {
 	if u == nil {
-		return nil
+		return ""
 	}
 	return u.URI
 }

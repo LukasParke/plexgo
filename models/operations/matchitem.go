@@ -144,10 +144,14 @@ type MatchItemRequest struct {
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	Ids         string  `pathParam:"style=simple,explode=false,name=ids"`
-	GUID        *string `queryParam:"style=form,explode=true,name=guid"`
-	Name        *string `queryParam:"style=form,explode=true,name=name"`
-	Year        *int64  `queryParam:"style=form,explode=true,name=year"`
+	// Comma-separated list of IDs
+	Ids string `pathParam:"style=simple,explode=false,name=ids"`
+	// The guid
+	GUID *string `queryParam:"style=form,explode=true,name=guid"`
+	// The name
+	Name *string `queryParam:"style=form,explode=true,name=name"`
+	// The year to filter by
+	Year *int64 `queryParam:"style=form,explode=true,name=year"`
 }
 
 func (m MatchItemRequest) MarshalJSON() ([]byte, error) {

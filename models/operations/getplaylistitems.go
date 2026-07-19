@@ -147,7 +147,7 @@ type GetPlaylistItemsRequest struct {
 	// The ID of the playlist
 	PlaylistID int64 `pathParam:"style=simple,explode=false,name=playlistId"`
 	// The metadata types of the item to return.  Values past the first are only used in fetching items from the background processing playlist.
-	Type []int64 `queryParam:"style=form,explode=false,name=type"`
+	MediaType []int64 `queryParam:"style=form,explode=false,name=type"`
 }
 
 func (g GetPlaylistItemsRequest) MarshalJSON() ([]byte, error) {
@@ -245,11 +245,11 @@ func (g *GetPlaylistItemsRequest) GetPlaylistID() int64 {
 	return g.PlaylistID
 }
 
-func (g *GetPlaylistItemsRequest) GetType() []int64 {
+func (g *GetPlaylistItemsRequest) GetMediaType() []int64 {
 	if g == nil {
 		return nil
 	}
-	return g.Type
+	return g.MediaType
 }
 
 type GetPlaylistItemsResponse struct {

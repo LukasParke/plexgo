@@ -144,10 +144,6 @@ type GetSectionImageRequest struct {
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	// Section identifier
-	SectionID int64 `pathParam:"style=simple,explode=false,name=sectionId"`
-	// The update time of the image.  Used for busting cache.
-	UpdatedAt int64 `pathParam:"style=simple,explode=false,name=updatedAt"`
 	// A querystring-based filtering language used to select subsets of media. Can be provided as an object with typed properties for type safety, or as a string for complex queries with operators and boolean logic.
 	//
 	// The query supports:
@@ -164,9 +160,12 @@ type GetSectionImageRequest struct {
 	// - Complex: `push=1&index=1&or=1&rating=2&pop=1&duration=10` - (index = 1 OR rating = 2) AND duration = 10
 	//
 	// See [API Info section](#section/API-Info/Media-Queries) for detailed information on building media queries.
-	//
 	MediaQuery *components.MediaQuery `queryParam:"style=form,explode=true,name=mediaQuery"`
 	Composite  *components.Composite  `queryParam:"style=form,explode=true,name=composite"`
+	// Section identifier
+	SectionID int64 `pathParam:"style=simple,explode=false,name=sectionId"`
+	// The update time of the image.  Used for busting cache.
+	UpdatedAt int64 `pathParam:"style=simple,explode=false,name=updatedAt"`
 }
 
 func (g GetSectionImageRequest) MarshalJSON() ([]byte, error) {
@@ -257,20 +256,6 @@ func (g *GetSectionImageRequest) GetMarketplace() *string {
 	return g.Marketplace
 }
 
-func (g *GetSectionImageRequest) GetSectionID() int64 {
-	if g == nil {
-		return 0
-	}
-	return g.SectionID
-}
-
-func (g *GetSectionImageRequest) GetUpdatedAt() int64 {
-	if g == nil {
-		return 0
-	}
-	return g.UpdatedAt
-}
-
 func (g *GetSectionImageRequest) GetMediaQuery() *components.MediaQuery {
 	if g == nil {
 		return nil
@@ -283,6 +268,20 @@ func (g *GetSectionImageRequest) GetComposite() *components.Composite {
 		return nil
 	}
 	return g.Composite
+}
+
+func (g *GetSectionImageRequest) GetSectionID() int64 {
+	if g == nil {
+		return 0
+	}
+	return g.SectionID
+}
+
+func (g *GetSectionImageRequest) GetUpdatedAt() int64 {
+	if g == nil {
+		return 0
+	}
+	return g.UpdatedAt
 }
 
 type GetSectionImageResponse struct {

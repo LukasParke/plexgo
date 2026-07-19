@@ -252,131 +252,6 @@ func (d *DeleteLineupRequest) GetLineup() string {
 	return d.Lineup
 }
 
-// DeleteLineupDVRsMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
-// Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
-// The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
-type DeleteLineupDVRsMediaContainer struct {
-	Identifier *string `json:"identifier,omitempty"`
-	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
-	Offset *int64 `json:"offset,omitempty"`
-	Size   *int64 `json:"size,omitempty"`
-	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize *int64 `json:"totalSize,omitempty"`
-	// A status indicator. If present and non-zero, indicates an error
-	Status *int64 `json:"status,omitempty"`
-}
-
-func (d *DeleteLineupDVRsMediaContainer) GetIdentifier() *string {
-	if d == nil {
-		return nil
-	}
-	return d.Identifier
-}
-
-func (d *DeleteLineupDVRsMediaContainer) GetOffset() *int64 {
-	if d == nil {
-		return nil
-	}
-	return d.Offset
-}
-
-func (d *DeleteLineupDVRsMediaContainer) GetSize() *int64 {
-	if d == nil {
-		return nil
-	}
-	return d.Size
-}
-
-func (d *DeleteLineupDVRsMediaContainer) GetTotalSize() *int64 {
-	if d == nil {
-		return nil
-	}
-	return d.TotalSize
-}
-
-func (d *DeleteLineupDVRsMediaContainer) GetStatus() *int64 {
-	if d == nil {
-		return nil
-	}
-	return d.Status
-}
-
-type DeleteLineupDVR struct {
-	Device   []components.Device `json:"Device,omitempty"`
-	Key      *string             `json:"key,omitempty"`
-	Language *string             `json:"language,omitempty"`
-	Lineup   *string             `json:"lineup,omitempty"`
-	UUID     *string             `json:"uuid,omitempty"`
-}
-
-func (d *DeleteLineupDVR) GetDevice() []components.Device {
-	if d == nil {
-		return nil
-	}
-	return d.Device
-}
-
-func (d *DeleteLineupDVR) GetKey() *string {
-	if d == nil {
-		return nil
-	}
-	return d.Key
-}
-
-func (d *DeleteLineupDVR) GetLanguage() *string {
-	if d == nil {
-		return nil
-	}
-	return d.Language
-}
-
-func (d *DeleteLineupDVR) GetLineup() *string {
-	if d == nil {
-		return nil
-	}
-	return d.Lineup
-}
-
-func (d *DeleteLineupDVR) GetUUID() *string {
-	if d == nil {
-		return nil
-	}
-	return d.UUID
-}
-
-type DeleteLineupMediaContainer struct {
-	MediaContainer *DeleteLineupDVRsMediaContainer `json:"MediaContainer,omitempty"`
-	Dvr            []DeleteLineupDVR               `json:"DVR,omitempty"`
-}
-
-func (d *DeleteLineupMediaContainer) GetMediaContainer() *DeleteLineupDVRsMediaContainer {
-	if d == nil {
-		return nil
-	}
-	return d.MediaContainer
-}
-
-func (d *DeleteLineupMediaContainer) GetDvr() []DeleteLineupDVR {
-	if d == nil {
-		return nil
-	}
-	return d.Dvr
-}
-
-// DeleteLineupResponseBody - OK
-type DeleteLineupResponseBody struct {
-	MediaContainer *DeleteLineupMediaContainer `json:"MediaContainer,omitempty"`
-}
-
-func (d *DeleteLineupResponseBody) GetMediaContainer() *DeleteLineupMediaContainer {
-	if d == nil {
-		return nil
-	}
-	return d.MediaContainer
-}
-
 type DeleteLineupResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -385,8 +260,8 @@ type DeleteLineupResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// OK
-	Object  *DeleteLineupResponseBody
-	Headers map[string][]string
+	DVRResponse *components.DVRResponse
+	Headers     map[string][]string
 }
 
 func (d *DeleteLineupResponse) GetContentType() string {
@@ -410,11 +285,11 @@ func (d *DeleteLineupResponse) GetRawResponse() *http.Response {
 	return d.RawResponse
 }
 
-func (d *DeleteLineupResponse) GetObject() *DeleteLineupResponseBody {
+func (d *DeleteLineupResponse) GetDVRResponse() *components.DVRResponse {
 	if d == nil {
 		return nil
 	}
-	return d.Object
+	return d.DVRResponse
 }
 
 func (d *DeleteLineupResponse) GetHeaders() map[string][]string {

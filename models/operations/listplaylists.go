@@ -176,10 +176,12 @@ type ListPlaylistsRequest struct {
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	// Limit to a type of playlist
-	PlaylistType *PlaylistType `queryParam:"style=form,explode=true,name=playlistType"`
 	// Whether this is a smart collection/playlist
 	Smart *bool `queryParam:"style=form,explode=true,name=smart"`
+	// Limit to a type of playlist
+	PlaylistType *PlaylistType `queryParam:"style=form,explode=true,name=playlistType"`
+	// Filter by playlist type. Use 42 for optimized/conversion items.
+	MediaType *int64 `queryParam:"style=form,explode=true,name=type"`
 }
 
 func (l ListPlaylistsRequest) MarshalJSON() ([]byte, error) {
@@ -270,6 +272,13 @@ func (l *ListPlaylistsRequest) GetMarketplace() *string {
 	return l.Marketplace
 }
 
+func (l *ListPlaylistsRequest) GetSmart() *bool {
+	if l == nil {
+		return nil
+	}
+	return l.Smart
+}
+
 func (l *ListPlaylistsRequest) GetPlaylistType() *PlaylistType {
 	if l == nil {
 		return nil
@@ -277,11 +286,11 @@ func (l *ListPlaylistsRequest) GetPlaylistType() *PlaylistType {
 	return l.PlaylistType
 }
 
-func (l *ListPlaylistsRequest) GetSmart() *bool {
+func (l *ListPlaylistsRequest) GetMediaType() *int64 {
 	if l == nil {
 		return nil
 	}
-	return l.Smart
+	return l.MediaType
 }
 
 type ListPlaylistsResponse struct {

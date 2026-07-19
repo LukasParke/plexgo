@@ -14,7 +14,6 @@ Logging mechanism to allow clients to log to the server
 
 This endpoint will write multiple lines to the main Plex Media Server log in a single request. It takes a set of query strings as would normally sent to the above PUT endpoint as a linefeed-separated block of POST data. The parameters for each query string match as above.
 
-
 ### Example Usage
 
 <!-- UsageSnippet language="go" operationID="writeLog" method="post" path="/log" -->
@@ -55,7 +54,7 @@ func main() {
 | Parameter                                                | Type                                                     | Required                                                 | Description                                              |
 | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
 | `ctx`                                                    | [context.Context](https://pkg.go.dev/context#Context)    | :heavy_check_mark:                                       | The context to use for the request.                      |
-| `request`                                                | [any](../../.md)                                         | :heavy_check_mark:                                       | The request object to use for the request.               |
+| `request`                                                | [any](../../logmessagerequest.md)                        | :heavy_check_mark:                                       | The request object to use for the request.               |
 | `opts`                                                   | [][operations.Option](../../models/operations/option.md) | :heavy_minus_sign:                                       | The options for this request.                            |
 
 ### Response
@@ -73,7 +72,6 @@ func main() {
 This endpoint will write a single-line log message, including a level and source to the main Plex Media Server log.
 
 Note: This endpoint responds to all HTTP verbs **except POST** but PUT is preferred
-
 
 ### Example Usage
 
@@ -133,6 +131,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## EnablePapertrail
@@ -140,7 +139,6 @@ func main() {
 This endpoint will enable all Plex Media Server logs to be sent to the Papertrail networked logging site for a period of time
 
 Note: This endpoint responds to all HTTP verbs but POST is preferred
-
 
 ### Example Usage
 

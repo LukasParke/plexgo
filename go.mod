@@ -1,6 +1,6 @@
 module github.com/LukeHagar/plexgo
 
-go 1.22
+go 1.25.10
 
 require github.com/stretchr/testify v1.11.1
 

@@ -243,68 +243,6 @@ func (g *GetAvailableSortsRequest) GetSectionID() int64 {
 	return g.SectionID
 }
 
-// GetAvailableSortsMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
-// Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
-// The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
-type GetAvailableSortsMediaContainer struct {
-	Identifier *string `json:"identifier,omitempty"`
-	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
-	Offset *int64 `json:"offset,omitempty"`
-	Size   *int64 `json:"size,omitempty"`
-	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize *int64            `json:"totalSize,omitempty"`
-	Directory []components.Sort `json:"Directory,omitempty"`
-}
-
-func (g *GetAvailableSortsMediaContainer) GetIdentifier() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Identifier
-}
-
-func (g *GetAvailableSortsMediaContainer) GetOffset() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.Offset
-}
-
-func (g *GetAvailableSortsMediaContainer) GetSize() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.Size
-}
-
-func (g *GetAvailableSortsMediaContainer) GetTotalSize() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.TotalSize
-}
-
-func (g *GetAvailableSortsMediaContainer) GetDirectory() []components.Sort {
-	if g == nil {
-		return nil
-	}
-	return g.Directory
-}
-
-// GetAvailableSortsResponseBody - OK
-type GetAvailableSortsResponseBody struct {
-	MediaContainer *GetAvailableSortsMediaContainer `json:"MediaContainer,omitempty"`
-}
-
-func (g *GetAvailableSortsResponseBody) GetMediaContainer() *GetAvailableSortsMediaContainer {
-	if g == nil {
-		return nil
-	}
-	return g.MediaContainer
-}
-
 type GetAvailableSortsResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -313,7 +251,7 @@ type GetAvailableSortsResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// OK
-	Object *GetAvailableSortsResponseBody
+	MediaContainerWithSorts *components.MediaContainerWithSorts
 }
 
 func (g *GetAvailableSortsResponse) GetContentType() string {
@@ -337,9 +275,9 @@ func (g *GetAvailableSortsResponse) GetRawResponse() *http.Response {
 	return g.RawResponse
 }
 
-func (g *GetAvailableSortsResponse) GetObject() *GetAvailableSortsResponseBody {
+func (g *GetAvailableSortsResponse) GetMediaContainerWithSorts() *components.MediaContainerWithSorts {
 	if g == nil {
 		return nil
 	}
-	return g.Object
+	return g.MediaContainerWithSorts
 }

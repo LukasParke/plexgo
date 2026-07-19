@@ -120,6 +120,16 @@ func (s *LibraryCollections) AddCollectionItems(ctx context.Context, request ope
 	if retryConfig == nil {
 		if globalRetryConfig != nil {
 			retryConfig = globalRetryConfig
+		} else {
+			retryConfig = &retry.Config{
+				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
+					InitialInterval: 1000,
+					MaxInterval:     30000,
+					Exponent:        2,
+					MaxElapsedTime:  300000,
+				},
+				RetryConnectionErrors: true,
+			}
 		}
 	}
 
@@ -129,10 +139,6 @@ func (s *LibraryCollections) AddCollectionItems(ctx context.Context, request ope
 			Config: retryConfig,
 			StatusCodes: []string{
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -260,12 +266,12 @@ func (s *LibraryCollections) AddCollectionItems(ctx context.Context, request ope
 
 }
 
-// DeleteCollectionItem - Delete an item from a collection
+// UpdateCollectionItem - Update an item in a collection
 // Delete an item from a collection
 //
 // If set, this operation will use [Security.Token] from the global security.
-func (s *LibraryCollections) DeleteCollectionItem(ctx context.Context, request operations.DeleteCollectionItemRequest, opts ...operations.Option) (*operations.DeleteCollectionItemResponse, error) {
-	globals := operations.DeleteCollectionItemGlobals{
+func (s *LibraryCollections) UpdateCollectionItem(ctx context.Context, request operations.UpdateCollectionItemRequest, opts ...operations.Option) (*operations.UpdateCollectionItemResponse, error) {
+	globals := operations.UpdateCollectionItemGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
 		ClientIdentifier: s.sdkConfiguration.Globals.ClientIdentifier,
 		Product:          s.sdkConfiguration.Globals.Product,
@@ -307,7 +313,7 @@ func (s *LibraryCollections) DeleteCollectionItem(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "deleteCollectionItem",
+		OperationID:      "updateCollectionItem",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -345,6 +351,16 @@ func (s *LibraryCollections) DeleteCollectionItem(ctx context.Context, request o
 	if retryConfig == nil {
 		if globalRetryConfig != nil {
 			retryConfig = globalRetryConfig
+		} else {
+			retryConfig = &retry.Config{
+				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
+					InitialInterval: 1000,
+					MaxInterval:     30000,
+					Exponent:        2,
+					MaxElapsedTime:  300000,
+				},
+				RetryConnectionErrors: true,
+			}
 		}
 	}
 
@@ -354,10 +370,6 @@ func (s *LibraryCollections) DeleteCollectionItem(ctx context.Context, request o
 			Config: retryConfig,
 			StatusCodes: []string{
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -431,7 +443,7 @@ func (s *LibraryCollections) DeleteCollectionItem(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.DeleteCollectionItemResponse{
+	res := &operations.UpdateCollectionItemResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -576,6 +588,16 @@ func (s *LibraryCollections) MoveCollectionItem(ctx context.Context, request ope
 	if retryConfig == nil {
 		if globalRetryConfig != nil {
 			retryConfig = globalRetryConfig
+		} else {
+			retryConfig = &retry.Config{
+				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
+					InitialInterval: 1000,
+					MaxInterval:     30000,
+					Exponent:        2,
+					MaxElapsedTime:  300000,
+				},
+				RetryConnectionErrors: true,
+			}
 		}
 	}
 
@@ -585,10 +607,6 @@ func (s *LibraryCollections) MoveCollectionItem(ctx context.Context, request ope
 			Config: retryConfig,
 			StatusCodes: []string{
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {

@@ -146,10 +146,6 @@ type RefreshSectionRequest struct {
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
 	// Section identifier
 	SectionID int64 `pathParam:"style=simple,explode=false,name=sectionId"`
-	// Whether the update of metadata and items should be performed even if modification dates indicate the items have not change
-	Force *components.BoolInt `default:"0" queryParam:"style=form,explode=true,name=force"`
-	// Restrict refresh to the specified path
-	Path *string `queryParam:"style=form,explode=true,name=path"`
 }
 
 func (r RefreshSectionRequest) MarshalJSON() ([]byte, error) {
@@ -247,20 +243,6 @@ func (r *RefreshSectionRequest) GetSectionID() int64 {
 	return r.SectionID
 }
 
-func (r *RefreshSectionRequest) GetForce() *components.BoolInt {
-	if r == nil {
-		return nil
-	}
-	return r.Force
-}
-
-func (r *RefreshSectionRequest) GetPath() *string {
-	if r == nil {
-		return nil
-	}
-	return r.Path
-}
-
 type RefreshSectionResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -268,6 +250,8 @@ type RefreshSectionResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// OK
+	SuccessResponse *components.SuccessResponse
 }
 
 func (r *RefreshSectionResponse) GetContentType() string {
@@ -289,4 +273,11 @@ func (r *RefreshSectionResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return r.RawResponse
+}
+
+func (r *RefreshSectionResponse) GetSuccessResponse() *components.SuccessResponse {
+	if r == nil {
+		return nil
+	}
+	return r.SuccessResponse
 }

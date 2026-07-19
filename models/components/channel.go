@@ -6,11 +6,19 @@ type Channel struct {
 	Title      *string `json:"title,omitempty"`
 	CallSign   *string `json:"callSign,omitempty"`
 	ChannelVcn *string `json:"channelVcn,omitempty"`
+	// Whether the channel requires DRM.
+	Drm *bool `json:"drm,omitempty"`
+	// Whether the channel is marked as a favorite.
+	Favorite   *bool   `json:"favorite,omitempty"`
 	Hd         *bool   `json:"hd,omitempty"`
 	Identifier *string `json:"identifier,omitempty"`
 	Key        *string `json:"key,omitempty"`
 	Language   *string `json:"language,omitempty"`
-	Thumb      *string `json:"thumb,omitempty"`
+	// Signal quality percentage (0-100).
+	SignalQuality *int64 `json:"signalQuality,omitempty"`
+	// Signal strength percentage (0-100).
+	SignalStrength *int64  `json:"signalStrength,omitempty"`
+	Thumb          *string `json:"thumb,omitempty"`
 }
 
 func (c *Channel) GetTitle() *string {
@@ -32,6 +40,20 @@ func (c *Channel) GetChannelVcn() *string {
 		return nil
 	}
 	return c.ChannelVcn
+}
+
+func (c *Channel) GetDrm() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.Drm
+}
+
+func (c *Channel) GetFavorite() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.Favorite
 }
 
 func (c *Channel) GetHd() *bool {
@@ -60,6 +82,20 @@ func (c *Channel) GetLanguage() *string {
 		return nil
 	}
 	return c.Language
+}
+
+func (c *Channel) GetSignalQuality() *int64 {
+	if c == nil {
+		return nil
+	}
+	return c.SignalQuality
+}
+
+func (c *Channel) GetSignalStrength() *int64 {
+	if c == nil {
+		return nil
+	}
+	return c.SignalStrength
 }
 
 func (c *Channel) GetThumb() *string {

@@ -124,6 +124,7 @@ func (g *GetItemArtworkGlobals) GetMarketplace() *string {
 	return g.Marketplace
 }
 
+// GetItemArtworkPathParamElement - The type of artwork element (e.g., art, poster, thumb)
 type GetItemArtworkPathParamElement string
 
 const (
@@ -184,9 +185,11 @@ type GetItemArtworkRequest struct {
 	// A friendly name for the client
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
-	Marketplace *string                        `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	Ids         string                         `pathParam:"style=simple,explode=false,name=ids"`
-	Element     GetItemArtworkPathParamElement `pathParam:"style=simple,explode=false,name=element"`
+	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
+	// Comma-separated list of IDs
+	Ids string `pathParam:"style=simple,explode=false,name=ids"`
+	// The type of artwork element (e.g., art, poster, thumb)
+	Element GetItemArtworkPathParamElement `pathParam:"style=simple,explode=false,name=element"`
 	// A timestamp on the element used for cache management in the client
 	Timestamp int64 `pathParam:"style=simple,explode=false,name=timestamp"`
 }

@@ -250,7 +250,7 @@ type UnshuffleResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// OK
+	// Successfully updated unshuffle a play queue
 	MediaContainerWithPlaylistMetadata *components.MediaContainerWithPlaylistMetadata
 }
 

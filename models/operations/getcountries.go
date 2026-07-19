@@ -3,116 +3,9 @@
 package operations
 
 import (
-	"encoding/json"
-	"fmt"
+	"github.com/LukeHagar/plexgo/models/components"
 	"net/http"
 )
-
-// Flavor - - `0`: The country is divided into regions, and following the key will lead to a list of regions.
-// - `1`: The county is divided by postal codes, and an example code is returned in `example`.
-// - `2`: The country has a single postal code, returned in `example`.
-type Flavor int64
-
-const (
-	FlavorZero Flavor = 0
-	FlavorOne  Flavor = 1
-	FlavorTwo  Flavor = 2
-)
-
-func (e Flavor) ToPointer() *Flavor {
-	return &e
-}
-func (e *Flavor) UnmarshalJSON(data []byte) error {
-	var v int64
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case 0:
-		fallthrough
-	case 1:
-		fallthrough
-	case 2:
-		*e = Flavor(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Flavor: %v", v)
-	}
-}
-
-type Country struct {
-	// Three letter code
-	Code    *string `json:"code,omitempty"`
-	Example *string `json:"example,omitempty"`
-	// - `0`: The country is divided into regions, and following the key will lead to a list of regions.
-	// - `1`: The county is divided by postal codes, and an example code is returned in `example`.
-	// - `2`: The country has a single postal code, returned in `example`.
-	//
-	Flavor *Flavor `json:"flavor,omitempty"`
-	Key    *string `json:"key,omitempty"`
-	// Three letter language code
-	Language *string `json:"language,omitempty"`
-	// The title of the language
-	LanguageTitle *string `json:"languageTitle,omitempty"`
-	Title         *string `json:"title,omitempty"`
-	Type          *string `json:"type,omitempty"`
-}
-
-func (c *Country) GetCode() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Code
-}
-
-func (c *Country) GetExample() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Example
-}
-
-func (c *Country) GetFlavor() *Flavor {
-	if c == nil {
-		return nil
-	}
-	return c.Flavor
-}
-
-func (c *Country) GetKey() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Key
-}
-
-func (c *Country) GetLanguage() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Language
-}
-
-func (c *Country) GetLanguageTitle() *string {
-	if c == nil {
-		return nil
-	}
-	return c.LanguageTitle
-}
-
-func (c *Country) GetTitle() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Title
-}
-
-func (c *Country) GetType() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Type
-}
 
 // GetCountriesMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
 // Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
@@ -120,13 +13,11 @@ func (c *Country) GetType() *string {
 type GetCountriesMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize *int64    `json:"totalSize,omitempty"`
-	Country   []Country `json:"Country,omitempty"`
+	TotalSize *int64                  `json:"totalSize,omitempty"`
+	Country   []components.EPGCountry `json:"Country,omitempty"`
 }
 
 func (g *GetCountriesMediaContainer) GetIdentifier() *string {
@@ -157,7 +48,7 @@ func (g *GetCountriesMediaContainer) GetTotalSize() *int64 {
 	return g.TotalSize
 }
 
-func (g *GetCountriesMediaContainer) GetCountry() []Country {
+func (g *GetCountriesMediaContainer) GetCountry() []components.EPGCountry {
 	if g == nil {
 		return nil
 	}

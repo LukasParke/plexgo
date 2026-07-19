@@ -144,10 +144,6 @@ type GetCommonRequest struct {
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	// Section identifier
-	SectionID int64 `pathParam:"style=simple,explode=false,name=sectionId"`
-	// Item type
-	Type *int64 `queryParam:"style=form,explode=true,name=type"`
 	// A querystring-based filtering language used to select subsets of media. Can be provided as an object with typed properties for type safety, or as a string for complex queries with operators and boolean logic.
 	//
 	// The query supports:
@@ -164,8 +160,11 @@ type GetCommonRequest struct {
 	// - Complex: `push=1&index=1&or=1&rating=2&pop=1&duration=10` - (index = 1 OR rating = 2) AND duration = 10
 	//
 	// See [API Info section](#section/API-Info/Media-Queries) for detailed information on building media queries.
-	//
 	MediaQuery *components.MediaQuery `queryParam:"style=form,explode=true,name=mediaQuery"`
+	// Section identifier
+	SectionID int64 `pathParam:"style=simple,explode=false,name=sectionId"`
+	// Item type
+	MediaType *int64 `queryParam:"style=form,explode=true,name=type"`
 }
 
 func (g GetCommonRequest) MarshalJSON() ([]byte, error) {
@@ -256,6 +255,13 @@ func (g *GetCommonRequest) GetMarketplace() *string {
 	return g.Marketplace
 }
 
+func (g *GetCommonRequest) GetMediaQuery() *components.MediaQuery {
+	if g == nil {
+		return nil
+	}
+	return g.MediaQuery
+}
+
 func (g *GetCommonRequest) GetSectionID() int64 {
 	if g == nil {
 		return 0
@@ -263,18 +269,11 @@ func (g *GetCommonRequest) GetSectionID() int64 {
 	return g.SectionID
 }
 
-func (g *GetCommonRequest) GetType() *int64 {
+func (g *GetCommonRequest) GetMediaType() *int64 {
 	if g == nil {
 		return nil
 	}
-	return g.Type
-}
-
-func (g *GetCommonRequest) GetMediaQuery() *components.MediaQuery {
-	if g == nil {
-		return nil
-	}
-	return g.MediaQuery
+	return g.MediaType
 }
 
 type GetCommonResponse struct {

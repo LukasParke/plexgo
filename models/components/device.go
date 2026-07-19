@@ -3,19 +3,44 @@
 package components
 
 type Device struct {
+	// Display title for the device.
+	Title          *string          `json:"title,omitempty"`
 	ChannelMapping []ChannelMapping `json:"ChannelMapping,omitempty"`
-	Key            *string          `json:"key,omitempty"`
-	LastSeenAt     *int64           `json:"lastSeenAt,omitempty"`
-	Make           *string          `json:"make,omitempty"`
-	Model          *string          `json:"model,omitempty"`
-	ModelNumber    *string          `json:"modelNumber,omitempty"`
-	Protocol       *string          `json:"protocol,omitempty"`
-	Sources        *string          `json:"sources,omitempty"`
-	State          *string          `json:"state,omitempty"`
-	Status         *string          `json:"status,omitempty"`
-	Tuners         *string          `json:"tuners,omitempty"`
-	URI            *string          `json:"uri,omitempty"`
-	UUID           *string          `json:"uuid,omitempty"`
+	// Distinct hardware identifier for the device.
+	DeviceIdentifier *string `json:"deviceIdentifier,omitempty"`
+	// Whether the device is enabled.
+	Enabled *bool `json:"enabled,omitempty"`
+	// Unique device ID.
+	ID         *int64  `json:"id,omitempty"`
+	Key        *string `json:"key,omitempty"`
+	LastSeenAt *int64  `json:"lastSeenAt,omitempty"`
+	// EPG lineup association.
+	Lineup *string `json:"lineup,omitempty"`
+	// Type of EPG lineup.
+	LineupType  *string `json:"lineupType,omitempty"`
+	Make        *string `json:"make,omitempty"`
+	Model       *string `json:"model,omitempty"`
+	ModelNumber *string `json:"modelNumber,omitempty"`
+	// Human-readable device name.
+	Name     *string `json:"name,omitempty"`
+	Protocol *string `json:"protocol,omitempty"`
+	Sources  *string `json:"sources,omitempty"`
+	State    *string `json:"state,omitempty"`
+	Status   *string `json:"status,omitempty"`
+	// URL to the device thumbnail image.
+	Thumb *string `json:"thumb,omitempty"`
+	// Version of the device thumbnail.
+	ThumbVersion *int64  `json:"thumbVersion,omitempty"`
+	Tuners       *string `json:"tuners,omitempty"`
+	URI          *string `json:"uri,omitempty"`
+	UUID         *string `json:"uuid,omitempty"`
+}
+
+func (d *Device) GetTitle() *string {
+	if d == nil {
+		return nil
+	}
+	return d.Title
 }
 
 func (d *Device) GetChannelMapping() []ChannelMapping {
@@ -23,6 +48,27 @@ func (d *Device) GetChannelMapping() []ChannelMapping {
 		return nil
 	}
 	return d.ChannelMapping
+}
+
+func (d *Device) GetDeviceIdentifier() *string {
+	if d == nil {
+		return nil
+	}
+	return d.DeviceIdentifier
+}
+
+func (d *Device) GetEnabled() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.Enabled
+}
+
+func (d *Device) GetID() *int64 {
+	if d == nil {
+		return nil
+	}
+	return d.ID
 }
 
 func (d *Device) GetKey() *string {
@@ -37,6 +83,20 @@ func (d *Device) GetLastSeenAt() *int64 {
 		return nil
 	}
 	return d.LastSeenAt
+}
+
+func (d *Device) GetLineup() *string {
+	if d == nil {
+		return nil
+	}
+	return d.Lineup
+}
+
+func (d *Device) GetLineupType() *string {
+	if d == nil {
+		return nil
+	}
+	return d.LineupType
 }
 
 func (d *Device) GetMake() *string {
@@ -58,6 +118,13 @@ func (d *Device) GetModelNumber() *string {
 		return nil
 	}
 	return d.ModelNumber
+}
+
+func (d *Device) GetName() *string {
+	if d == nil {
+		return nil
+	}
+	return d.Name
 }
 
 func (d *Device) GetProtocol() *string {
@@ -86,6 +153,20 @@ func (d *Device) GetStatus() *string {
 		return nil
 	}
 	return d.Status
+}
+
+func (d *Device) GetThumb() *string {
+	if d == nil {
+		return nil
+	}
+	return d.Thumb
+}
+
+func (d *Device) GetThumbVersion() *int64 {
+	if d == nil {
+		return nil
+	}
+	return d.ThumbVersion
 }
 
 func (d *Device) GetTuners() *string {

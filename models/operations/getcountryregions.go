@@ -252,54 +252,17 @@ func (g *GetCountryRegionsRequest) GetEpgID() string {
 	return g.EpgID
 }
 
-type GetCountryRegionsCountry struct {
-	Key      *string `json:"key,omitempty"`
-	National *bool   `json:"national,omitempty"`
-	Title    *string `json:"title,omitempty"`
-	Type     *string `json:"type,omitempty"`
-}
-
-func (g *GetCountryRegionsCountry) GetKey() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Key
-}
-
-func (g *GetCountryRegionsCountry) GetNational() *bool {
-	if g == nil {
-		return nil
-	}
-	return g.National
-}
-
-func (g *GetCountryRegionsCountry) GetTitle() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Title
-}
-
-func (g *GetCountryRegionsCountry) GetType() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Type
-}
-
 // GetCountryRegionsMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
 // Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
 // The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
 type GetCountryRegionsMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize *int64                     `json:"totalSize,omitempty"`
-	Country   []GetCountryRegionsCountry `json:"Country,omitempty"`
+	TotalSize *int64                 `json:"totalSize,omitempty"`
+	Country   []components.EPGRegion `json:"Country,omitempty"`
 }
 
 func (g *GetCountryRegionsMediaContainer) GetIdentifier() *string {
@@ -330,7 +293,7 @@ func (g *GetCountryRegionsMediaContainer) GetTotalSize() *int64 {
 	return g.TotalSize
 }
 
-func (g *GetCountryRegionsMediaContainer) GetCountry() []GetCountryRegionsCountry {
+func (g *GetCountryRegionsMediaContainer) GetCountry() []components.EPGRegion {
 	if g == nil {
 		return nil
 	}

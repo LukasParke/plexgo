@@ -276,19 +276,25 @@ func (e *GetPlaylistGeneratorsType) UnmarshalJSON(data []byte) error {
 }
 
 type PlayQueueGenerator struct {
-	ChangedAt  *int64 `json:"changedAt,omitempty"`
-	CreatedAt  *int64 `json:"createdAt,omitempty"`
-	ID         *int64 `json:"id,omitempty"`
-	PlaylistID *int64 `json:"playlistID,omitempty"`
 	// The type of playlist generator.
 	//
 	//   - -1: A smart playlist generator
 	//   - 42: A optimized version generator
-	//
-	Type      *GetPlaylistGeneratorsType `json:"type,omitempty"`
-	UpdatedAt *int64                     `json:"updatedAt,omitempty"`
+	Type       *GetPlaylistGeneratorsType `json:"type,omitempty"`
+	ChangedAt  *int64                     `json:"changedAt,omitempty"`
+	CreatedAt  *int64                     `json:"createdAt,omitempty"`
+	ID         *int64                     `json:"id,omitempty"`
+	PlaylistID *int64                     `json:"playlistID,omitempty"`
+	UpdatedAt  *int64                     `json:"updatedAt,omitempty"`
 	// The URI indicating the search for this generator
 	URI *string `json:"uri,omitempty"`
+}
+
+func (p *PlayQueueGenerator) GetType() *GetPlaylistGeneratorsType {
+	if p == nil {
+		return nil
+	}
+	return p.Type
 }
 
 func (p *PlayQueueGenerator) GetChangedAt() *int64 {
@@ -319,13 +325,6 @@ func (p *PlayQueueGenerator) GetPlaylistID() *int64 {
 	return p.PlaylistID
 }
 
-func (p *PlayQueueGenerator) GetType() *GetPlaylistGeneratorsType {
-	if p == nil {
-		return nil
-	}
-	return p.Type
-}
-
 func (p *PlayQueueGenerator) GetUpdatedAt() *int64 {
 	if p == nil {
 		return nil
@@ -346,11 +345,9 @@ func (p *PlayQueueGenerator) GetURI() *string {
 type GetPlaylistGeneratorsMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
 	TotalSize          *int64               `json:"totalSize,omitempty"`
 	PlayQueueGenerator []PlayQueueGenerator `json:"PlayQueueGenerator,omitempty"`
 }

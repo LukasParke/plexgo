@@ -144,7 +144,8 @@ type ListTopUsersRequest struct {
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	Ids         string  `pathParam:"style=simple,explode=false,name=ids"`
+	// Comma-separated list of IDs
+	Ids string `pathParam:"style=simple,explode=false,name=ids"`
 }
 
 func (l ListTopUsersRequest) MarshalJSON() ([]byte, error) {
@@ -242,38 +243,17 @@ func (l *ListTopUsersRequest) GetIds() string {
 	return l.Ids
 }
 
-type Account struct {
-	GlobalViewCount *int64 `json:"globalViewCount,omitempty"`
-	ID              *int64 `json:"id,omitempty"`
-}
-
-func (a *Account) GetGlobalViewCount() *int64 {
-	if a == nil {
-		return nil
-	}
-	return a.GlobalViewCount
-}
-
-func (a *Account) GetID() *int64 {
-	if a == nil {
-		return nil
-	}
-	return a.ID
-}
-
 // ListTopUsersMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
 // Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
 // The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
 type ListTopUsersMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize *int64    `json:"totalSize,omitempty"`
-	Account   []Account `json:"Account,omitempty"`
+	TotalSize *int64                      `json:"totalSize,omitempty"`
+	Account   []components.TopUserAccount `json:"Account,omitempty"`
 }
 
 func (l *ListTopUsersMediaContainer) GetIdentifier() *string {
@@ -304,7 +284,7 @@ func (l *ListTopUsersMediaContainer) GetTotalSize() *int64 {
 	return l.TotalSize
 }
 
-func (l *ListTopUsersMediaContainer) GetAccount() []Account {
+func (l *ListTopUsersMediaContainer) GetAccount() []components.TopUserAccount {
 	if l == nil {
 		return nil
 	}

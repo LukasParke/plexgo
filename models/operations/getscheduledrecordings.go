@@ -7,68 +7,6 @@ import (
 	"net/http"
 )
 
-// GetScheduledRecordingsMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
-// Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
-// The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
-type GetScheduledRecordingsMediaContainer struct {
-	Identifier *string `json:"identifier,omitempty"`
-	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
-	Offset *int64 `json:"offset,omitempty"`
-	Size   *int64 `json:"size,omitempty"`
-	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize          *int64                          `json:"totalSize,omitempty"`
-	MediaGrabOperation []components.MediaGrabOperation `json:"MediaGrabOperation,omitempty"`
-}
-
-func (g *GetScheduledRecordingsMediaContainer) GetIdentifier() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Identifier
-}
-
-func (g *GetScheduledRecordingsMediaContainer) GetOffset() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.Offset
-}
-
-func (g *GetScheduledRecordingsMediaContainer) GetSize() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.Size
-}
-
-func (g *GetScheduledRecordingsMediaContainer) GetTotalSize() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.TotalSize
-}
-
-func (g *GetScheduledRecordingsMediaContainer) GetMediaGrabOperation() []components.MediaGrabOperation {
-	if g == nil {
-		return nil
-	}
-	return g.MediaGrabOperation
-}
-
-// GetScheduledRecordingsResponseBody - OK
-type GetScheduledRecordingsResponseBody struct {
-	MediaContainer *GetScheduledRecordingsMediaContainer `json:"MediaContainer,omitempty"`
-}
-
-func (g *GetScheduledRecordingsResponseBody) GetMediaContainer() *GetScheduledRecordingsMediaContainer {
-	if g == nil {
-		return nil
-	}
-	return g.MediaContainer
-}
-
 type GetScheduledRecordingsResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -77,8 +15,8 @@ type GetScheduledRecordingsResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// OK
-	Object  *GetScheduledRecordingsResponseBody
-	Headers map[string][]string
+	MediaContainerWithMediaGrabOperation *components.MediaContainerWithMediaGrabOperation
+	Headers                              map[string][]string
 }
 
 func (g *GetScheduledRecordingsResponse) GetContentType() string {
@@ -102,11 +40,11 @@ func (g *GetScheduledRecordingsResponse) GetRawResponse() *http.Response {
 	return g.RawResponse
 }
 
-func (g *GetScheduledRecordingsResponse) GetObject() *GetScheduledRecordingsResponseBody {
+func (g *GetScheduledRecordingsResponse) GetMediaContainerWithMediaGrabOperation() *components.MediaContainerWithMediaGrabOperation {
 	if g == nil {
 		return nil
 	}
-	return g.Object
+	return g.MediaContainerWithMediaGrabOperation
 }
 
 func (g *GetScheduledRecordingsResponse) GetHeaders() map[string][]string {

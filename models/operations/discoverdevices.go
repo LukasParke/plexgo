@@ -3,9 +3,62 @@
 package operations
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/LukeHagar/plexgo/models/components"
 	"net/http"
 )
+
+// Protocol to filter discovery.
+type Protocol string
+
+const (
+	ProtocolStream   Protocol = "stream"
+	ProtocolDownload Protocol = "download"
+	ProtocolLivetv   Protocol = "livetv"
+)
+
+func (e Protocol) ToPointer() *Protocol {
+	return &e
+}
+func (e *Protocol) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "stream":
+		fallthrough
+	case "download":
+		fallthrough
+	case "livetv":
+		*e = Protocol(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for Protocol: %v", v)
+	}
+}
+
+type DiscoverDevicesRequest struct {
+	// Protocol to filter discovery.
+	Protocol *Protocol `queryParam:"style=form,explode=true,name=protocol"`
+	// Targeted grabber identifier.
+	GrabberIdentifier *string `queryParam:"style=form,explode=true,name=grabberIdentifier"`
+}
+
+func (d *DiscoverDevicesRequest) GetProtocol() *Protocol {
+	if d == nil {
+		return nil
+	}
+	return d.Protocol
+}
+
+func (d *DiscoverDevicesRequest) GetGrabberIdentifier() *string {
+	if d == nil {
+		return nil
+	}
+	return d.GrabberIdentifier
+}
 
 type DiscoverDevicesResponse struct {
 	// HTTP response content type for this operation

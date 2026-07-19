@@ -157,15 +157,17 @@ type GetLibraryMatchesRequest struct {
 	// 9 = photo
 	//
 	// E.g. A movie library will not return anything with type 3 as there are no seasons for movie libraries
-	//
-	Type                            *components.MediaType `queryParam:"style=form,explode=true,name=type"`
-	IncludeFullMetadata             *components.BoolInt   `default:"0" queryParam:"style=form,explode=true,name=includeFullMetadata"`
-	IncludeAncestorMetadata         *components.BoolInt   `default:"0" queryParam:"style=form,explode=true,name=includeAncestorMetadata"`
-	IncludeAlternateMetadataSources *components.BoolInt   `default:"0" queryParam:"style=form,explode=true,name=includeAlternateMetadataSources"`
-	// Used for movies, shows, artists, albums, and tracks.  Allowed for various URI schemes, to be defined.
-	GUID *string `queryParam:"style=form,explode=true,name=guid"`
+	Type *components.MediaType `queryParam:"style=form,explode=true,name=type"`
 	// The title to filter by or assign
 	Title *string `queryParam:"style=form,explode=true,name=title"`
+	// Include full metadata in the response
+	IncludeFullMetadata *components.BoolInt `default:"0" queryParam:"style=form,explode=true,name=includeFullMetadata"`
+	// Include ancestor metadata in the response
+	IncludeAncestorMetadata *components.BoolInt `default:"0" queryParam:"style=form,explode=true,name=includeAncestorMetadata"`
+	// Include alternate metadata sources in the response
+	IncludeAlternateMetadataSources *components.BoolInt `default:"0" queryParam:"style=form,explode=true,name=includeAlternateMetadataSources"`
+	// Used for movies, shows, artists, albums, and tracks.  Allowed for various URI schemes, to be defined.
+	GUID *string `queryParam:"style=form,explode=true,name=guid"`
 	// Used for movies shows, and albums.  Optional.
 	Year *int64 `queryParam:"style=form,explode=true,name=year"`
 	// Used for movies, episodes, and tracks.  The full path to the media file, used for "cloud-scanning" an item.
@@ -279,6 +281,13 @@ func (g *GetLibraryMatchesRequest) GetType() *components.MediaType {
 	return g.Type
 }
 
+func (g *GetLibraryMatchesRequest) GetTitle() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Title
+}
+
 func (g *GetLibraryMatchesRequest) GetIncludeFullMetadata() *components.BoolInt {
 	if g == nil {
 		return nil
@@ -305,13 +314,6 @@ func (g *GetLibraryMatchesRequest) GetGUID() *string {
 		return nil
 	}
 	return g.GUID
-}
-
-func (g *GetLibraryMatchesRequest) GetTitle() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Title
 }
 
 func (g *GetLibraryMatchesRequest) GetYear() *int64 {

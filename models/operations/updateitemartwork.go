@@ -123,6 +123,7 @@ func (u *UpdateItemArtworkGlobals) GetMarketplace() *string {
 	return u.Marketplace
 }
 
+// PathParamElement - The type of artwork element (e.g., art, poster, thumb)
 type PathParamElement string
 
 const (
@@ -183,9 +184,11 @@ type UpdateItemArtworkRequest struct {
 	// A friendly name for the client
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
-	Marketplace *string          `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	Ids         string           `pathParam:"style=simple,explode=false,name=ids"`
-	Element     PathParamElement `pathParam:"style=simple,explode=false,name=element"`
+	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
+	// Comma-separated list of IDs
+	Ids string `pathParam:"style=simple,explode=false,name=ids"`
+	// The type of artwork element (e.g., art, poster, thumb)
+	Element PathParamElement `pathParam:"style=simple,explode=false,name=element"`
 	// The url of the new asset.
 	URL *string `queryParam:"style=form,explode=true,name=url"`
 }

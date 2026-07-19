@@ -3,28 +3,9 @@
 package operations
 
 import (
+	"github.com/LukeHagar/plexgo/models/components"
 	"net/http"
 )
-
-type Language struct {
-	// 3 letter language code
-	Code  *string `json:"code,omitempty"`
-	Title *string `json:"title,omitempty"`
-}
-
-func (l *Language) GetCode() *string {
-	if l == nil {
-		return nil
-	}
-	return l.Code
-}
-
-func (l *Language) GetTitle() *string {
-	if l == nil {
-		return nil
-	}
-	return l.Title
-}
 
 // GetAllLanguagesMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
 // Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
@@ -32,13 +13,11 @@ func (l *Language) GetTitle() *string {
 type GetAllLanguagesMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize *int64     `json:"totalSize,omitempty"`
-	Language  []Language `json:"Language,omitempty"`
+	TotalSize *int64                   `json:"totalSize,omitempty"`
+	Language  []components.EPGLanguage `json:"Language,omitempty"`
 }
 
 func (g *GetAllLanguagesMediaContainer) GetIdentifier() *string {
@@ -69,7 +48,7 @@ func (g *GetAllLanguagesMediaContainer) GetTotalSize() *int64 {
 	return g.TotalSize
 }
 
-func (g *GetAllLanguagesMediaContainer) GetLanguage() []Language {
+func (g *GetAllLanguagesMediaContainer) GetLanguage() []components.EPGLanguage {
 	if g == nil {
 		return nil
 	}

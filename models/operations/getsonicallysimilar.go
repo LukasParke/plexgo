@@ -147,7 +147,7 @@ type GetSonicallySimilarRequest struct {
 	// Section identifier
 	SectionID int64 `pathParam:"style=simple,explode=false,name=sectionId"`
 	// The metadata type to fetch (should be 10 for audio track)
-	Type *int64 `queryParam:"style=form,explode=true,name=type"`
+	MediaType *int64 `queryParam:"style=form,explode=true,name=type"`
 	// The music analysis to center the search.  Typically obtained from the `musicAnalysis` of a track
 	Values []int64 `queryParam:"style=form,explode=false,name=values"`
 	// The limit of the number of items to fetch; defaults to 50
@@ -251,11 +251,11 @@ func (g *GetSonicallySimilarRequest) GetSectionID() int64 {
 	return g.SectionID
 }
 
-func (g *GetSonicallySimilarRequest) GetType() *int64 {
+func (g *GetSonicallySimilarRequest) GetMediaType() *int64 {
 	if g == nil {
 		return nil
 	}
-	return g.Type
+	return g.MediaType
 }
 
 func (g *GetSonicallySimilarRequest) GetValues() []int64 {

@@ -121,6 +121,7 @@ func (s *SetItemPreferencesGlobals) GetMarketplace() *string {
 	return s.Marketplace
 }
 
+// QueryParamArgs - The args
 type QueryParamArgs struct {
 }
 
@@ -146,9 +147,11 @@ type SetItemPreferencesRequest struct {
 	// A friendly name for the client
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
-	Marketplace *string         `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	Ids         string          `pathParam:"style=simple,explode=false,name=ids"`
-	Args        *QueryParamArgs `queryParam:"style=form,explode=true,name=args"`
+	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
+	// Comma-separated list of IDs
+	Ids string `pathParam:"style=simple,explode=false,name=ids"`
+	// The args
+	Args *QueryParamArgs `queryParam:"style=form,explode=true,name=args"`
 }
 
 func (s SetItemPreferencesRequest) MarshalJSON() ([]byte, error) {

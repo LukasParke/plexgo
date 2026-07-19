@@ -4,7 +4,6 @@
 
 Subscriptions determine which media will be recorded and the criteria for selecting an airing when multiple are available
 
-
 ### Available Operations
 
 * [GetAllSubscriptions](#getallsubscriptions) - Get all subscriptions
@@ -124,7 +123,7 @@ func main() {
     res, err := s.Subscriptions.CreateSubscription(ctx, operations.CreateSubscriptionRequest{
         TargetLibrarySectionID: plexgo.Pointer[int64](1),
         TargetSectionLocationID: plexgo.Pointer[int64](3),
-        Type: plexgo.Pointer[int64](2),
+        MediaType: plexgo.Pointer[int64](2),
         Hints: &operations.Hints{},
         Prefs: &operations.CreateSubscriptionQueryParamPrefs{},
         Params: &operations.Params{},
@@ -183,7 +182,7 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
-    if res != nil {
+    if res.Body != nil {
         // handle response
     }
 }
@@ -233,7 +232,7 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
-    if res.Object != nil {
+    if res.MediaContainerWithMediaGrabOperation != nil {
         // handle response
     }
 }

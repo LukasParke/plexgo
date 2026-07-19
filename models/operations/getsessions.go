@@ -7,6 +7,27 @@ import (
 	"net/http"
 )
 
+type GetSessionsRequest struct {
+	// Filter by DVR ID.
+	DvrID *int64 `queryParam:"style=form,explode=true,name=dvrId"`
+	// Filter by channel ID.
+	Channel *int64 `queryParam:"style=form,explode=true,name=channel"`
+}
+
+func (g *GetSessionsRequest) GetDvrID() *int64 {
+	if g == nil {
+		return nil
+	}
+	return g.DvrID
+}
+
+func (g *GetSessionsRequest) GetChannel() *int64 {
+	if g == nil {
+		return nil
+	}
+	return g.Channel
+}
+
 type GetSessionsResponse struct {
 	// HTTP response content type for this operation
 	ContentType string

@@ -144,7 +144,8 @@ type GetRelatedItemsRequest struct {
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	Ids         string  `pathParam:"style=simple,explode=false,name=ids"`
+	// Comma-separated list of IDs
+	Ids string `pathParam:"style=simple,explode=false,name=ids"`
 }
 
 func (g GetRelatedItemsRequest) MarshalJSON() ([]byte, error) {
@@ -242,68 +243,6 @@ func (g *GetRelatedItemsRequest) GetIds() string {
 	return g.Ids
 }
 
-// GetRelatedItemsMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
-// Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
-// The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
-type GetRelatedItemsMediaContainer struct {
-	Identifier *string `json:"identifier,omitempty"`
-	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
-	Offset *int64 `json:"offset,omitempty"`
-	Size   *int64 `json:"size,omitempty"`
-	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize *int64           `json:"totalSize,omitempty"`
-	Hub       []components.Hub `json:"Hub,omitempty"`
-}
-
-func (g *GetRelatedItemsMediaContainer) GetIdentifier() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Identifier
-}
-
-func (g *GetRelatedItemsMediaContainer) GetOffset() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.Offset
-}
-
-func (g *GetRelatedItemsMediaContainer) GetSize() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.Size
-}
-
-func (g *GetRelatedItemsMediaContainer) GetTotalSize() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.TotalSize
-}
-
-func (g *GetRelatedItemsMediaContainer) GetHub() []components.Hub {
-	if g == nil {
-		return nil
-	}
-	return g.Hub
-}
-
-// GetRelatedItemsResponseBody - OK
-type GetRelatedItemsResponseBody struct {
-	MediaContainer *GetRelatedItemsMediaContainer `json:"MediaContainer,omitempty"`
-}
-
-func (g *GetRelatedItemsResponseBody) GetMediaContainer() *GetRelatedItemsMediaContainer {
-	if g == nil {
-		return nil
-	}
-	return g.MediaContainer
-}
-
 type GetRelatedItemsResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -312,7 +251,7 @@ type GetRelatedItemsResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// OK
-	Object *GetRelatedItemsResponseBody
+	MediaContainerWithHubs *components.MediaContainerWithHubs
 }
 
 func (g *GetRelatedItemsResponse) GetContentType() string {
@@ -336,9 +275,9 @@ func (g *GetRelatedItemsResponse) GetRawResponse() *http.Response {
 	return g.RawResponse
 }
 
-func (g *GetRelatedItemsResponse) GetObject() *GetRelatedItemsResponseBody {
+func (g *GetRelatedItemsResponse) GetMediaContainerWithHubs() *components.MediaContainerWithHubs {
 	if g == nil {
 		return nil
 	}
-	return g.Object
+	return g.MediaContainerWithHubs
 }

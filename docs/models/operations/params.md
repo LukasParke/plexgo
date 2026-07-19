@@ -5,7 +5,6 @@ Subscription parameters.
   - `source`: Required for downloads to indicate the source of the downloaded content.
 
 
-
 ## Fields
 
 | Field       | Type        | Required    | Description |

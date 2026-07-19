@@ -17,6 +17,7 @@ import (
 	"net/url"
 )
 
+// Plex Plex operations
 type Plex struct {
 	rootSDK          *PlexAPI
 	sdkConfiguration config.SDKConfiguration
@@ -33,8 +34,6 @@ func newPlex(rootSDK *PlexAPI, sdkConfig config.SDKConfiguration, hooks *hooks.H
 
 // GetServerResources - Get Server Resources
 // Get Plex server access tokens and server connections
-//
-// If set, this operation will use [Security.Token] from the global security.
 func (s *Plex) GetServerResources(ctx context.Context, request operations.GetServerResourcesRequest, opts ...operations.Option) (*operations.GetServerResourcesResponse, error) {
 	globals := operations.GetServerResourcesGlobals{
 		Accepts:          s.sdkConfiguration.Globals.Accepts,
@@ -68,7 +67,7 @@ func (s *Plex) GetServerResources(ctx context.Context, request operations.GetSer
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "get-server-resources",
+		OperationID:      "getServerResources",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -97,7 +96,7 @@ func (s *Plex) GetServerResources(ctx context.Context, request operations.GetSer
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security, "Token"); err != nil {
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
 		return nil, err
 	}
 
@@ -110,6 +109,16 @@ func (s *Plex) GetServerResources(ctx context.Context, request operations.GetSer
 	if retryConfig == nil {
 		if globalRetryConfig != nil {
 			retryConfig = globalRetryConfig
+		} else {
+			retryConfig = &retry.Config{
+				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
+					InitialInterval: 1000,
+					MaxInterval:     30000,
+					Exponent:        2,
+					MaxElapsedTime:  300000,
+				},
+				RetryConnectionErrors: true,
+			}
 		}
 	}
 
@@ -119,10 +128,6 @@ func (s *Plex) GetServerResources(ctx context.Context, request operations.GetSer
 			Config: retryConfig,
 			StatusCodes: []string{
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -232,12 +237,11 @@ func (s *Plex) GetServerResources(ctx context.Context, request operations.GetSer
 				return nil, err
 			}
 
-			var out sdkerrors.GetServerResourcesUnauthorized
+			var out sdkerrors.Unauthorized
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			out.RawResponse = httpRes
 			return nil, &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)

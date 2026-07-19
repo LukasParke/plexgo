@@ -147,8 +147,9 @@ type EditMetadataItemRequest struct {
 	// A friendly name for the client
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
-	Marketplace *string  `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	Ids         []string `pathParam:"style=simple,explode=false,name=ids"`
+	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
+	// Comma-separated list of IDs
+	Ids []string `pathParam:"style=simple,explode=false,name=ids"`
 	// The new values for the metadata item
 	Args *Args `queryParam:"style=form,explode=true,name=args"`
 }

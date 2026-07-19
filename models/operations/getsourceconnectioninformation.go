@@ -252,107 +252,17 @@ func (g *GetSourceConnectionInformationRequest) GetRefresh() *components.BoolInt
 	return g.Refresh
 }
 
-type Connection struct {
-	Address *string `json:"address,omitempty"`
-	// Indicates if the connection is the server's LAN address
-	Local    *bool   `json:"local,omitempty"`
-	Port     *int64  `json:"port,omitempty"`
-	Protocol *string `json:"protocol,omitempty"`
-	// Indicates the connection is over a relayed connection
-	Relay *bool   `json:"relay,omitempty"`
-	URI   *string `json:"uri,omitempty"`
-}
-
-func (c *Connection) GetAddress() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Address
-}
-
-func (c *Connection) GetLocal() *bool {
-	if c == nil {
-		return nil
-	}
-	return c.Local
-}
-
-func (c *Connection) GetPort() *int64 {
-	if c == nil {
-		return nil
-	}
-	return c.Port
-}
-
-func (c *Connection) GetProtocol() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Protocol
-}
-
-func (c *Connection) GetRelay() *bool {
-	if c == nil {
-		return nil
-	}
-	return c.Relay
-}
-
-func (c *Connection) GetURI() *string {
-	if c == nil {
-		return nil
-	}
-	return c.URI
-}
-
-type Device struct {
-	AccessToken      *string      `json:"accessToken,omitempty"`
-	ClientIdentifier *string      `json:"clientIdentifier,omitempty"`
-	Connection       []Connection `json:"Connection,omitempty"`
-	Name             *string      `json:"name,omitempty"`
-}
-
-func (d *Device) GetAccessToken() *string {
-	if d == nil {
-		return nil
-	}
-	return d.AccessToken
-}
-
-func (d *Device) GetClientIdentifier() *string {
-	if d == nil {
-		return nil
-	}
-	return d.ClientIdentifier
-}
-
-func (d *Device) GetConnection() []Connection {
-	if d == nil {
-		return nil
-	}
-	return d.Connection
-}
-
-func (d *Device) GetName() *string {
-	if d == nil {
-		return nil
-	}
-	return d.Name
-}
-
 // GetSourceConnectionInformationMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
 // Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
 // The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
 type GetSourceConnectionInformationMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize *int64  `json:"totalSize,omitempty"`
-	Device    *Device `json:"Device,omitempty"`
+	TotalSize *int64                     `json:"totalSize,omitempty"`
+	Device    *components.ConnectionInfo `json:"Device,omitempty"`
 }
 
 func (g *GetSourceConnectionInformationMediaContainer) GetIdentifier() *string {
@@ -383,7 +293,7 @@ func (g *GetSourceConnectionInformationMediaContainer) GetTotalSize() *int64 {
 	return g.TotalSize
 }
 
-func (g *GetSourceConnectionInformationMediaContainer) GetDevice() *Device {
+func (g *GetSourceConnectionInformationMediaContainer) GetDevice() *components.ConnectionInfo {
 	if g == nil {
 		return nil
 	}

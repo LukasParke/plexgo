@@ -161,9 +161,9 @@ func (e *QueryParamScope) UnmarshalJSON(data []byte) error {
 }
 
 type Policy struct {
-	Value     *int64              `queryParam:"name=value"`
 	Scope     *QueryParamScope    `queryParam:"name=scope"`
 	Unwatched *components.BoolInt `default:"0" queryParam:"name=unwatched"`
+	Value     *int64              `queryParam:"name=value"`
 }
 
 func (p Policy) MarshalJSON() ([]byte, error) {
@@ -175,13 +175,6 @@ func (p *Policy) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (p *Policy) GetValue() *int64 {
-	if p == nil {
-		return nil
-	}
-	return p.Value
 }
 
 func (p *Policy) GetScope() *QueryParamScope {
@@ -198,17 +191,38 @@ func (p *Policy) GetUnwatched() *components.BoolInt {
 	return p.Unwatched
 }
 
+func (p *Policy) GetValue() *int64 {
+	if p == nil {
+		return nil
+	}
+	return p.Value
+}
+
 // Item - Note: OpenAPI cannot properly render this query parameter example ([See GHI](https://github.com/OAI/OpenAPI-Specification/issues/1706)).  It should be rendered as:
 //
 // Item[type]=42&Item[title]=Jack-Jack Attack&Item[target]=&Item[targetTagID]=1&Item[locationID]=-1&Item[Location][uri]=library://82503060-0d68-4603-b594-8b071d54819e/item//library/metadata/146&Item[Policy][scope]=all&Item[Policy][value]=&Item[Policy][unwatched]=0
 type Item struct {
+	Title       *string                                    `queryParam:"name=title"`
+	Type        *int64                                     `queryParam:"name=type"`
 	Location    *ModifyPlaylistGeneratorQueryParamLocation `queryParam:"name=Location"`
 	LocationID  *int64                                     `queryParam:"name=locationID"`
 	Policy      *Policy                                    `queryParam:"name=Policy"`
 	Target      *string                                    `queryParam:"name=target"`
 	TargetTagID *int64                                     `queryParam:"name=targetTagID"`
-	Title       *string                                    `queryParam:"name=title"`
-	Type        *int64                                     `queryParam:"name=type"`
+}
+
+func (i *Item) GetTitle() *string {
+	if i == nil {
+		return nil
+	}
+	return i.Title
+}
+
+func (i *Item) GetType() *int64 {
+	if i == nil {
+		return nil
+	}
+	return i.Type
 }
 
 func (i *Item) GetLocation() *ModifyPlaylistGeneratorQueryParamLocation {
@@ -246,20 +260,6 @@ func (i *Item) GetTargetTagID() *int64 {
 	return i.TargetTagID
 }
 
-func (i *Item) GetTitle() *string {
-	if i == nil {
-		return nil
-	}
-	return i.Title
-}
-
-func (i *Item) GetType() *int64 {
-	if i == nil {
-		return nil
-	}
-	return i.Type
-}
-
 type ModifyPlaylistGeneratorRequest struct {
 	// Indicates the client accepts the indicated media types
 	Accepts *components.Accepts `default:"application/xml" header:"style=simple,explode=false,name=accepts"`
@@ -290,7 +290,6 @@ type ModifyPlaylistGeneratorRequest struct {
 	// Note: OpenAPI cannot properly render this query parameter example ([See GHI](https://github.com/OAI/OpenAPI-Specification/issues/1706)).  It should be rendered as:
 	//
 	// Item[type]=42&Item[title]=Jack-Jack Attack&Item[target]=&Item[targetTagID]=1&Item[locationID]=-1&Item[Location][uri]=library://82503060-0d68-4603-b594-8b071d54819e/item//library/metadata/146&Item[Policy][scope]=all&Item[Policy][value]=&Item[Policy][unwatched]=0
-	//
 	Item *Item `queryParam:"style=deepObject,explode=true,name=Item"`
 }
 
@@ -410,7 +409,7 @@ type ModifyPlaylistGeneratorResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// OK
+	// Successfully updated modify a generator
 	MediaContainerWithPlaylistMetadata *components.MediaContainerWithPlaylistMetadata
 }
 

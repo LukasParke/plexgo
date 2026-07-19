@@ -4,13 +4,16 @@
 
 The DVR provides means to watch and record live TV.  This section of endpoints describes how to setup the DVR itself
 
-
 ### Available Operations
 
 * [ListDVRs](#listdvrs) - Get DVRs
 * [CreateDVR](#createdvr) - Create a DVR
 * [DeleteDVR](#deletedvr) - Delete a single DVR
 * [GetDVR](#getdvr) - Get a single DVR
+* [PatchDVRSettings](#patchdvrsettings) - Update DVR Settings
+* [UpdateDVRSettings](#updatedvrsettings) - Update DVR Settings
+* [GetDVRChannels](#getdvrchannels) - Get DVR Channels
+* [GetDVRGuide](#getdvrguide) - Get DVR Guide
 * [DeleteLineup](#deletelineup) - Delete a DVR Lineup
 * [AddLineup](#addlineup) - Add a DVR Lineup
 * [SetDVRPreferences](#setdvrpreferences) - Set DVR preferences
@@ -43,11 +46,11 @@ func main() {
         plexgo.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.DVRs.ListDVRs(ctx)
+    res, err := s.DVRs.ListDVRs(ctx, nil, nil)
     if err != nil {
         log.Fatal(err)
     }
-    if res.Object != nil {
+    if res.DVRResponse != nil {
         // handle response
     }
 }
@@ -58,6 +61,8 @@ func main() {
 | Parameter                                                | Type                                                     | Required                                                 | Description                                              |
 | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
 | `ctx`                                                    | [context.Context](https://pkg.go.dev/context#Context)    | :heavy_check_mark:                                       | The context to use for the request.                      |
+| `uuid`                                                   | `*string`                                                | :heavy_minus_sign:                                       | Filter by DVR UUID.                                      |
+| `lineup`                                                 | `*string`                                                | :heavy_minus_sign:                                       | Filter by lineup.                                        |
 | `opts`                                                   | [][operations.Option](../../models/operations/option.md) | :heavy_minus_sign:                                       | The options for this request.                            |
 
 ### Response
@@ -68,11 +73,12 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## CreateDVR
 
-Creation of a DVR, after creation of a devcie and a lineup is selected
+Creation of a DVR, after creation of a device and a lineup is selected
 
 ### Example Usage
 
@@ -190,6 +196,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## DeleteDVR
@@ -256,6 +263,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## GetDVR
@@ -300,7 +308,7 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
-    if res.Object != nil {
+    if res.DVRResponse != nil {
         // handle response
     }
 }
@@ -322,6 +330,275 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
+| sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
+
+## PatchDVRSettings
+
+Update DVR settings.
+
+### Example Usage
+
+<!-- UsageSnippet language="go" operationID="patchDVRSettings" method="patch" path="/livetv/dvrs/{dvrId}" -->
+```go
+package main
+
+import(
+	"context"
+	"github.com/LukeHagar/plexgo/models/components"
+	"github.com/LukeHagar/plexgo"
+	"github.com/LukeHagar/plexgo/models/operations"
+	"log"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := plexgo.New(
+        plexgo.WithAccepts(components.AcceptsApplicationXML),
+        plexgo.WithClientIdentifier("abc123"),
+        plexgo.WithProduct("Plex for Roku"),
+        plexgo.WithVersion("2.4.1"),
+        plexgo.WithPlatform("Roku"),
+        plexgo.WithPlatformVersion("4.3 build 1057"),
+        plexgo.WithDevice("Roku 3"),
+        plexgo.WithModel("4200X"),
+        plexgo.WithDeviceVendor("Roku"),
+        plexgo.WithDeviceName("Living Room TV"),
+        plexgo.WithMarketplace("googlePlay"),
+        plexgo.WithSecurity("<YOUR_API_KEY_HERE>"),
+    )
+
+    res, err := s.DVRs.PatchDVRSettings(ctx, operations.PatchDVRSettingsRequest{
+        DvrID: 537061,
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res.SuccessResponse != nil {
+        // handle response
+    }
+}
+```
+
+### Parameters
+
+| Parameter                                                                                | Type                                                                                     | Required                                                                                 | Description                                                                              |
+| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `ctx`                                                                                    | [context.Context](https://pkg.go.dev/context#Context)                                    | :heavy_check_mark:                                                                       | The context to use for the request.                                                      |
+| `request`                                                                                | [operations.PatchDVRSettingsRequest](../../models/operations/patchdvrsettingsrequest.md) | :heavy_check_mark:                                                                       | The request object to use for the request.                                               |
+| `opts`                                                                                   | [][operations.Option](../../models/operations/option.md)                                 | :heavy_minus_sign:                                                                       | The options for this request.                                                            |
+
+### Response
+
+**[*operations.PatchDVRSettingsResponse](../../models/operations/patchdvrsettingsresponse.md), error**
+
+### Errors
+
+| Error Type         | Status Code        | Content Type       |
+| ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
+| sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
+
+## UpdateDVRSettings
+
+Update DVR settings.
+
+### Example Usage
+
+<!-- UsageSnippet language="go" operationID="updateDVRSettings" method="put" path="/livetv/dvrs/{dvrId}" -->
+```go
+package main
+
+import(
+	"context"
+	"github.com/LukeHagar/plexgo/models/components"
+	"github.com/LukeHagar/plexgo"
+	"github.com/LukeHagar/plexgo/models/operations"
+	"log"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := plexgo.New(
+        plexgo.WithAccepts(components.AcceptsApplicationXML),
+        plexgo.WithClientIdentifier("abc123"),
+        plexgo.WithProduct("Plex for Roku"),
+        plexgo.WithVersion("2.4.1"),
+        plexgo.WithPlatform("Roku"),
+        plexgo.WithPlatformVersion("4.3 build 1057"),
+        plexgo.WithDevice("Roku 3"),
+        plexgo.WithModel("4200X"),
+        plexgo.WithDeviceVendor("Roku"),
+        plexgo.WithDeviceName("Living Room TV"),
+        plexgo.WithMarketplace("googlePlay"),
+        plexgo.WithSecurity("<YOUR_API_KEY_HERE>"),
+    )
+
+    res, err := s.DVRs.UpdateDVRSettings(ctx, operations.UpdateDVRSettingsRequest{
+        DvrID: 614847,
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res.SuccessResponse != nil {
+        // handle response
+    }
+}
+```
+
+### Parameters
+
+| Parameter                                                                                  | Type                                                                                       | Required                                                                                   | Description                                                                                |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `ctx`                                                                                      | [context.Context](https://pkg.go.dev/context#Context)                                      | :heavy_check_mark:                                                                         | The context to use for the request.                                                        |
+| `request`                                                                                  | [operations.UpdateDVRSettingsRequest](../../models/operations/updatedvrsettingsrequest.md) | :heavy_check_mark:                                                                         | The request object to use for the request.                                                 |
+| `opts`                                                                                     | [][operations.Option](../../models/operations/option.md)                                   | :heavy_minus_sign:                                                                         | The options for this request.                                                              |
+
+### Response
+
+**[*operations.UpdateDVRSettingsResponse](../../models/operations/updatedvrsettingsresponse.md), error**
+
+### Errors
+
+| Error Type         | Status Code        | Content Type       |
+| ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
+| sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
+
+## GetDVRChannels
+
+List channels directly associated with a DVR.
+
+### Example Usage
+
+<!-- UsageSnippet language="go" operationID="getDVRChannels" method="get" path="/livetv/dvrs/{dvrId}/channels" -->
+```go
+package main
+
+import(
+	"context"
+	"github.com/LukeHagar/plexgo/models/components"
+	"github.com/LukeHagar/plexgo"
+	"github.com/LukeHagar/plexgo/models/operations"
+	"log"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := plexgo.New(
+        plexgo.WithAccepts(components.AcceptsApplicationXML),
+        plexgo.WithClientIdentifier("abc123"),
+        plexgo.WithProduct("Plex for Roku"),
+        plexgo.WithVersion("2.4.1"),
+        plexgo.WithPlatform("Roku"),
+        plexgo.WithPlatformVersion("4.3 build 1057"),
+        plexgo.WithDevice("Roku 3"),
+        plexgo.WithModel("4200X"),
+        plexgo.WithDeviceVendor("Roku"),
+        plexgo.WithDeviceName("Living Room TV"),
+        plexgo.WithMarketplace("googlePlay"),
+        plexgo.WithSecurity("<YOUR_API_KEY_HERE>"),
+    )
+
+    res, err := s.DVRs.GetDVRChannels(ctx, operations.GetDVRChannelsRequest{
+        DvrID: 901521,
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res.MediaContainerWithMetadata != nil {
+        // handle response
+    }
+}
+```
+
+### Parameters
+
+| Parameter                                                                            | Type                                                                                 | Required                                                                             | Description                                                                          |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `ctx`                                                                                | [context.Context](https://pkg.go.dev/context#Context)                                | :heavy_check_mark:                                                                   | The context to use for the request.                                                  |
+| `request`                                                                            | [operations.GetDVRChannelsRequest](../../models/operations/getdvrchannelsrequest.md) | :heavy_check_mark:                                                                   | The request object to use for the request.                                           |
+| `opts`                                                                               | [][operations.Option](../../models/operations/option.md)                             | :heavy_minus_sign:                                                                   | The options for this request.                                                        |
+
+### Response
+
+**[*operations.GetDVRChannelsResponse](../../models/operations/getdvrchannelsresponse.md), error**
+
+### Errors
+
+| Error Type         | Status Code        | Content Type       |
+| ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
+| sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
+
+## GetDVRGuide
+
+Fetch program guide/schedule for a DVR.
+
+### Example Usage
+
+<!-- UsageSnippet language="go" operationID="getDVRGuide" method="get" path="/livetv/dvrs/{dvrId}/guide" -->
+```go
+package main
+
+import(
+	"context"
+	"github.com/LukeHagar/plexgo/models/components"
+	"github.com/LukeHagar/plexgo"
+	"github.com/LukeHagar/plexgo/models/operations"
+	"log"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := plexgo.New(
+        plexgo.WithAccepts(components.AcceptsApplicationXML),
+        plexgo.WithClientIdentifier("abc123"),
+        plexgo.WithProduct("Plex for Roku"),
+        plexgo.WithVersion("2.4.1"),
+        plexgo.WithPlatform("Roku"),
+        plexgo.WithPlatformVersion("4.3 build 1057"),
+        plexgo.WithDevice("Roku 3"),
+        plexgo.WithModel("4200X"),
+        plexgo.WithDeviceVendor("Roku"),
+        plexgo.WithDeviceName("Living Room TV"),
+        plexgo.WithMarketplace("googlePlay"),
+        plexgo.WithSecurity("<YOUR_API_KEY_HERE>"),
+    )
+
+    res, err := s.DVRs.GetDVRGuide(ctx, operations.GetDVRGuideRequest{
+        DvrID: 19054,
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res.MediaContainerWithMetadata != nil {
+        // handle response
+    }
+}
+```
+
+### Parameters
+
+| Parameter                                                                      | Type                                                                           | Required                                                                       | Description                                                                    |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `ctx`                                                                          | [context.Context](https://pkg.go.dev/context#Context)                          | :heavy_check_mark:                                                             | The context to use for the request.                                            |
+| `request`                                                                      | [operations.GetDVRGuideRequest](../../models/operations/getdvrguiderequest.md) | :heavy_check_mark:                                                             | The request object to use for the request.                                     |
+| `opts`                                                                         | [][operations.Option](../../models/operations/option.md)                       | :heavy_minus_sign:                                                             | The options for this request.                                                  |
+
+### Response
+
+**[*operations.GetDVRGuideResponse](../../models/operations/getdvrguideresponse.md), error**
+
+### Errors
+
+| Error Type         | Status Code        | Content Type       |
+| ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## DeleteLineup
@@ -367,7 +644,7 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
-    if res.Object != nil {
+    if res.DVRResponse != nil {
         // handle response
     }
 }
@@ -389,6 +666,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## AddLineup
@@ -434,7 +712,7 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
-    if res.Object != nil {
+    if res.DVRResponse != nil {
         // handle response
     }
 }
@@ -456,11 +734,12 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## SetDVRPreferences
 
-Set DVR preferences by name avd value
+Set DVR preferences by name and value
 
 ### Example Usage
 
@@ -500,7 +779,7 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
-    if res.Object != nil {
+    if res.DVRResponse != nil {
         // handle response
     }
 }
@@ -522,6 +801,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## StopDVRReload
@@ -588,6 +868,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## ReloadGuide
@@ -632,7 +913,7 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
-    if res != nil {
+    if res.Body != nil {
         // handle response
     }
 }
@@ -654,6 +935,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## TuneChannel
@@ -788,6 +1070,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## AddDeviceToDVR
@@ -855,4 +1138,5 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |

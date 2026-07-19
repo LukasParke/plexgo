@@ -150,9 +150,10 @@ type CreateMarkerRequest struct {
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	Ids         string  `pathParam:"style=simple,explode=false,name=ids"`
+	// Comma-separated list of IDs
+	Ids string `pathParam:"style=simple,explode=false,name=ids"`
 	// The type of marker to edit/create
-	Type int64 `queryParam:"style=form,explode=true,name=type"`
+	MediaType int64 `queryParam:"style=form,explode=true,name=type"`
 	// The start time of the marker
 	StartTimeOffset int64 `queryParam:"style=form,explode=true,name=startTimeOffset"`
 	// The end time of the marker
@@ -256,11 +257,11 @@ func (c *CreateMarkerRequest) GetIds() string {
 	return c.Ids
 }
 
-func (c *CreateMarkerRequest) GetType() int64 {
+func (c *CreateMarkerRequest) GetMediaType() int64 {
 	if c == nil {
 		return 0
 	}
-	return c.Type
+	return c.MediaType
 }
 
 func (c *CreateMarkerRequest) GetStartTimeOffset() int64 {
@@ -325,18 +326,16 @@ func (e *CreateMarkerType) UnmarshalJSON(data []byte) error {
 type CreateMarkerMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
 	TotalSize            *int64            `json:"totalSize,omitempty"`
+	Title                *string           `json:"title,omitempty"`
+	Type                 *CreateMarkerType `json:"type,omitempty"`
 	Color                *string           `json:"color,omitempty"`
 	EndTimeOffset        *int64            `json:"endTimeOffset,omitempty"`
 	ID                   *int64            `json:"id,omitempty"`
 	StartTimeOffset      *int64            `json:"startTimeOffset,omitempty"`
-	Title                *string           `json:"title,omitempty"`
-	Type                 *CreateMarkerType `json:"type,omitempty"`
 	AdditionalProperties map[string]any    `additionalProperties:"true" json:"-"`
 }
 
@@ -379,6 +378,20 @@ func (c *CreateMarkerMediaContainer) GetTotalSize() *int64 {
 	return c.TotalSize
 }
 
+func (c *CreateMarkerMediaContainer) GetTitle() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Title
+}
+
+func (c *CreateMarkerMediaContainer) GetType() *CreateMarkerType {
+	if c == nil {
+		return nil
+	}
+	return c.Type
+}
+
 func (c *CreateMarkerMediaContainer) GetColor() *string {
 	if c == nil {
 		return nil
@@ -405,20 +418,6 @@ func (c *CreateMarkerMediaContainer) GetStartTimeOffset() *int64 {
 		return nil
 	}
 	return c.StartTimeOffset
-}
-
-func (c *CreateMarkerMediaContainer) GetTitle() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Title
-}
-
-func (c *CreateMarkerMediaContainer) GetType() *CreateMarkerType {
-	if c == nil {
-		return nil
-	}
-	return c.Type
 }
 
 func (c *CreateMarkerMediaContainer) GetAdditionalProperties() map[string]any {

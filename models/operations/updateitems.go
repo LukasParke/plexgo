@@ -145,8 +145,9 @@ type UpdateItemsRequest struct {
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
 	// The id of the section
-	SectionID string  `pathParam:"style=simple,explode=false,name=sectionId"`
-	Type      *string `queryParam:"style=form,explode=true,name=type"`
+	SectionID string `pathParam:"style=simple,explode=false,name=sectionId"`
+	// The media type to filter by
+	MediaType *string `queryParam:"style=form,explode=true,name=type"`
 	// The filters to apply to determine which items should be modified
 	Filters *string `queryParam:"style=form,explode=true,name=filters"`
 	// Set the specified field to a new value
@@ -268,11 +269,11 @@ func (u *UpdateItemsRequest) GetSectionID() string {
 	return u.SectionID
 }
 
-func (u *UpdateItemsRequest) GetType() *string {
+func (u *UpdateItemsRequest) GetMediaType() *string {
 	if u == nil {
 		return nil
 	}
-	return u.Type
+	return u.MediaType
 }
 
 func (u *UpdateItemsRequest) GetFilters() *string {

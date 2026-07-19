@@ -144,7 +144,8 @@ type DetectIntrosRequest struct {
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	Ids         string  `pathParam:"style=simple,explode=false,name=ids"`
+	// Comma-separated list of IDs
+	Ids string `pathParam:"style=simple,explode=false,name=ids"`
 	// Indicate whether detection should be re-run
 	Force *components.BoolInt `default:"0" queryParam:"style=form,explode=true,name=force"`
 	// The threshold for determining if content is an intro or not

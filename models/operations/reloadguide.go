@@ -250,6 +250,7 @@ type ReloadGuideResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	Body        []byte
 	Headers     map[string][]string
 }
 
@@ -272,6 +273,13 @@ func (r *ReloadGuideResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return r.RawResponse
+}
+
+func (r *ReloadGuideResponse) GetBody() []byte {
+	if r == nil {
+		return nil
+	}
+	return r.Body
 }
 
 func (r *ReloadGuideResponse) GetHeaders() map[string][]string {

@@ -280,12 +280,12 @@ type StartTranscodeSessionRequest struct {
 	TranscodeType components.TranscodeType `pathParam:"style=simple,explode=false,name=transcodeType"`
 	// Transcode session UUID
 	TranscodeSessionID *string `queryParam:"style=form,explode=true,name=transcodeSessionId"`
-	// Extension
-	//
-	Extension Extension `pathParam:"style=simple,explode=false,name=extension"`
 	// Indicates how incompatible advanced subtitles (such as ass/ssa) should be included: * 'burn' - Burn incompatible advanced text subtitles into the video stream * 'text' - Transcode incompatible advanced text subtitles to a compatible text format, even if some markup is lost
-	//
 	AdvancedSubtitles *components.AdvancedSubtitles `queryParam:"style=form,explode=true,name=advancedSubtitles"`
+	// Client platform (some clients send this in addition to headers).
+	PlatformQueryParameter *string `queryParam:"style=form,explode=true,name=platform"`
+	// Extension
+	Extension Extension `pathParam:"style=simple,explode=false,name=extension"`
 	// Percentage of original audio loudness to use when transcoding (100 is equivalent to original volume, 50 is half, 200 is double, etc)
 	AudioBoost *int64 `queryParam:"style=form,explode=true,name=audioBoost"`
 	// Target video number of audio channels.
@@ -323,21 +323,23 @@ type StartTranscodeSessionRequest struct {
 	// Target photo resolution.
 	PhotoResolution *string `queryParam:"style=form,explode=true,name=photoResolution"`
 	// Indicates the network streaming protocol to be used for the transcode session: * 'http' - include the file in the http response such as MKV streaming * 'hls' - hls stream (RFC 8216) * 'dash' - dash stream (ISO/IEC 23009-1:2022)
-	//
 	Protocol *StartTranscodeSessionQueryParamProtocol `queryParam:"style=form,explode=true,name=protocol"`
 	// Number of seconds to include in each transcoded segment
 	SecondsPerSegment *int64 `queryParam:"style=form,explode=true,name=secondsPerSegment"`
 	// Percentage of original subtitle size to use when burning subtitles (100 is equivalent to original size, 50 is half, ect)
 	SubtitleSize *int64 `queryParam:"style=form,explode=true,name=subtitleSize"`
 	// Indicates how subtitles should be included: * 'auto' - Compute the appropriate subtitle setting automatically * 'burn' - Burn the selected subtitle; auto if no selected subtitle * 'none' - Ignore all subtitle streams * 'sidecar' - The selected subtitle should be provided as a sidecar * 'embedded' - The selected subtitle should be provided as an embedded stream * 'segmented' - The selected subtitle should be provided as a segmented stream
-	//
 	Subtitles *StartTranscodeSessionQueryParamSubtitles `queryParam:"style=form,explode=true,name=subtitles"`
+	// Client-side maximum video bitrate cap in kbps
+	MaxVideoBitrate *int64 `queryParam:"style=form,explode=true,name=maxVideoBitrate"`
+	// Cap resolution string (e.g. 1920x1080)
+	VideoResolution *string `queryParam:"style=form,explode=true,name=videoResolution"`
+	// Copy timestamps instead of re-encoding them
+	Copyts *components.BoolInt `default:"0" queryParam:"style=form,explode=true,name=copyts"`
 	// Target video bitrate (in kbps).
 	VideoBitrate *int64 `queryParam:"style=form,explode=true,name=videoBitrate"`
 	// Target photo quality.
 	VideoQuality *int64 `queryParam:"style=form,explode=true,name=videoQuality"`
-	// Target maximum video resolution.
-	VideoResolution *string `queryParam:"style=form,explode=true,name=videoResolution"`
 	// See [Profile Augmentations](#section/API-Info/Profile-Augmentations) .
 	XPlexClientProfileExtra *string `header:"style=simple,explode=false,name=X-Plex-Client-Profile-Extra"`
 	// Which built in Client Profile to use in the decision. Generally should only be used to specify the Generic profile.
@@ -448,18 +450,25 @@ func (s *StartTranscodeSessionRequest) GetTranscodeSessionID() *string {
 	return s.TranscodeSessionID
 }
 
-func (s *StartTranscodeSessionRequest) GetExtension() Extension {
-	if s == nil {
-		return Extension("")
-	}
-	return s.Extension
-}
-
 func (s *StartTranscodeSessionRequest) GetAdvancedSubtitles() *components.AdvancedSubtitles {
 	if s == nil {
 		return nil
 	}
 	return s.AdvancedSubtitles
+}
+
+func (s *StartTranscodeSessionRequest) GetPlatformQueryParameter() *string {
+	if s == nil {
+		return nil
+	}
+	return s.PlatformQueryParameter
+}
+
+func (s *StartTranscodeSessionRequest) GetExtension() Extension {
+	if s == nil {
+		return Extension("")
+	}
+	return s.Extension
 }
 
 func (s *StartTranscodeSessionRequest) GetAudioBoost() *int64 {
@@ -616,6 +625,27 @@ func (s *StartTranscodeSessionRequest) GetSubtitles() *StartTranscodeSessionQuer
 	return s.Subtitles
 }
 
+func (s *StartTranscodeSessionRequest) GetMaxVideoBitrate() *int64 {
+	if s == nil {
+		return nil
+	}
+	return s.MaxVideoBitrate
+}
+
+func (s *StartTranscodeSessionRequest) GetVideoResolution() *string {
+	if s == nil {
+		return nil
+	}
+	return s.VideoResolution
+}
+
+func (s *StartTranscodeSessionRequest) GetCopyts() *components.BoolInt {
+	if s == nil {
+		return nil
+	}
+	return s.Copyts
+}
+
 func (s *StartTranscodeSessionRequest) GetVideoBitrate() *int64 {
 	if s == nil {
 		return nil
@@ -628,13 +658,6 @@ func (s *StartTranscodeSessionRequest) GetVideoQuality() *int64 {
 		return nil
 	}
 	return s.VideoQuality
-}
-
-func (s *StartTranscodeSessionRequest) GetVideoResolution() *string {
-	if s == nil {
-		return nil
-	}
-	return s.VideoResolution
 }
 
 func (s *StartTranscodeSessionRequest) GetXPlexClientProfileExtra() *string {
@@ -667,7 +690,13 @@ type StartTranscodeSessionResponse struct {
 	RawResponse *http.Response
 	// MPD file (see ISO/IEC 23009-1:2022), m3u8 file (see RFC 8216), or binary http stream
 	// The Close method must be called on this field, even if it is not used, to prevent resource leaks.
-	ResponseStream io.ReadCloser
+	TwoHundredApplicationVndAppleMpegurlBinaryResponse io.ReadCloser
+	// MPD file (see ISO/IEC 23009-1:2022), m3u8 file (see RFC 8216), or binary http stream
+	// The Close method must be called on this field, even if it is not used, to prevent resource leaks.
+	TwoHundredTextHTMLBinaryResponse io.ReadCloser
+	// MPD file (see ISO/IEC 23009-1:2022), m3u8 file (see RFC 8216), or binary http stream
+	// The Close method must be called on this field, even if it is not used, to prevent resource leaks.
+	TwoHundredVideoXMatroskaResponseStream io.ReadCloser
 }
 
 func (s *StartTranscodeSessionResponse) GetContentType() string {
@@ -691,9 +720,23 @@ func (s *StartTranscodeSessionResponse) GetRawResponse() *http.Response {
 	return s.RawResponse
 }
 
-func (s *StartTranscodeSessionResponse) GetResponseStream() io.ReadCloser {
+func (s *StartTranscodeSessionResponse) GetTwoHundredApplicationVndAppleMpegurlBinaryResponse() io.ReadCloser {
 	if s == nil {
 		return nil
 	}
-	return s.ResponseStream
+	return s.TwoHundredApplicationVndAppleMpegurlBinaryResponse
+}
+
+func (s *StartTranscodeSessionResponse) GetTwoHundredTextHTMLBinaryResponse() io.ReadCloser {
+	if s == nil {
+		return nil
+	}
+	return s.TwoHundredTextHTMLBinaryResponse
+}
+
+func (s *StartTranscodeSessionResponse) GetTwoHundredVideoXMatroskaResponseStream() io.ReadCloser {
+	if s == nil {
+		return nil
+	}
+	return s.TwoHundredVideoXMatroskaResponseStream
 }

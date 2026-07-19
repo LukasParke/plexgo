@@ -59,7 +59,7 @@ func main() {
     )
 
     res, err := s.PlayQueue.CreatePlayQueue(ctx, operations.CreatePlayQueueRequest{
-        Type: operations.TypeAudio,
+        MediaType: operations.TypeAudio,
         Shuffle: components.BoolIntTrue.ToPointer(),
         Repeat: components.BoolIntTrue.ToPointer(),
         Continuous: components.BoolIntTrue.ToPointer(),
@@ -69,7 +69,7 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
-    if res.Object != nil {
+    if res.MediaContainerWithPlayQueue != nil {
         // handle response
     }
 }
@@ -138,7 +138,7 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
-    if res.MediaContainerWithPlaylistMetadata != nil {
+    if res.PlayQueueResponse != nil {
         // handle response
     }
 }
@@ -293,6 +293,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## ResetPlayQueue

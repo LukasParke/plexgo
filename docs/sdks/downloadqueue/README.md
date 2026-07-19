@@ -2,7 +2,8 @@
 
 ## Overview
 
-API Operations against the Download Queue
+API Operations against the Download Queue.
+Note: The Download Queue is distinct from the Play Queue. The Download Queue manages offline/downloaded content, while the Play Queue manages active playback sessions.
 
 ### Available Operations
 
@@ -21,7 +22,6 @@ API Operations against the Download Queue
 Available: 0.2.0
 
 Creates a download queue for this client if one doesn't exist, or returns the existing queue for this client and user.
-
 
 ### Example Usage
 
@@ -67,6 +67,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## GetDownloadQueue
@@ -74,7 +75,6 @@ func main() {
 Available: 0.2.0
 
 Get a download queue by its id
-
 
 ### Example Usage
 
@@ -136,6 +136,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## AddDownloadQueueItems
@@ -143,7 +144,6 @@ func main() {
 Available: 0.2.0
 
 Add items to the download queue
-
 
 ### Example Usage
 
@@ -178,11 +178,6 @@ func main() {
     )
 
     res, err := s.DownloadQueue.AddDownloadQueueItems(ctx, operations.AddDownloadQueueItemsRequest{
-        QueueID: 984925,
-        Keys: []string{
-            "/library/metadata/3",
-            "/library/metadata/6",
-        },
         AdvancedSubtitles: components.AdvancedSubtitlesBurn.ToPointer(),
         AudioBoost: plexgo.Pointer[int64](50),
         AudioChannelCount: plexgo.Pointer[int64](5),
@@ -205,9 +200,15 @@ func main() {
         Protocol: components.ProtocolDash.ToPointer(),
         SecondsPerSegment: plexgo.Pointer[int64](5),
         SubtitleSize: plexgo.Pointer[int64](50),
+        Subtitles: components.SubtitlesBurn.ToPointer(),
         VideoBitrate: plexgo.Pointer[int64](12000),
         VideoQuality: plexgo.Pointer[int64](50),
         VideoResolution: plexgo.Pointer("1080x1080"),
+        QueueID: 984925,
+        Keys: []string{
+            "/library/metadata/3",
+            "/library/metadata/6",
+        },
     })
     if err != nil {
         log.Fatal(err)
@@ -234,6 +235,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## ListDownloadQueueItems
@@ -241,7 +243,6 @@ func main() {
 Available: 0.2.0
 
 Get items from a download queue
-
 
 ### Example Usage
 
@@ -303,6 +304,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## GetItemDecision
@@ -310,7 +312,6 @@ func main() {
 Available: 0.2.0
 
 Grab the decision for a download queue item
-
 
 ### Example Usage
 
@@ -381,7 +382,6 @@ Available: 0.2.0
 
 Grab the media for a download queue item
 
-
 ### Example Usage
 
 <!-- UsageSnippet language="go" operationID="getDownloadQueueMedia" method="get" path="/downloadQueue/{queueId}/item/{itemId}/media" -->
@@ -421,7 +421,7 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
-    if res != nil {
+    if res.BinaryResponse != nil {
         // handle response
     }
 }
@@ -514,6 +514,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## GetDownloadQueueItems
@@ -521,7 +522,6 @@ func main() {
 Available: 0.2.0
 
 Get items from a download queue
-
 
 ### Example Usage
 
@@ -588,6 +588,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## RestartProcessingDownloadQueueItems
@@ -595,7 +596,6 @@ func main() {
 Available: 0.2.0
 
 Reprocess download queue items with previous decision parameters
-
 
 ### Example Usage
 
@@ -662,4 +662,5 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |

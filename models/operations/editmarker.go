@@ -148,11 +148,12 @@ type EditMarkerRequest struct {
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	Ids         string  `pathParam:"style=simple,explode=false,name=ids"`
+	// Comma-separated list of IDs
+	Ids string `pathParam:"style=simple,explode=false,name=ids"`
 	// The id of the marker to edit
 	Marker string `pathParam:"style=simple,explode=false,name=marker"`
 	// The type of marker to edit/create
-	Type int64 `queryParam:"style=form,explode=true,name=type"`
+	MediaType int64 `queryParam:"style=form,explode=true,name=type"`
 	// The start time of the marker
 	StartTimeOffset int64 `queryParam:"style=form,explode=true,name=startTimeOffset"`
 	// The end time of the marker
@@ -263,11 +264,11 @@ func (e *EditMarkerRequest) GetMarker() string {
 	return e.Marker
 }
 
-func (e *EditMarkerRequest) GetType() int64 {
+func (e *EditMarkerRequest) GetMediaType() int64 {
 	if e == nil {
 		return 0
 	}
-	return e.Type
+	return e.MediaType
 }
 
 func (e *EditMarkerRequest) GetStartTimeOffset() int64 {
@@ -298,7 +299,7 @@ type EditMarkerResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// OK
+	// Successfully updated edit a marker
 	PostResponses200 *components.PostResponses200
 }
 

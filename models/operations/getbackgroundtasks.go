@@ -3,128 +3,9 @@
 package operations
 
 import (
-	"encoding/json"
-	"fmt"
+	"github.com/LukeHagar/plexgo/models/components"
 	"net/http"
 )
-
-type GetBackgroundTasksType string
-
-const (
-	GetBackgroundTasksTypeTranscode GetBackgroundTasksType = "transcode"
-)
-
-func (e GetBackgroundTasksType) ToPointer() *GetBackgroundTasksType {
-	return &e
-}
-func (e *GetBackgroundTasksType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "transcode":
-		*e = GetBackgroundTasksType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GetBackgroundTasksType: %v", v)
-	}
-}
-
-type TranscodeJob struct {
-	GeneratorID *int64   `json:"generatorID,omitempty"`
-	Key         *string  `json:"key,omitempty"`
-	Progress    *float64 `json:"progress,omitempty"`
-	RatingKey   *string  `json:"ratingKey,omitempty"`
-	// The number of seconds remaining in this job
-	Remaining *int64 `json:"remaining,omitempty"`
-	// The size of the result so far
-	Size *int64 `json:"size,omitempty"`
-	// The speed of the transcode; 1.0 means real-time
-	Speed *float64 `json:"speed,omitempty"`
-	// The tag associated with the job.  This could be the tag containing the optimizer settings.
-	TargetTagID *int64                  `json:"targetTagID,omitempty"`
-	Thumb       *string                 `json:"thumb,omitempty"`
-	Title       *string                 `json:"title,omitempty"`
-	Type        *GetBackgroundTasksType `json:"type,omitempty"`
-}
-
-func (t *TranscodeJob) GetGeneratorID() *int64 {
-	if t == nil {
-		return nil
-	}
-	return t.GeneratorID
-}
-
-func (t *TranscodeJob) GetKey() *string {
-	if t == nil {
-		return nil
-	}
-	return t.Key
-}
-
-func (t *TranscodeJob) GetProgress() *float64 {
-	if t == nil {
-		return nil
-	}
-	return t.Progress
-}
-
-func (t *TranscodeJob) GetRatingKey() *string {
-	if t == nil {
-		return nil
-	}
-	return t.RatingKey
-}
-
-func (t *TranscodeJob) GetRemaining() *int64 {
-	if t == nil {
-		return nil
-	}
-	return t.Remaining
-}
-
-func (t *TranscodeJob) GetSize() *int64 {
-	if t == nil {
-		return nil
-	}
-	return t.Size
-}
-
-func (t *TranscodeJob) GetSpeed() *float64 {
-	if t == nil {
-		return nil
-	}
-	return t.Speed
-}
-
-func (t *TranscodeJob) GetTargetTagID() *int64 {
-	if t == nil {
-		return nil
-	}
-	return t.TargetTagID
-}
-
-func (t *TranscodeJob) GetThumb() *string {
-	if t == nil {
-		return nil
-	}
-	return t.Thumb
-}
-
-func (t *TranscodeJob) GetTitle() *string {
-	if t == nil {
-		return nil
-	}
-	return t.Title
-}
-
-func (t *TranscodeJob) GetType() *GetBackgroundTasksType {
-	if t == nil {
-		return nil
-	}
-	return t.Type
-}
 
 // GetBackgroundTasksMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
 // Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
@@ -132,13 +13,11 @@ func (t *TranscodeJob) GetType() *GetBackgroundTasksType {
 type GetBackgroundTasksMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize    *int64         `json:"totalSize,omitempty"`
-	TranscodeJob []TranscodeJob `json:"TranscodeJob,omitempty"`
+	TotalSize    *int64                    `json:"totalSize,omitempty"`
+	TranscodeJob []components.TranscodeJob `json:"TranscodeJob,omitempty"`
 }
 
 func (g *GetBackgroundTasksMediaContainer) GetIdentifier() *string {
@@ -169,7 +48,7 @@ func (g *GetBackgroundTasksMediaContainer) GetTotalSize() *int64 {
 	return g.TotalSize
 }
 
-func (g *GetBackgroundTasksMediaContainer) GetTranscodeJob() []TranscodeJob {
+func (g *GetBackgroundTasksMediaContainer) GetTranscodeJob() []components.TranscodeJob {
 	if g == nil {
 		return nil
 	}

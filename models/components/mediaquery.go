@@ -19,16 +19,15 @@ type MediaQuery struct {
 	// 9 = photo
 	//
 	// E.g. A movie library will not return anything with type 3 as there are no seasons for movie libraries
-	//
 	Type *MediaType `queryParam:"name=type"`
-	// Change the default level to which fields refer (used with type for hierarchical queries)
-	SourceType *int64 `queryParam:"name=sourceType"`
-	// Field(s) to sort by, with optional modifiers. Use comma to separate multiple fields, and :desc or :nullsLast for modifiers (e.g., "duration:desc,index")
-	Sort *string `queryParam:"name=sort"`
 	// Field to group results by (similar to SQL GROUP BY)
 	Group *string `queryParam:"name=group"`
 	// Maximum number of results to return
 	Limit *int64 `queryParam:"name=limit"`
+	// Field(s) to sort by, with optional modifiers. Use comma to separate multiple fields, and :desc or :nullsLast for modifiers (e.g., "duration:desc,index")
+	Sort *string `queryParam:"name=sort"`
+	// Change the default level to which fields refer (used with type for hierarchical queries)
+	SourceType *int64 `queryParam:"name=sourceType"`
 }
 
 func (m *MediaQuery) GetType() *MediaType {
@@ -36,20 +35,6 @@ func (m *MediaQuery) GetType() *MediaType {
 		return nil
 	}
 	return m.Type
-}
-
-func (m *MediaQuery) GetSourceType() *int64 {
-	if m == nil {
-		return nil
-	}
-	return m.SourceType
-}
-
-func (m *MediaQuery) GetSort() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Sort
 }
 
 func (m *MediaQuery) GetGroup() *string {
@@ -64,4 +49,18 @@ func (m *MediaQuery) GetLimit() *int64 {
 		return nil
 	}
 	return m.Limit
+}
+
+func (m *MediaQuery) GetSort() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Sort
+}
+
+func (m *MediaQuery) GetSourceType() *int64 {
+	if m == nil {
+		return nil
+	}
+	return m.SourceType
 }

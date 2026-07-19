@@ -143,10 +143,13 @@ type DetectCreditsRequest struct {
 	// A friendly name for the client
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
-	Marketplace *string             `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	Ids         string              `pathParam:"style=simple,explode=false,name=ids"`
-	Force       *components.BoolInt `default:"0" queryParam:"style=form,explode=true,name=force"`
-	Manual      *components.BoolInt `default:"0" queryParam:"style=form,explode=true,name=manual"`
+	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
+	// Comma-separated list of IDs
+	Ids string `pathParam:"style=simple,explode=false,name=ids"`
+	// Force the operation even if conditions are not met
+	Force *components.BoolInt `default:"0" queryParam:"style=form,explode=true,name=force"`
+	// Whether to perform the operation manually
+	Manual *components.BoolInt `default:"0" queryParam:"style=form,explode=true,name=manual"`
 }
 
 func (d DetectCreditsRequest) MarshalJSON() ([]byte, error) {

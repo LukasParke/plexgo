@@ -144,8 +144,10 @@ type DeleteMediaItemRequest struct {
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	Ids         string  `pathParam:"style=simple,explode=false,name=ids"`
-	MediaItem   string  `pathParam:"style=simple,explode=false,name=mediaItem"`
+	// Comma-separated list of IDs
+	Ids string `pathParam:"style=simple,explode=false,name=ids"`
+	// The mediaItem
+	MediaItem string `pathParam:"style=simple,explode=false,name=mediaItem"`
 	// Whether proxy items, such as media optimized versions, should also be deleted.  Defaults to false.
 	Proxy *components.BoolInt `default:"0" queryParam:"style=form,explode=true,name=proxy"`
 }

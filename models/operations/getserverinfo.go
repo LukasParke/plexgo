@@ -234,6 +234,444 @@ func (g *GetServerInfoRequest) GetMarketplace() *string {
 	return g.Marketplace
 }
 
+// GetServerInfoResponseBody - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
+// Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
+// The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
+type GetServerInfoResponseBody struct {
+	Identifier *string `json:"identifier,omitempty"`
+	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
+	Offset *int64 `json:"offset,omitempty"`
+	Size   *int64 `json:"size,omitempty"`
+	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
+	TotalSize            *int64  `json:"totalSize,omitempty"`
+	AllowCameraUpload    *bool   `json:"allowCameraUpload,omitempty"`
+	AllowChannelAccess   *bool   `json:"allowChannelAccess,omitempty"`
+	AllowMediaDeletion   *bool   `json:"allowMediaDeletion,omitempty"`
+	AllowSharing         *bool   `json:"allowSharing,omitempty"`
+	AllowSync            *bool   `json:"allowSync,omitempty"`
+	AllowTuners          *bool   `json:"allowTuners,omitempty"`
+	BackgroundProcessing *bool   `json:"backgroundProcessing,omitempty"`
+	Certificate          *bool   `json:"certificate,omitempty"`
+	CompanionProxy       *bool   `json:"companionProxy,omitempty"`
+	CountryCode          *string `json:"countryCode,omitempty"`
+	// Comma-separated list of enabled diagnostics modules.
+	Diagnostics        []string `json:"diagnostics,omitempty"`
+	EventStream        *bool    `json:"eventStream,omitempty"`
+	FriendlyName       *string  `json:"friendlyName,omitempty"`
+	HubSearch          *bool    `json:"hubSearch,omitempty"`
+	ItemClusters       *bool    `json:"itemClusters,omitempty"`
+	Livetv             *int64   `json:"livetv,omitempty"`
+	MachineIdentifier  any      `json:"machineIdentifier,omitempty"`
+	MediaProviders     *bool    `json:"mediaProviders,omitempty"`
+	Multiuser          *bool    `json:"multiuser,omitempty"`
+	MusicAnalysis      *int64   `json:"musicAnalysis,omitempty"`
+	MyPlex             *bool    `json:"myPlex,omitempty"`
+	MyPlexMappingState any      `json:"myPlexMappingState,omitempty"`
+	MyPlexSigninState  any      `json:"myPlexSigninState,omitempty"`
+	MyPlexSubscription *bool    `json:"myPlexSubscription,omitempty"`
+	MyPlexUsername     *string  `json:"myPlexUsername,omitempty"`
+	// Whether offline transcoding is enabled.
+	OfflineTranscode *int `json:"offlineTranscode,omitempty"`
+	// List of enabled owner features.
+	OwnerFeatures                 []string `json:"ownerFeatures,omitempty"`
+	Platform                      *string  `json:"platform,omitempty"`
+	PlatformVersion               *string  `json:"platformVersion,omitempty"`
+	PluginHost                    *bool    `json:"pluginHost,omitempty"`
+	PushNotifications             *bool    `json:"pushNotifications,omitempty"`
+	ReadOnlyLibraries             *bool    `json:"readOnlyLibraries,omitempty"`
+	StreamingBrainABRVersion      *int64   `json:"streamingBrainABRVersion,omitempty"`
+	StreamingBrainVersion         *int64   `json:"streamingBrainVersion,omitempty"`
+	Sync                          *bool    `json:"sync,omitempty"`
+	TranscoderActiveVideoSessions *int64   `json:"transcoderActiveVideoSessions,omitempty"`
+	TranscoderAudio               *bool    `json:"transcoderAudio,omitempty"`
+	TranscoderLyrics              *bool    `json:"transcoderLyrics,omitempty"`
+	TranscoderPhoto               *bool    `json:"transcoderPhoto,omitempty"`
+	TranscoderSubtitles           *bool    `json:"transcoderSubtitles,omitempty"`
+	TranscoderVideo               *bool    `json:"transcoderVideo,omitempty"`
+	// List of supported transcoder video bitrates.
+	TranscoderVideoBitrates []string `json:"transcoderVideoBitrates,omitempty"`
+	// List of supported transcoder video qualities.
+	TranscoderVideoQualities []string `json:"transcoderVideoQualities,omitempty"`
+	// List of supported transcoder video resolutions.
+	TranscoderVideoResolutions []string               `json:"transcoderVideoResolutions,omitempty"`
+	UpdatedAt                  *int64                 `json:"updatedAt,omitempty"`
+	Updater                    *bool                  `json:"updater,omitempty"`
+	Version                    *string                `json:"version,omitempty"`
+	VoiceSearch                *bool                  `json:"voiceSearch,omitempty"`
+	Directory                  []components.Directory `json:"Directory,omitempty"`
+}
+
+func (g *GetServerInfoResponseBody) GetIdentifier() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Identifier
+}
+
+func (g *GetServerInfoResponseBody) GetOffset() *int64 {
+	if g == nil {
+		return nil
+	}
+	return g.Offset
+}
+
+func (g *GetServerInfoResponseBody) GetSize() *int64 {
+	if g == nil {
+		return nil
+	}
+	return g.Size
+}
+
+func (g *GetServerInfoResponseBody) GetTotalSize() *int64 {
+	if g == nil {
+		return nil
+	}
+	return g.TotalSize
+}
+
+func (g *GetServerInfoResponseBody) GetAllowCameraUpload() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.AllowCameraUpload
+}
+
+func (g *GetServerInfoResponseBody) GetAllowChannelAccess() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.AllowChannelAccess
+}
+
+func (g *GetServerInfoResponseBody) GetAllowMediaDeletion() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.AllowMediaDeletion
+}
+
+func (g *GetServerInfoResponseBody) GetAllowSharing() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.AllowSharing
+}
+
+func (g *GetServerInfoResponseBody) GetAllowSync() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.AllowSync
+}
+
+func (g *GetServerInfoResponseBody) GetAllowTuners() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.AllowTuners
+}
+
+func (g *GetServerInfoResponseBody) GetBackgroundProcessing() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.BackgroundProcessing
+}
+
+func (g *GetServerInfoResponseBody) GetCertificate() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.Certificate
+}
+
+func (g *GetServerInfoResponseBody) GetCompanionProxy() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.CompanionProxy
+}
+
+func (g *GetServerInfoResponseBody) GetCountryCode() *string {
+	if g == nil {
+		return nil
+	}
+	return g.CountryCode
+}
+
+func (g *GetServerInfoResponseBody) GetDiagnostics() []string {
+	if g == nil {
+		return nil
+	}
+	return g.Diagnostics
+}
+
+func (g *GetServerInfoResponseBody) GetEventStream() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.EventStream
+}
+
+func (g *GetServerInfoResponseBody) GetFriendlyName() *string {
+	if g == nil {
+		return nil
+	}
+	return g.FriendlyName
+}
+
+func (g *GetServerInfoResponseBody) GetHubSearch() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.HubSearch
+}
+
+func (g *GetServerInfoResponseBody) GetItemClusters() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.ItemClusters
+}
+
+func (g *GetServerInfoResponseBody) GetLivetv() *int64 {
+	if g == nil {
+		return nil
+	}
+	return g.Livetv
+}
+
+func (g *GetServerInfoResponseBody) GetMachineIdentifier() any {
+	if g == nil {
+		return nil
+	}
+	return g.MachineIdentifier
+}
+
+func (g *GetServerInfoResponseBody) GetMediaProviders() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.MediaProviders
+}
+
+func (g *GetServerInfoResponseBody) GetMultiuser() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.Multiuser
+}
+
+func (g *GetServerInfoResponseBody) GetMusicAnalysis() *int64 {
+	if g == nil {
+		return nil
+	}
+	return g.MusicAnalysis
+}
+
+func (g *GetServerInfoResponseBody) GetMyPlex() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.MyPlex
+}
+
+func (g *GetServerInfoResponseBody) GetMyPlexMappingState() any {
+	if g == nil {
+		return nil
+	}
+	return g.MyPlexMappingState
+}
+
+func (g *GetServerInfoResponseBody) GetMyPlexSigninState() any {
+	if g == nil {
+		return nil
+	}
+	return g.MyPlexSigninState
+}
+
+func (g *GetServerInfoResponseBody) GetMyPlexSubscription() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.MyPlexSubscription
+}
+
+func (g *GetServerInfoResponseBody) GetMyPlexUsername() *string {
+	if g == nil {
+		return nil
+	}
+	return g.MyPlexUsername
+}
+
+func (g *GetServerInfoResponseBody) GetOfflineTranscode() *int {
+	if g == nil {
+		return nil
+	}
+	return g.OfflineTranscode
+}
+
+func (g *GetServerInfoResponseBody) GetOwnerFeatures() []string {
+	if g == nil {
+		return nil
+	}
+	return g.OwnerFeatures
+}
+
+func (g *GetServerInfoResponseBody) GetPlatform() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Platform
+}
+
+func (g *GetServerInfoResponseBody) GetPlatformVersion() *string {
+	if g == nil {
+		return nil
+	}
+	return g.PlatformVersion
+}
+
+func (g *GetServerInfoResponseBody) GetPluginHost() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.PluginHost
+}
+
+func (g *GetServerInfoResponseBody) GetPushNotifications() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.PushNotifications
+}
+
+func (g *GetServerInfoResponseBody) GetReadOnlyLibraries() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.ReadOnlyLibraries
+}
+
+func (g *GetServerInfoResponseBody) GetStreamingBrainABRVersion() *int64 {
+	if g == nil {
+		return nil
+	}
+	return g.StreamingBrainABRVersion
+}
+
+func (g *GetServerInfoResponseBody) GetStreamingBrainVersion() *int64 {
+	if g == nil {
+		return nil
+	}
+	return g.StreamingBrainVersion
+}
+
+func (g *GetServerInfoResponseBody) GetSync() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.Sync
+}
+
+func (g *GetServerInfoResponseBody) GetTranscoderActiveVideoSessions() *int64 {
+	if g == nil {
+		return nil
+	}
+	return g.TranscoderActiveVideoSessions
+}
+
+func (g *GetServerInfoResponseBody) GetTranscoderAudio() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.TranscoderAudio
+}
+
+func (g *GetServerInfoResponseBody) GetTranscoderLyrics() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.TranscoderLyrics
+}
+
+func (g *GetServerInfoResponseBody) GetTranscoderPhoto() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.TranscoderPhoto
+}
+
+func (g *GetServerInfoResponseBody) GetTranscoderSubtitles() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.TranscoderSubtitles
+}
+
+func (g *GetServerInfoResponseBody) GetTranscoderVideo() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.TranscoderVideo
+}
+
+func (g *GetServerInfoResponseBody) GetTranscoderVideoBitrates() []string {
+	if g == nil {
+		return nil
+	}
+	return g.TranscoderVideoBitrates
+}
+
+func (g *GetServerInfoResponseBody) GetTranscoderVideoQualities() []string {
+	if g == nil {
+		return nil
+	}
+	return g.TranscoderVideoQualities
+}
+
+func (g *GetServerInfoResponseBody) GetTranscoderVideoResolutions() []string {
+	if g == nil {
+		return nil
+	}
+	return g.TranscoderVideoResolutions
+}
+
+func (g *GetServerInfoResponseBody) GetUpdatedAt() *int64 {
+	if g == nil {
+		return nil
+	}
+	return g.UpdatedAt
+}
+
+func (g *GetServerInfoResponseBody) GetUpdater() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.Updater
+}
+
+func (g *GetServerInfoResponseBody) GetVersion() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Version
+}
+
+func (g *GetServerInfoResponseBody) GetVoiceSearch() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.VoiceSearch
+}
+
+func (g *GetServerInfoResponseBody) GetDirectory() []components.Directory {
+	if g == nil {
+		return nil
+	}
+	return g.Directory
+}
+
 type GetServerInfoResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -242,7 +680,7 @@ type GetServerInfoResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// OK
-	MediaContainerWithDirectory *components.MediaContainerWithDirectory
+	Object *GetServerInfoResponseBody
 }
 
 func (g *GetServerInfoResponse) GetContentType() string {
@@ -266,9 +704,9 @@ func (g *GetServerInfoResponse) GetRawResponse() *http.Response {
 	return g.RawResponse
 }
 
-func (g *GetServerInfoResponse) GetMediaContainerWithDirectory() *components.MediaContainerWithDirectory {
+func (g *GetServerInfoResponse) GetObject() *GetServerInfoResponseBody {
 	if g == nil {
 		return nil
 	}
-	return g.MediaContainerWithDirectory
+	return g.Object
 }

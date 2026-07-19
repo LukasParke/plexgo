@@ -144,12 +144,6 @@ type AutocompleteRequest struct {
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	// Section identifier
-	SectionID int64 `pathParam:"style=simple,explode=false,name=sectionId"`
-	// Item type
-	Type *int64 `queryParam:"style=form,explode=true,name=type"`
-	// The "field" stands in for any field, the value is a partial string for matching
-	FieldQuery *string `queryParam:"style=form,explode=true,name=field.query"`
 	// A querystring-based filtering language used to select subsets of media. Can be provided as an object with typed properties for type safety, or as a string for complex queries with operators and boolean logic.
 	//
 	// The query supports:
@@ -166,8 +160,13 @@ type AutocompleteRequest struct {
 	// - Complex: `push=1&index=1&or=1&rating=2&pop=1&duration=10` - (index = 1 OR rating = 2) AND duration = 10
 	//
 	// See [API Info section](#section/API-Info/Media-Queries) for detailed information on building media queries.
-	//
 	MediaQuery *components.MediaQuery `queryParam:"style=form,explode=true,name=mediaQuery"`
+	// Section identifier
+	SectionID int64 `pathParam:"style=simple,explode=false,name=sectionId"`
+	// Item type
+	MediaType *int64 `queryParam:"style=form,explode=true,name=type"`
+	// The "field" stands in for any field, the value is a partial string for matching
+	FieldQuery *string `queryParam:"style=form,explode=true,name=field.query"`
 }
 
 func (a AutocompleteRequest) MarshalJSON() ([]byte, error) {
@@ -258,6 +257,13 @@ func (a *AutocompleteRequest) GetMarketplace() *string {
 	return a.Marketplace
 }
 
+func (a *AutocompleteRequest) GetMediaQuery() *components.MediaQuery {
+	if a == nil {
+		return nil
+	}
+	return a.MediaQuery
+}
+
 func (a *AutocompleteRequest) GetSectionID() int64 {
 	if a == nil {
 		return 0
@@ -265,11 +271,11 @@ func (a *AutocompleteRequest) GetSectionID() int64 {
 	return a.SectionID
 }
 
-func (a *AutocompleteRequest) GetType() *int64 {
+func (a *AutocompleteRequest) GetMediaType() *int64 {
 	if a == nil {
 		return nil
 	}
-	return a.Type
+	return a.MediaType
 }
 
 func (a *AutocompleteRequest) GetFieldQuery() *string {
@@ -277,13 +283,6 @@ func (a *AutocompleteRequest) GetFieldQuery() *string {
 		return nil
 	}
 	return a.FieldQuery
-}
-
-func (a *AutocompleteRequest) GetMediaQuery() *components.MediaQuery {
-	if a == nil {
-		return nil
-	}
-	return a.MediaQuery
 }
 
 type AutocompleteResponse struct {

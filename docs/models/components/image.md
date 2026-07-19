@@ -3,7 +3,6 @@
 Images such as movie posters and background artwork are represented by Image elements.
 
 
-
 ## Fields
 
 | Field                                                              | Type                                                               | Required                                                           | Description                                                        |

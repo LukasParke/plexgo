@@ -345,13 +345,13 @@ func (u AllowSync) MarshalJSON() ([]byte, error) {
 }
 
 type GetLibraryDetailsMediaContainer struct {
+	AllowSync *AllowSync `json:"allowSync,omitempty"`
+	Art       *string    `json:"art,omitempty"`
 	// The flavors of directory found here:
 	//   - Primary: (e.g. all, On Deck) These are still used in some clients to provide "shortcuts" to subsets of media. However, with the exception of On Deck, all of them can be created by media queries, and the desire is to allow these to be customized by users.
 	//   - Secondary: These are marked with `"secondary": true` and were used by old clients to provide nested menus allowing for primative (but structured) navigation.
 	//   - Special: There is a By Folder entry which allows browsing the media by the underlying filesystem structure, and there's a completely obsolete entry marked `"search": true` which used to be used to allow clients to build search dialogs on the fly.
 	Content          *string               `json:"content,omitempty"`
-	AllowSync        *AllowSync            `json:"allowSync,omitempty"`
-	Art              *string               `json:"art,omitempty"`
 	Directory        []components.Metadata `json:"Directory,omitempty"`
 	Identifier       *string               `json:"identifier,omitempty"`
 	LibrarySectionID *int64                `json:"librarySectionID,omitempty"`
@@ -363,13 +363,6 @@ type GetLibraryDetailsMediaContainer struct {
 	Title1           *string               `json:"title1,omitempty"`
 	ViewGroup        *string               `json:"viewGroup,omitempty"`
 	ViewMode         *int64                `json:"viewMode,omitempty"`
-}
-
-func (g *GetLibraryDetailsMediaContainer) GetContent() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Content
 }
 
 func (g *GetLibraryDetailsMediaContainer) GetAllowSync() *AllowSync {
@@ -384,6 +377,13 @@ func (g *GetLibraryDetailsMediaContainer) GetArt() *string {
 		return nil
 	}
 	return g.Art
+}
+
+func (g *GetLibraryDetailsMediaContainer) GetContent() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Content
 }
 
 func (g *GetLibraryDetailsMediaContainer) GetDirectory() []components.Metadata {

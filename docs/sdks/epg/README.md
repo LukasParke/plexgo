@@ -4,15 +4,16 @@
 
 The EPG (Electronic Program Guide) is responsible for obtaining metadata for what is airing on each channel and when
 
-
 ### Available Operations
 
 * [ComputeChannelMap](#computechannelmap) - Compute the best channel map
 * [GetChannels](#getchannels) - Get channels for a lineup
 * [GetCountries](#getcountries) - Get all countries
+* [GetEPGGuide](#getepgguide) - Get EPG Guide
 * [GetAllLanguages](#getalllanguages) - Get all languages
 * [GetLineup](#getlineup) - Compute the best lineup
-* [GetLineupChannels](#getlineupchannels) - Get the channels for mulitple lineups
+* [GetLineupChannels](#getlineupchannels) - Get the channels for multiple lineups
+* [SearchEPG](#searchepg) - Search EPG
 * [GetCountriesLineups](#getcountrieslineups) - Get lineups for a country via postal code
 * [GetCountryRegions](#getcountryregions) - Get regions for a country
 * [ListLineups](#listlineups) - Get lineups for a region
@@ -126,7 +127,7 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
-    if res.Object != nil {
+    if res.ChannelResponse != nil {
         // handle response
     }
 }
@@ -198,6 +199,58 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
+| sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
+
+## GetEPGGuide
+
+Fetch the global electronic program guide.
+
+### Example Usage
+
+<!-- UsageSnippet language="go" operationID="getEPGGuide" method="get" path="/livetv/epg/guide" -->
+```go
+package main
+
+import(
+	"context"
+	"github.com/LukeHagar/plexgo"
+	"log"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := plexgo.New(
+        plexgo.WithSecurity("<YOUR_API_KEY_HERE>"),
+    )
+
+    res, err := s.Epg.GetEPGGuide(ctx)
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res.MediaContainerWithMetadata != nil {
+        // handle response
+    }
+}
+```
+
+### Parameters
+
+| Parameter                                                | Type                                                     | Required                                                 | Description                                              |
+| -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
+| `ctx`                                                    | [context.Context](https://pkg.go.dev/context#Context)    | :heavy_check_mark:                                       | The context to use for the request.                      |
+| `opts`                                                   | [][operations.Option](../../models/operations/option.md) | :heavy_minus_sign:                                       | The options for this request.                            |
+
+### Response
+
+**[*operations.GetEPGGuideResponse](../../models/operations/getepgguideresponse.md), error**
+
+### Errors
+
+| Error Type         | Status Code        | Content Type       |
+| ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## GetAllLanguages
@@ -248,6 +301,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## GetLineup
@@ -293,7 +347,7 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
-    if res != nil {
+    if res.MediaContainerWithLineup != nil {
         // handle response
     }
 }
@@ -384,6 +438,71 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
+
+## SearchEPG
+
+Search the electronic program guide for upcoming airings.
+
+### Example Usage
+
+<!-- UsageSnippet language="go" operationID="searchEPG" method="get" path="/livetv/epg/search" -->
+```go
+package main
+
+import(
+	"context"
+	"github.com/LukeHagar/plexgo/models/components"
+	"github.com/LukeHagar/plexgo"
+	"github.com/LukeHagar/plexgo/models/operations"
+	"log"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := plexgo.New(
+        plexgo.WithAccepts(components.AcceptsApplicationXML),
+        plexgo.WithClientIdentifier("abc123"),
+        plexgo.WithProduct("Plex for Roku"),
+        plexgo.WithVersion("2.4.1"),
+        plexgo.WithPlatform("Roku"),
+        plexgo.WithPlatformVersion("4.3 build 1057"),
+        plexgo.WithDevice("Roku 3"),
+        plexgo.WithModel("4200X"),
+        plexgo.WithDeviceVendor("Roku"),
+        plexgo.WithDeviceName("Living Room TV"),
+        plexgo.WithMarketplace("googlePlay"),
+        plexgo.WithSecurity("<YOUR_API_KEY_HERE>"),
+    )
+
+    res, err := s.Epg.SearchEPG(ctx, operations.SearchEPGRequest{})
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res.MediaContainerWithMetadata != nil {
+        // handle response
+    }
+}
+```
+
+### Parameters
+
+| Parameter                                                                  | Type                                                                       | Required                                                                   | Description                                                                |
+| -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `ctx`                                                                      | [context.Context](https://pkg.go.dev/context#Context)                      | :heavy_check_mark:                                                         | The context to use for the request.                                        |
+| `request`                                                                  | [operations.SearchEPGRequest](../../models/operations/searchepgrequest.md) | :heavy_check_mark:                                                         | The request object to use for the request.                                 |
+| `opts`                                                                     | [][operations.Option](../../models/operations/option.md)                   | :heavy_minus_sign:                                                         | The options for this request.                                              |
+
+### Response
+
+**[*operations.SearchEPGResponse](../../models/operations/searchepgresponse.md), error**
+
+### Errors
+
+| Error Type         | Status Code        | Content Type       |
+| ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## GetCountriesLineups

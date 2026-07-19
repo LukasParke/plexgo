@@ -144,7 +144,7 @@ type EmptyTrashRequest struct {
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	// Section identifier
+	// The unique identifier of the library section
 	SectionID int64 `pathParam:"style=simple,explode=false,name=sectionId"`
 }
 
@@ -250,6 +250,8 @@ type EmptyTrashResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// OK
+	SuccessResponse *components.SuccessResponse
 }
 
 func (e *EmptyTrashResponse) GetContentType() string {
@@ -271,4 +273,11 @@ func (e *EmptyTrashResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return e.RawResponse
+}
+
+func (e *EmptyTrashResponse) GetSuccessResponse() *components.SuccessResponse {
+	if e == nil {
+		return nil
+	}
+	return e.SuccessResponse
 }

@@ -243,68 +243,6 @@ func (g *GetChannelsRequest) GetLineup() string {
 	return g.Lineup
 }
 
-// GetChannelsMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
-// Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
-// The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
-type GetChannelsMediaContainer struct {
-	Identifier *string `json:"identifier,omitempty"`
-	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
-	Offset *int64 `json:"offset,omitempty"`
-	Size   *int64 `json:"size,omitempty"`
-	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize *int64               `json:"totalSize,omitempty"`
-	Channel   []components.Channel `json:"Channel,omitempty"`
-}
-
-func (g *GetChannelsMediaContainer) GetIdentifier() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Identifier
-}
-
-func (g *GetChannelsMediaContainer) GetOffset() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.Offset
-}
-
-func (g *GetChannelsMediaContainer) GetSize() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.Size
-}
-
-func (g *GetChannelsMediaContainer) GetTotalSize() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.TotalSize
-}
-
-func (g *GetChannelsMediaContainer) GetChannel() []components.Channel {
-	if g == nil {
-		return nil
-	}
-	return g.Channel
-}
-
-// GetChannelsResponseBody - OK
-type GetChannelsResponseBody struct {
-	MediaContainer *GetChannelsMediaContainer `json:"MediaContainer,omitempty"`
-}
-
-func (g *GetChannelsResponseBody) GetMediaContainer() *GetChannelsMediaContainer {
-	if g == nil {
-		return nil
-	}
-	return g.MediaContainer
-}
-
 type GetChannelsResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -313,8 +251,8 @@ type GetChannelsResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// OK
-	Object  *GetChannelsResponseBody
-	Headers map[string][]string
+	ChannelResponse *components.ChannelResponse
+	Headers         map[string][]string
 }
 
 func (g *GetChannelsResponse) GetContentType() string {
@@ -338,11 +276,11 @@ func (g *GetChannelsResponse) GetRawResponse() *http.Response {
 	return g.RawResponse
 }
 
-func (g *GetChannelsResponse) GetObject() *GetChannelsResponseBody {
+func (g *GetChannelsResponse) GetChannelResponse() *components.ChannelResponse {
 	if g == nil {
 		return nil
 	}
-	return g.Object
+	return g.ChannelResponse
 }
 
 func (g *GetChannelsResponse) GetHeaders() map[string][]string {

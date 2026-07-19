@@ -151,7 +151,6 @@ type GetNotificationsRequest struct {
 	// - `filters=foo,bar`: Only the foo and bar event types.
 	// - `filters=`: All events types.
 	// - `filters=-foo,bar`: All event types except foo and bar.
-	//
 	Filter []string `queryParam:"style=form,explode=true,name=filter"`
 }
 

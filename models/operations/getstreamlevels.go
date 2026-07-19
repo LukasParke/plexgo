@@ -252,31 +252,17 @@ func (g *GetStreamLevelsRequest) GetSubsample() *int64 {
 	return g.Subsample
 }
 
-type GetStreamLevelsLevel struct {
-	// The level in db.
-	V *float64 `json:"v,omitempty"`
-}
-
-func (g *GetStreamLevelsLevel) GetV() *float64 {
-	if g == nil {
-		return nil
-	}
-	return g.V
-}
-
 // GetStreamLevelsMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
 // Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
 // The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
 type GetStreamLevelsMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize *int64                 `json:"totalSize,omitempty"`
-	Level     []GetStreamLevelsLevel `json:"Level,omitempty"`
+	TotalSize *int64             `json:"totalSize,omitempty"`
+	Level     []components.Level `json:"Level,omitempty"`
 	// The total number of samples (as a string)
 	TotalSamples *string `json:"totalSamples,omitempty"`
 }
@@ -309,7 +295,7 @@ func (g *GetStreamLevelsMediaContainer) GetTotalSize() *int64 {
 	return g.TotalSize
 }
 
-func (g *GetStreamLevelsMediaContainer) GetLevel() []GetStreamLevelsLevel {
+func (g *GetStreamLevelsMediaContainer) GetLevel() []components.Level {
 	if g == nil {
 		return nil
 	}

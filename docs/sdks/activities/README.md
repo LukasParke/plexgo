@@ -8,7 +8,6 @@ Activities are associated with HTTP replies via a special `X-Plex-Activity` head
 
 Activities are optional cancellable. If cancellable, they may be cancelled via the `DELETE` endpoint.
 
-
 ### Available Operations
 
 * [ListActivities](#listactivities) - Get all activities
@@ -62,6 +61,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## CancelActivity

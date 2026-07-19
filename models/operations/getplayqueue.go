@@ -295,8 +295,8 @@ type GetPlayQueueResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// OK
-	MediaContainerWithPlaylistMetadata *components.MediaContainerWithPlaylistMetadata
+	// The play queue
+	PlayQueueResponse *components.PlayQueueResponse
 }
 
 func (g *GetPlayQueueResponse) GetContentType() string {
@@ -320,9 +320,9 @@ func (g *GetPlayQueueResponse) GetRawResponse() *http.Response {
 	return g.RawResponse
 }
 
-func (g *GetPlayQueueResponse) GetMediaContainerWithPlaylistMetadata() *components.MediaContainerWithPlaylistMetadata {
+func (g *GetPlayQueueResponse) GetPlayQueueResponse() *components.PlayQueueResponse {
 	if g == nil {
 		return nil
 	}
-	return g.MediaContainerWithPlaylistMetadata
+	return g.PlayQueueResponse
 }

@@ -293,13 +293,16 @@ type Lineup struct {
 	Title *string `json:"title,omitempty"`
 	// The type of this object (`lineup` in this case)
 	Type *string `json:"type,omitempty"`
+	// Lineup identifier.
+	Identifier *string `json:"identifier,omitempty"`
+	// API key for this lineup.
+	Key *string `json:"key,omitempty"`
 	// - `-1`: N/A
 	// - `0`: Over the air
 	// - `1`: Cable
 	// - `2`: Satellite
 	// - `3`: IPTV
 	// - `4`: Virtual
-	//
 	LineupType *LineupType `json:"lineupType,omitempty"`
 	Location   *string     `json:"location,omitempty"`
 	// The uuid of this lineup
@@ -319,6 +322,20 @@ func (l *Lineup) GetType() *string {
 		return nil
 	}
 	return l.Type
+}
+
+func (l *Lineup) GetIdentifier() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Identifier
+}
+
+func (l *Lineup) GetKey() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Key
 }
 
 func (l *Lineup) GetLineupType() *LineupType {
@@ -355,11 +372,9 @@ func (l *Lineup) GetChannel() []components.Channel {
 type GetLineupChannelsMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
 	TotalSize *int64   `json:"totalSize,omitempty"`
 	Lineup    []Lineup `json:"Lineup,omitempty"`
 }

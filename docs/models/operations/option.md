@@ -55,20 +55,20 @@ WithPort allows setting the port variable for url substitution.
 plexgo.WithPort(/* ... */)
 ```
 
-### WithProtocol
-
-WithProtocol allows setting the protocol variable for url substitution.
-
-```go
-plexgo.WithProtocol(/* ... */)
-```
-
 ### WithHost
 
 WithHost allows setting the host variable for url substitution.
 
 ```go
 plexgo.WithHost(/* ... */)
+```
+
+### WithProtocol
+
+WithProtocol allows setting the protocol variable for url substitution.
+
+```go
+plexgo.WithProtocol(/* ... */)
 ```
 
 ### WithFullServerURL

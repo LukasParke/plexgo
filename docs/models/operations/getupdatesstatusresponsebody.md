@@ -1,6 +1,6 @@
 # GetUpdatesStatusResponseBody
 
-OK
+Status of the PMS updater.
 
 
 ## Fields
@@ -8,3 +8,7 @@ OK
 | Field                                                                                                   | Type                                                                                                    | Required                                                                                                | Description                                                                                             |
 | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | `MediaContainer`                                                                                        | [*operations.GetUpdatesStatusMediaContainer](../../models/operations/getupdatesstatusmediacontainer.md) | :heavy_minus_sign:                                                                                      | N/A                                                                                                     |
+| `CheckedAt`                                                                                             | `*int64`                                                                                                | :heavy_minus_sign:                                                                                      | Timestamp of the last update check.                                                                     |
+| `DownloadURL`                                                                                           | `*string`                                                                                               | :heavy_minus_sign:                                                                                      | The URL where the update is available.                                                                  |
+| `Release`                                                                                               | [][components.Release](../../models/components/release.md)                                              | :heavy_minus_sign:                                                                                      | N/A                                                                                                     |
+| `Status`                                                                                                | `*int64`                                                                                                | :heavy_minus_sign:                                                                                      | The current error code (0 means no error).                                                              |

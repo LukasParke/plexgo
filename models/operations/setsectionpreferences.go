@@ -121,6 +121,7 @@ func (s *SetSectionPreferencesGlobals) GetMarketplace() *string {
 	return s.Marketplace
 }
 
+// SetSectionPreferencesQueryParamPrefs - The preference key to retrieve or set
 type SetSectionPreferencesQueryParamPrefs struct {
 }
 
@@ -148,8 +149,9 @@ type SetSectionPreferencesRequest struct {
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
 	// Section identifier
-	SectionID int64                                `pathParam:"style=simple,explode=false,name=sectionId"`
-	Prefs     SetSectionPreferencesQueryParamPrefs `queryParam:"style=form,explode=true,name=prefs"`
+	SectionID int64 `pathParam:"style=simple,explode=false,name=sectionId"`
+	// The preference key to retrieve or set
+	Prefs SetSectionPreferencesQueryParamPrefs `queryParam:"style=form,explode=true,name=prefs"`
 }
 
 func (s SetSectionPreferencesRequest) MarshalJSON() ([]byte, error) {

@@ -243,68 +243,6 @@ func (g *GetPersonRequest) GetPersonID() string {
 	return g.PersonID
 }
 
-// GetPersonMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
-// Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
-// The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
-type GetPersonMediaContainer struct {
-	Identifier *string `json:"identifier,omitempty"`
-	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
-	Offset *int64 `json:"offset,omitempty"`
-	Size   *int64 `json:"size,omitempty"`
-	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize *int64           `json:"totalSize,omitempty"`
-	Directory []components.Tag `json:"Directory,omitempty"`
-}
-
-func (g *GetPersonMediaContainer) GetIdentifier() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Identifier
-}
-
-func (g *GetPersonMediaContainer) GetOffset() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.Offset
-}
-
-func (g *GetPersonMediaContainer) GetSize() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.Size
-}
-
-func (g *GetPersonMediaContainer) GetTotalSize() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.TotalSize
-}
-
-func (g *GetPersonMediaContainer) GetDirectory() []components.Tag {
-	if g == nil {
-		return nil
-	}
-	return g.Directory
-}
-
-// GetPersonResponseBody - OK
-type GetPersonResponseBody struct {
-	MediaContainer *GetPersonMediaContainer `json:"MediaContainer,omitempty"`
-}
-
-func (g *GetPersonResponseBody) GetMediaContainer() *GetPersonMediaContainer {
-	if g == nil {
-		return nil
-	}
-	return g.MediaContainer
-}
-
 type GetPersonResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -313,7 +251,7 @@ type GetPersonResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// OK
-	Object *GetPersonResponseBody
+	MediaContainerWithTags *components.MediaContainerWithTags
 }
 
 func (g *GetPersonResponse) GetContentType() string {
@@ -337,9 +275,9 @@ func (g *GetPersonResponse) GetRawResponse() *http.Response {
 	return g.RawResponse
 }
 
-func (g *GetPersonResponse) GetObject() *GetPersonResponseBody {
+func (g *GetPersonResponse) GetMediaContainerWithTags() *components.MediaContainerWithTags {
 	if g == nil {
 		return nil
 	}
-	return g.Object
+	return g.MediaContainerWithTags
 }

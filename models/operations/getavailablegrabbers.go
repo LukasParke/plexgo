@@ -243,46 +243,17 @@ func (g *GetAvailableGrabbersRequest) GetProtocol() *string {
 	return g.Protocol
 }
 
-type MediaGrabber struct {
-	Identifier *string `json:"identifier,omitempty"`
-	Protocol   *string `json:"protocol,omitempty"`
-	Title      *string `json:"title,omitempty"`
-}
-
-func (m *MediaGrabber) GetIdentifier() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Identifier
-}
-
-func (m *MediaGrabber) GetProtocol() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Protocol
-}
-
-func (m *MediaGrabber) GetTitle() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Title
-}
-
 // GetAvailableGrabbersMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
 // Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
 // The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
 type GetAvailableGrabbersMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize    *int64         `json:"totalSize,omitempty"`
-	MediaGrabber []MediaGrabber `json:"MediaGrabber,omitempty"`
+	TotalSize    *int64                    `json:"totalSize,omitempty"`
+	MediaGrabber []components.MediaGrabber `json:"MediaGrabber,omitempty"`
 }
 
 func (g *GetAvailableGrabbersMediaContainer) GetIdentifier() *string {
@@ -313,7 +284,7 @@ func (g *GetAvailableGrabbersMediaContainer) GetTotalSize() *int64 {
 	return g.TotalSize
 }
 
-func (g *GetAvailableGrabbersMediaContainer) GetMediaGrabber() []MediaGrabber {
+func (g *GetAvailableGrabbersMediaContainer) GetMediaGrabber() []components.MediaGrabber {
 	if g == nil {
 		return nil
 	}

@@ -148,6 +148,8 @@ type SetDVRPreferencesRequest struct {
 	DvrID int64 `pathParam:"style=simple,explode=false,name=dvrId"`
 	// Set the `name` preference to the provided value
 	Name *string `queryParam:"style=form,explode=true,name=name"`
+	// Preference value to set.
+	Value *string `queryParam:"style=form,explode=true,name=value"`
 }
 
 func (s SetDVRPreferencesRequest) MarshalJSON() ([]byte, error) {
@@ -252,129 +254,11 @@ func (s *SetDVRPreferencesRequest) GetName() *string {
 	return s.Name
 }
 
-// SetDVRPreferencesDVRsMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
-// Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
-// The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
-type SetDVRPreferencesDVRsMediaContainer struct {
-	Identifier *string `json:"identifier,omitempty"`
-	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
-	Offset *int64 `json:"offset,omitempty"`
-	Size   *int64 `json:"size,omitempty"`
-	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize *int64 `json:"totalSize,omitempty"`
-	// A status indicator. If present and non-zero, indicates an error
-	Status *int64 `json:"status,omitempty"`
-}
-
-func (s *SetDVRPreferencesDVRsMediaContainer) GetIdentifier() *string {
+func (s *SetDVRPreferencesRequest) GetValue() *string {
 	if s == nil {
 		return nil
 	}
-	return s.Identifier
-}
-
-func (s *SetDVRPreferencesDVRsMediaContainer) GetOffset() *int64 {
-	if s == nil {
-		return nil
-	}
-	return s.Offset
-}
-
-func (s *SetDVRPreferencesDVRsMediaContainer) GetSize() *int64 {
-	if s == nil {
-		return nil
-	}
-	return s.Size
-}
-
-func (s *SetDVRPreferencesDVRsMediaContainer) GetTotalSize() *int64 {
-	if s == nil {
-		return nil
-	}
-	return s.TotalSize
-}
-
-func (s *SetDVRPreferencesDVRsMediaContainer) GetStatus() *int64 {
-	if s == nil {
-		return nil
-	}
-	return s.Status
-}
-
-type SetDVRPreferencesDVR struct {
-	Device   []components.Device `json:"Device,omitempty"`
-	Key      *string             `json:"key,omitempty"`
-	Language *string             `json:"language,omitempty"`
-	Lineup   *string             `json:"lineup,omitempty"`
-	UUID     *string             `json:"uuid,omitempty"`
-}
-
-func (s *SetDVRPreferencesDVR) GetDevice() []components.Device {
-	if s == nil {
-		return nil
-	}
-	return s.Device
-}
-
-func (s *SetDVRPreferencesDVR) GetKey() *string {
-	if s == nil {
-		return nil
-	}
-	return s.Key
-}
-
-func (s *SetDVRPreferencesDVR) GetLanguage() *string {
-	if s == nil {
-		return nil
-	}
-	return s.Language
-}
-
-func (s *SetDVRPreferencesDVR) GetLineup() *string {
-	if s == nil {
-		return nil
-	}
-	return s.Lineup
-}
-
-func (s *SetDVRPreferencesDVR) GetUUID() *string {
-	if s == nil {
-		return nil
-	}
-	return s.UUID
-}
-
-type SetDVRPreferencesMediaContainer struct {
-	MediaContainer *SetDVRPreferencesDVRsMediaContainer `json:"MediaContainer,omitempty"`
-	Dvr            []SetDVRPreferencesDVR               `json:"DVR,omitempty"`
-}
-
-func (s *SetDVRPreferencesMediaContainer) GetMediaContainer() *SetDVRPreferencesDVRsMediaContainer {
-	if s == nil {
-		return nil
-	}
-	return s.MediaContainer
-}
-
-func (s *SetDVRPreferencesMediaContainer) GetDvr() []SetDVRPreferencesDVR {
-	if s == nil {
-		return nil
-	}
-	return s.Dvr
-}
-
-// SetDVRPreferencesResponseBody - OK
-type SetDVRPreferencesResponseBody struct {
-	MediaContainer *SetDVRPreferencesMediaContainer `json:"MediaContainer,omitempty"`
-}
-
-func (s *SetDVRPreferencesResponseBody) GetMediaContainer() *SetDVRPreferencesMediaContainer {
-	if s == nil {
-		return nil
-	}
-	return s.MediaContainer
+	return s.Value
 }
 
 type SetDVRPreferencesResponse struct {
@@ -385,8 +269,8 @@ type SetDVRPreferencesResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// OK
-	Object  *SetDVRPreferencesResponseBody
-	Headers map[string][]string
+	DVRResponse *components.DVRResponse
+	Headers     map[string][]string
 }
 
 func (s *SetDVRPreferencesResponse) GetContentType() string {
@@ -410,11 +294,11 @@ func (s *SetDVRPreferencesResponse) GetRawResponse() *http.Response {
 	return s.RawResponse
 }
 
-func (s *SetDVRPreferencesResponse) GetObject() *SetDVRPreferencesResponseBody {
+func (s *SetDVRPreferencesResponse) GetDVRResponse() *components.DVRResponse {
 	if s == nil {
 		return nil
 	}
-	return s.Object
+	return s.DVRResponse
 }
 
 func (s *SetDVRPreferencesResponse) GetHeaders() map[string][]string {

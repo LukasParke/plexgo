@@ -49,18 +49,16 @@ func (e *PostResponses200Type) UnmarshalJSON(data []byte) error {
 type PostResponses200MediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
 	TotalSize            *int64                `json:"totalSize,omitempty"`
+	Title                *string               `json:"title,omitempty"`
+	Type                 *PostResponses200Type `json:"type,omitempty"`
 	Color                *string               `json:"color,omitempty"`
 	EndTimeOffset        *int64                `json:"endTimeOffset,omitempty"`
 	ID                   *int64                `json:"id,omitempty"`
 	StartTimeOffset      *int64                `json:"startTimeOffset,omitempty"`
-	Title                *string               `json:"title,omitempty"`
-	Type                 *PostResponses200Type `json:"type,omitempty"`
 	AdditionalProperties map[string]any        `additionalProperties:"true" json:"-"`
 }
 
@@ -103,6 +101,20 @@ func (p *PostResponses200MediaContainer) GetTotalSize() *int64 {
 	return p.TotalSize
 }
 
+func (p *PostResponses200MediaContainer) GetTitle() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Title
+}
+
+func (p *PostResponses200MediaContainer) GetType() *PostResponses200Type {
+	if p == nil {
+		return nil
+	}
+	return p.Type
+}
+
 func (p *PostResponses200MediaContainer) GetColor() *string {
 	if p == nil {
 		return nil
@@ -129,20 +141,6 @@ func (p *PostResponses200MediaContainer) GetStartTimeOffset() *int64 {
 		return nil
 	}
 	return p.StartTimeOffset
-}
-
-func (p *PostResponses200MediaContainer) GetTitle() *string {
-	if p == nil {
-		return nil
-	}
-	return p.Title
-}
-
-func (p *PostResponses200MediaContainer) GetType() *PostResponses200Type {
-	if p == nil {
-		return nil
-	}
-	return p.Type
 }
 
 func (p *PostResponses200MediaContainer) GetAdditionalProperties() map[string]any {

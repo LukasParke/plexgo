@@ -146,6 +146,10 @@ type GetTemplateRequest struct {
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
 	// The guid of the item for which to get the template
 	GUID *string `queryParam:"style=form,explode=true,name=guid"`
+	// Subscription type.
+	MediaType *string `queryParam:"style=form,explode=true,name=type"`
+	// Target library section ID.
+	TargetLibrarySectionID *int64 `queryParam:"style=form,explode=true,name=targetLibrarySectionID"`
 }
 
 func (g GetTemplateRequest) MarshalJSON() ([]byte, error) {
@@ -241,6 +245,20 @@ func (g *GetTemplateRequest) GetGUID() *string {
 		return nil
 	}
 	return g.GUID
+}
+
+func (g *GetTemplateRequest) GetMediaType() *string {
+	if g == nil {
+		return nil
+	}
+	return g.MediaType
+}
+
+func (g *GetTemplateRequest) GetTargetLibrarySectionID() *int64 {
+	if g == nil {
+		return nil
+	}
+	return g.TargetLibrarySectionID
 }
 
 // MediaSubscription - A media subscription contains a representation of metadata desired to be recorded
@@ -418,11 +436,9 @@ func (s *SubscriptionTemplate) GetMediaSubscription() []MediaSubscription {
 type GetTemplateMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
 	TotalSize            *int64                 `json:"totalSize,omitempty"`
 	SubscriptionTemplate []SubscriptionTemplate `json:"SubscriptionTemplate,omitempty"`
 }

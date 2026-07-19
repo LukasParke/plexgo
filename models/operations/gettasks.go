@@ -3,71 +3,15 @@
 package operations
 
 import (
+	"github.com/LukeHagar/plexgo/models/components"
 	"net/http"
 )
 
-type GetTasksButlerTask struct {
-	// A user-friendly description of the task
-	Description *string `json:"description,omitempty"`
-	// Whether this task is enabled or not
-	Enabled *bool `json:"enabled,omitempty"`
-	// The interval (in days) of when this task is run.  A value of 1 is run every day, 7 is every week, etc.
-	Interval *int64 `json:"interval,omitempty"`
-	// The name of the task
-	Name *string `json:"name,omitempty"`
-	// Indicates whether the timing of the task is randomized within the butler interval
-	ScheduleRandomized *bool `json:"scheduleRandomized,omitempty"`
-	// A user-friendly title of the task
-	Title *string `json:"title,omitempty"`
-}
-
-func (g *GetTasksButlerTask) GetDescription() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Description
-}
-
-func (g *GetTasksButlerTask) GetEnabled() *bool {
-	if g == nil {
-		return nil
-	}
-	return g.Enabled
-}
-
-func (g *GetTasksButlerTask) GetInterval() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.Interval
-}
-
-func (g *GetTasksButlerTask) GetName() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Name
-}
-
-func (g *GetTasksButlerTask) GetScheduleRandomized() *bool {
-	if g == nil {
-		return nil
-	}
-	return g.ScheduleRandomized
-}
-
-func (g *GetTasksButlerTask) GetTitle() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Title
-}
-
 type ButlerTasks struct {
-	ButlerTask []GetTasksButlerTask `json:"ButlerTask,omitempty"`
+	ButlerTask []components.ButlerTask `json:"ButlerTask,omitempty"`
 }
 
-func (b *ButlerTasks) GetButlerTask() []GetTasksButlerTask {
+func (b *ButlerTasks) GetButlerTask() []components.ButlerTask {
 	if b == nil {
 		return nil
 	}

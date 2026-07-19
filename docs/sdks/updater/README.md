@@ -5,7 +5,6 @@
 This describes the API for searching and applying updates to the Plex Media Server.
 Updates to the status can be observed via the Event API.
 
-
 ### Available Operations
 
 * [ApplyUpdates](#applyupdates) - Applying updates
@@ -55,7 +54,7 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
-    if res != nil {
+    if res.Body != nil {
         // handle response
     }
 }
@@ -143,6 +142,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## GetUpdatesStatus
@@ -193,4 +193,5 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |

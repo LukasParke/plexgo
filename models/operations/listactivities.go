@@ -3,98 +3,15 @@
 package operations
 
 import (
+	"github.com/LukeHagar/plexgo/models/components"
 	"net/http"
 )
 
-type Activity struct {
-	// Indicates whether this activity can be cancelled
-	Cancellable *bool `json:"cancellable,omitempty"`
-	// An object with additional values
-	Context map[string]any `json:"Context,omitempty"`
-	// A progress percentage.  A value of -1 means the progress is indeterminate
-	Progress *float64 `json:"progress,omitempty"`
-	// An object with the response to the async opperation
-	Response map[string]any `json:"Response,omitempty"`
-	// A user-friendly sub-title for this activity
-	Subtitle *string `json:"subtitle,omitempty"`
-	// A user-friendly title for this activity
-	Title *string `json:"title,omitempty"`
-	// The type of activity
-	Type *string `json:"type,omitempty"`
-	// The user this activity belongs to
-	UserID *int64 `json:"userID,omitempty"`
-	// The ID of the activity
-	UUID *string `json:"uuid,omitempty"`
-}
-
-func (a *Activity) GetCancellable() *bool {
-	if a == nil {
-		return nil
-	}
-	return a.Cancellable
-}
-
-func (a *Activity) GetContext() map[string]any {
-	if a == nil {
-		return nil
-	}
-	return a.Context
-}
-
-func (a *Activity) GetProgress() *float64 {
-	if a == nil {
-		return nil
-	}
-	return a.Progress
-}
-
-func (a *Activity) GetResponse() map[string]any {
-	if a == nil {
-		return nil
-	}
-	return a.Response
-}
-
-func (a *Activity) GetSubtitle() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Subtitle
-}
-
-func (a *Activity) GetTitle() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Title
-}
-
-func (a *Activity) GetType() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Type
-}
-
-func (a *Activity) GetUserID() *int64 {
-	if a == nil {
-		return nil
-	}
-	return a.UserID
-}
-
-func (a *Activity) GetUUID() *string {
-	if a == nil {
-		return nil
-	}
-	return a.UUID
-}
-
 type ListActivitiesMediaContainer struct {
-	Activity []Activity `json:"Activity,omitempty"`
+	Activity []components.Activity `json:"Activity,omitempty"`
 }
 
-func (l *ListActivitiesMediaContainer) GetActivity() []Activity {
+func (l *ListActivitiesMediaContainer) GetActivity() []components.Activity {
 	if l == nil {
 		return nil
 	}

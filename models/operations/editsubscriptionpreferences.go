@@ -121,6 +121,7 @@ func (e *EditSubscriptionPreferencesGlobals) GetMarketplace() *string {
 	return e.Marketplace
 }
 
+// EditSubscriptionPreferencesQueryParamPrefs - The preference key to retrieve or set
 type EditSubscriptionPreferencesQueryParamPrefs struct {
 }
 
@@ -146,9 +147,11 @@ type EditSubscriptionPreferencesRequest struct {
 	// A friendly name for the client
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
-	Marketplace    *string                                     `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	SubscriptionID int64                                       `pathParam:"style=simple,explode=false,name=subscriptionId"`
-	Prefs          *EditSubscriptionPreferencesQueryParamPrefs `queryParam:"style=deepObject,explode=true,name=prefs"`
+	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
+	// The unique identifier of the subscription
+	SubscriptionID int64 `pathParam:"style=simple,explode=false,name=subscriptionId"`
+	// The preference key to retrieve or set
+	Prefs *EditSubscriptionPreferencesQueryParamPrefs `queryParam:"style=deepObject,explode=true,name=prefs"`
 }
 
 func (e EditSubscriptionPreferencesRequest) MarshalJSON() ([]byte, error) {

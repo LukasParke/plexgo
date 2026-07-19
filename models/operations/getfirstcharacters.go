@@ -144,12 +144,6 @@ type GetFirstCharactersRequest struct {
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	// Section identifier
-	SectionID int64 `pathParam:"style=simple,explode=false,name=sectionId"`
-	// The metadata type to filter on
-	Type *int64 `queryParam:"style=form,explode=true,name=type"`
-	// The metadata type to filter on
-	Sort *int64 `queryParam:"style=form,explode=true,name=sort"`
 	// A querystring-based filtering language used to select subsets of media. Can be provided as an object with typed properties for type safety, or as a string for complex queries with operators and boolean logic.
 	//
 	// The query supports:
@@ -166,8 +160,13 @@ type GetFirstCharactersRequest struct {
 	// - Complex: `push=1&index=1&or=1&rating=2&pop=1&duration=10` - (index = 1 OR rating = 2) AND duration = 10
 	//
 	// See [API Info section](#section/API-Info/Media-Queries) for detailed information on building media queries.
-	//
 	MediaQuery *components.MediaQuery `queryParam:"style=form,explode=true,name=mediaQuery"`
+	// Section identifier
+	SectionID int64 `pathParam:"style=simple,explode=false,name=sectionId"`
+	// The metadata type to filter on
+	MediaType *int64 `queryParam:"style=form,explode=true,name=type"`
+	// The metadata type to filter on
+	Sort *int64 `queryParam:"style=form,explode=true,name=sort"`
 }
 
 func (g GetFirstCharactersRequest) MarshalJSON() ([]byte, error) {
@@ -258,6 +257,13 @@ func (g *GetFirstCharactersRequest) GetMarketplace() *string {
 	return g.Marketplace
 }
 
+func (g *GetFirstCharactersRequest) GetMediaQuery() *components.MediaQuery {
+	if g == nil {
+		return nil
+	}
+	return g.MediaQuery
+}
+
 func (g *GetFirstCharactersRequest) GetSectionID() int64 {
 	if g == nil {
 		return 0
@@ -265,11 +271,11 @@ func (g *GetFirstCharactersRequest) GetSectionID() int64 {
 	return g.SectionID
 }
 
-func (g *GetFirstCharactersRequest) GetType() *int64 {
+func (g *GetFirstCharactersRequest) GetMediaType() *int64 {
 	if g == nil {
 		return nil
 	}
-	return g.Type
+	return g.MediaType
 }
 
 func (g *GetFirstCharactersRequest) GetSort() *int64 {
@@ -279,18 +285,18 @@ func (g *GetFirstCharactersRequest) GetSort() *int64 {
 	return g.Sort
 }
 
-func (g *GetFirstCharactersRequest) GetMediaQuery() *components.MediaQuery {
+type GetFirstCharactersDirectory struct {
+	Title *string `json:"title,omitempty"`
+	Key   *string `json:"key,omitempty"`
+	// The number of items starting with this character
+	Size *int64 `json:"size,omitempty"`
+}
+
+func (g *GetFirstCharactersDirectory) GetTitle() *string {
 	if g == nil {
 		return nil
 	}
-	return g.MediaQuery
-}
-
-type GetFirstCharactersDirectory struct {
-	Key *string `json:"key,omitempty"`
-	// The number of items starting with this character
-	Size  *int64  `json:"size,omitempty"`
-	Title *string `json:"title,omitempty"`
+	return g.Title
 }
 
 func (g *GetFirstCharactersDirectory) GetKey() *string {
@@ -307,24 +313,15 @@ func (g *GetFirstCharactersDirectory) GetSize() *int64 {
 	return g.Size
 }
 
-func (g *GetFirstCharactersDirectory) GetTitle() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Title
-}
-
 // GetFirstCharactersMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
 // Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
 // The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
 type GetFirstCharactersMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
 	TotalSize *int64                        `json:"totalSize,omitempty"`
 	Directory []GetFirstCharactersDirectory `json:"Directory,omitempty"`
 }

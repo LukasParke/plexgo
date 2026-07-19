@@ -268,7 +268,7 @@ type CreateDVRResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// OK
+	// Successfully created/executed create a dvr
 	DvrRequestHandlerSlashGetResponses200 *components.DvrRequestHandlerSlashGetResponses200
 	Headers                               map[string][]string
 }

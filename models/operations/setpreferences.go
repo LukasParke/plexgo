@@ -121,6 +121,7 @@ func (s *SetPreferencesGlobals) GetMarketplace() *string {
 	return s.Marketplace
 }
 
+// Prefs - The preference key to retrieve or set
 type Prefs struct {
 }
 
@@ -147,7 +148,8 @@ type SetPreferencesRequest struct {
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	Prefs       Prefs   `queryParam:"style=form,explode=true,name=prefs"`
+	// The preference key to retrieve or set
+	Prefs Prefs `queryParam:"style=form,explode=true,name=prefs"`
 }
 
 func (s SetPreferencesRequest) MarshalJSON() ([]byte, error) {

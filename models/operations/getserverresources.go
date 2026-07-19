@@ -137,7 +137,6 @@ type GetServerResourcesRequest struct {
 	IncludeHTTPS *IncludeHTTPS `default:"0" queryParam:"style=form,explode=true,name=includeHttps"`
 	// Include Relay addresses in the results
 	// E.g: https://10-0-0-25.bbf8e10c7fa20447cacee74cd9914cde.plex.direct:32400
-	//
 	IncludeRelay *IncludeRelay `default:"0" queryParam:"style=form,explode=true,name=includeRelay"`
 	// Include IPv6 entries in the results
 	IncludeIPv6 *IncludeIPv6 `default:"0" queryParam:"style=form,explode=true,name=includeIPv6"`

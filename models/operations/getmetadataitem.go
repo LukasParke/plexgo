@@ -143,8 +143,9 @@ type GetMetadataItemRequest struct {
 	// A friendly name for the client
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
-	Marketplace *string  `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	Ids         []string `pathParam:"style=simple,explode=false,name=ids"`
+	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
+	// Comma-separated list of IDs
+	Ids []string `pathParam:"style=simple,explode=false,name=ids"`
 	// Determines if file check should be performed asynchronously.  An activity is created to indicate progress.  Default is false.
 	AsyncCheckFiles *components.BoolInt `default:"0" queryParam:"style=form,explode=true,name=asyncCheckFiles"`
 	// Determines if local media agent refresh should be performed asynchronously.  An activity is created to indicate progress.  Default is false.
@@ -161,6 +162,30 @@ type GetMetadataItemRequest struct {
 	AsyncAugmentMetadata *components.BoolInt `default:"0" queryParam:"style=form,explode=true,name=asyncAugmentMetadata"`
 	// Number of augmentations to add.  Requires `asyncAugmentMetadata` to be specified.
 	AugmentCount *components.BoolInt `default:"0" queryParam:"style=form,explode=true,name=augmentCount"`
+	// Include intro/credits markers in the response
+	IncludeMarkers *bool `queryParam:"style=form,explode=true,name=includeMarkers"`
+	// Include external GUIDs (e.g. TMDB, TVDB) in the response
+	IncludeGuids *bool `queryParam:"style=form,explode=true,name=includeGuids"`
+	// Include chapter data in the response
+	IncludeChapters *bool `queryParam:"style=form,explode=true,name=includeChapters"`
+	// Include external/online media in the response
+	IncludeExternalMedia *bool `queryParam:"style=form,explode=true,name=includeExternalMedia"`
+	// Include trailers, behind-the-scenes, and other extras
+	IncludeExtras *bool `queryParam:"style=form,explode=true,name=includeExtras"`
+	// Include related items in the response
+	IncludeRelated *bool `queryParam:"style=form,explode=true,name=includeRelated"`
+	// Include On Deck status in the response
+	IncludeOnDeck *bool `queryParam:"style=form,explode=true,name=includeOnDeck"`
+	// Include popular episodes in the response
+	IncludePopularLeaves *bool `queryParam:"style=form,explode=true,name=includePopularLeaves"`
+	// Include user reviews in the response
+	IncludeReviews *bool `queryParam:"style=form,explode=true,name=includeReviews"`
+	// Include radio station data in the response
+	IncludeStations *bool `queryParam:"style=form,explode=true,name=includeStations"`
+	// Comma-separated list of elements to exclude from the response
+	ExcludeElements *string `queryParam:"style=form,explode=true,name=excludeElements"`
+	// Comma-separated list of fields to exclude from the response
+	ExcludeFields *string `queryParam:"style=form,explode=true,name=excludeFields"`
 }
 
 func (g GetMetadataItemRequest) MarshalJSON() ([]byte, error) {
@@ -312,6 +337,90 @@ func (g *GetMetadataItemRequest) GetAugmentCount() *components.BoolInt {
 		return nil
 	}
 	return g.AugmentCount
+}
+
+func (g *GetMetadataItemRequest) GetIncludeMarkers() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.IncludeMarkers
+}
+
+func (g *GetMetadataItemRequest) GetIncludeGuids() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.IncludeGuids
+}
+
+func (g *GetMetadataItemRequest) GetIncludeChapters() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.IncludeChapters
+}
+
+func (g *GetMetadataItemRequest) GetIncludeExternalMedia() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.IncludeExternalMedia
+}
+
+func (g *GetMetadataItemRequest) GetIncludeExtras() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.IncludeExtras
+}
+
+func (g *GetMetadataItemRequest) GetIncludeRelated() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.IncludeRelated
+}
+
+func (g *GetMetadataItemRequest) GetIncludeOnDeck() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.IncludeOnDeck
+}
+
+func (g *GetMetadataItemRequest) GetIncludePopularLeaves() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.IncludePopularLeaves
+}
+
+func (g *GetMetadataItemRequest) GetIncludeReviews() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.IncludeReviews
+}
+
+func (g *GetMetadataItemRequest) GetIncludeStations() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.IncludeStations
+}
+
+func (g *GetMetadataItemRequest) GetExcludeElements() *string {
+	if g == nil {
+		return nil
+	}
+	return g.ExcludeElements
+}
+
+func (g *GetMetadataItemRequest) GetExcludeFields() *string {
+	if g == nil {
+		return nil
+	}
+	return g.ExcludeFields
 }
 
 type GetMetadataItemResponse struct {

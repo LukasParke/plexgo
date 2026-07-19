@@ -158,6 +158,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## GetAlbums
@@ -224,11 +225,13 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## ListContent
 
-Get the items in a section, potentially filtering them
+Get the items in a section, potentially filtering them.
+When `includeCollections=1` is passed, the response may also contain `Collection` items.
 
 ### Example Usage
 
@@ -265,12 +268,38 @@ func main() {
     res, err := s.Content.ListContent(ctx, operations.ListContentRequest{
         MediaQuery: &components.MediaQuery{
             Type: components.MediaTypeEpisode.ToPointer(),
-            SourceType: plexgo.Pointer[int64](2),
             Sort: plexgo.Pointer("duration:desc,index"),
+            SourceType: plexgo.Pointer[int64](2),
         },
+        SectionID: 813218,
         IncludeMeta: components.BoolIntTrue.ToPointer(),
         IncludeGuids: components.BoolIntTrue.ToPointer(),
-        SectionID: "<id>",
+        IncludeCollections: components.BoolIntTrue.ToPointer(),
+        IncludeExternalMedia: components.BoolIntTrue.ToPointer(),
+        IncludeAdvanced: components.BoolIntTrue.ToPointer(),
+        CheckFiles: components.BoolIntTrue.ToPointer(),
+        IncludeRelated: components.BoolIntTrue.ToPointer(),
+        IncludeExtras: components.BoolIntTrue.ToPointer(),
+        IncludePopularLeaves: components.BoolIntTrue.ToPointer(),
+        IncludeConcerts: components.BoolIntTrue.ToPointer(),
+        IncludeOnDeck: components.BoolIntTrue.ToPointer(),
+        IncludeChapters: components.BoolIntTrue.ToPointer(),
+        IncludePreferences: components.BoolIntTrue.ToPointer(),
+        IncludeBandwidths: components.BoolIntTrue.ToPointer(),
+        IncludeLoudnessRamps: components.BoolIntTrue.ToPointer(),
+        IncludeStations: components.BoolIntTrue.ToPointer(),
+        IncludeExternalIds: components.BoolIntTrue.ToPointer(),
+        IncludeReviews: components.BoolIntTrue.ToPointer(),
+        IncludeCredits: components.BoolIntTrue.ToPointer(),
+        IncludeArt: components.BoolIntTrue.ToPointer(),
+        IncludeThumb: components.BoolIntTrue.ToPointer(),
+        IncludeBanner: components.BoolIntTrue.ToPointer(),
+        IncludeTheme: components.BoolIntTrue.ToPointer(),
+        AsyncAugmentMetadata: components.BoolIntTrue.ToPointer(),
+        AsyncRefreshLocalMediaAgent: components.BoolIntTrue.ToPointer(),
+        Nocache: components.BoolIntTrue.ToPointer(),
+        SkipRefresh: components.BoolIntTrue.ToPointer(),
+        Unwatched: components.BoolIntTrue.ToPointer(),
     })
     if err != nil {
         log.Fatal(err)
@@ -297,6 +326,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## GetAllLeaves
@@ -363,6 +393,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## GetArts
@@ -429,6 +460,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## GetCategories
@@ -495,6 +527,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## GetCluster
@@ -561,6 +594,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## GetSonicPath
@@ -629,6 +663,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## GetFolders
@@ -695,6 +730,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## ListMoments
@@ -761,6 +797,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## GetSonicallySimilar
@@ -828,6 +865,7 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
 
 ## GetCollectionImage

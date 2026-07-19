@@ -30,8 +30,8 @@ func main() {
 
 	res, err := s.Transcoder.StartTranscodeSession(ctx, operations.StartTranscodeSessionRequest{
 		TranscodeType:             components.TranscodeTypeMusic,
-		Extension:                 operations.ExtensionMpd,
 		AdvancedSubtitles:         components.AdvancedSubtitlesBurn.ToPointer(),
+		Extension:                 operations.ExtensionMpd,
 		AudioBoost:                plexgo.Pointer[int64](50),
 		AudioChannelCount:         plexgo.Pointer[int64](5),
 		AutoAdjustQuality:         components.BoolIntTrue.ToPointer(),
@@ -53,16 +53,18 @@ func main() {
 		Protocol:                  operations.StartTranscodeSessionQueryParamProtocolDash.ToPointer(),
 		SecondsPerSegment:         plexgo.Pointer[int64](5),
 		SubtitleSize:              plexgo.Pointer[int64](50),
+		Subtitles:                 operations.StartTranscodeSessionQueryParamSubtitlesBurn.ToPointer(),
+		VideoResolution:           plexgo.Pointer("1080x1080"),
+		Copyts:                    components.BoolIntTrue.ToPointer(),
 		VideoBitrate:              plexgo.Pointer[int64](12000),
 		VideoQuality:              plexgo.Pointer[int64](50),
-		VideoResolution:           plexgo.Pointer("1080x1080"),
 		XPlexClientProfileExtra:   plexgo.Pointer("add-limitation(scope=videoCodec&scopeName=*&type=upperBound&name=video.frameRate&value=60&replace=true)+append-transcode-target-codec(type=videoProfile&context=streaming&videoCodec=h264%2Chevc&audioCodec=aac&protocol=dash)"),
 		XPlexClientProfileName:    plexgo.Pointer("generic"),
 	})
 	if err != nil {
 		log.Fatal(err)
 	}
-	if res.ResponseStream != nil {
+	if res.TwoHundredApplicationVndAppleMpegurlBinaryResponse != nil {
 		// handle response
 	}
 }

@@ -15,19 +15,23 @@ type Hub struct {
 	// A unique identifier for the hub
 	HubIdentifier *string `json:"hubIdentifier,omitempty"`
 	// A key at which the exact content currently displayed can be fetched again. This is particularly important when a hub is marked as random and requesting the `key` may get different results. It's otherwise optional.
-	//
 	HubKey *string `json:"hubKey,omitempty"`
 	// The key at which all of the content for this hub can be retrieved
 	Key      *string    `json:"key,omitempty"`
 	Metadata []Metadata `json:"Metadata,omitempty"`
 	// "A boolean indicating that the hub contains more than what's included in the current response."
-	//
 	More *bool `json:"more,omitempty"`
 	// Indicating if the hub should be promoted to the user's homescreen
 	Promoted *bool `json:"promoted,omitempty"`
 	// Indicating that the contents of the hub may change on each request
-	Random *bool  `json:"random,omitempty"`
-	Size   *int64 `json:"size,omitempty"`
+	Random *bool `json:"random,omitempty"`
+	// Reason for hub inclusion (e.g. "because you watched").
+	Reason *string `json:"reason,omitempty"`
+	// ID of the item that triggered the reason.
+	ReasonID *int64 `json:"reasonID,omitempty"`
+	// Human-readable reason title.
+	ReasonTitle *string `json:"reasonTitle,omitempty"`
+	Size        *int64  `json:"size,omitempty"`
 	// A suggestion on how this hub's contents might be displayed by a client. Some examples include `hero`, `list`, `spotlight`, and `upsell`
 	Style *string `json:"style,omitempty"`
 	// The subtype of the items contained in this hub, or possibly `mixed` if there are multiple types
@@ -115,6 +119,27 @@ func (h *Hub) GetRandom() *bool {
 		return nil
 	}
 	return h.Random
+}
+
+func (h *Hub) GetReason() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Reason
+}
+
+func (h *Hub) GetReasonID() *int64 {
+	if h == nil {
+		return nil
+	}
+	return h.ReasonID
+}
+
+func (h *Hub) GetReasonTitle() *string {
+	if h == nil {
+		return nil
+	}
+	return h.ReasonTitle
 }
 
 func (h *Hub) GetSize() *int64 {

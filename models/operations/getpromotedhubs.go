@@ -243,68 +243,6 @@ func (g *GetPromotedHubsRequest) GetCount() *int64 {
 	return g.Count
 }
 
-// GetPromotedHubsMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
-// Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
-// The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
-type GetPromotedHubsMediaContainer struct {
-	Identifier *string `json:"identifier,omitempty"`
-	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
-	Offset *int64 `json:"offset,omitempty"`
-	Size   *int64 `json:"size,omitempty"`
-	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize *int64           `json:"totalSize,omitempty"`
-	Hub       []components.Hub `json:"Hub,omitempty"`
-}
-
-func (g *GetPromotedHubsMediaContainer) GetIdentifier() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Identifier
-}
-
-func (g *GetPromotedHubsMediaContainer) GetOffset() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.Offset
-}
-
-func (g *GetPromotedHubsMediaContainer) GetSize() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.Size
-}
-
-func (g *GetPromotedHubsMediaContainer) GetTotalSize() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.TotalSize
-}
-
-func (g *GetPromotedHubsMediaContainer) GetHub() []components.Hub {
-	if g == nil {
-		return nil
-	}
-	return g.Hub
-}
-
-// GetPromotedHubsResponseBody - OK
-type GetPromotedHubsResponseBody struct {
-	MediaContainer *GetPromotedHubsMediaContainer `json:"MediaContainer,omitempty"`
-}
-
-func (g *GetPromotedHubsResponseBody) GetMediaContainer() *GetPromotedHubsMediaContainer {
-	if g == nil {
-		return nil
-	}
-	return g.MediaContainer
-}
-
 type GetPromotedHubsResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -313,8 +251,8 @@ type GetPromotedHubsResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// OK
-	Object  *GetPromotedHubsResponseBody
-	Headers map[string][]string
+	MediaContainerWithHubs *components.MediaContainerWithHubs
+	Headers                map[string][]string
 }
 
 func (g *GetPromotedHubsResponse) GetContentType() string {
@@ -338,11 +276,11 @@ func (g *GetPromotedHubsResponse) GetRawResponse() *http.Response {
 	return g.RawResponse
 }
 
-func (g *GetPromotedHubsResponse) GetObject() *GetPromotedHubsResponseBody {
+func (g *GetPromotedHubsResponse) GetMediaContainerWithHubs() *components.MediaContainerWithHubs {
 	if g == nil {
 		return nil
 	}
-	return g.Object
+	return g.MediaContainerWithHubs
 }
 
 func (g *GetPromotedHubsResponse) GetHeaders() map[string][]string {

@@ -1,9 +1,0 @@
-# AddLineupMediaContainer
-
-
-## Fields
-
-| Field                                                                                             | Type                                                                                              | Required                                                                                          | Description                                                                                       |
-| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| `MediaContainer`                                                                                  | [*operations.AddLineupDVRsMediaContainer](../../models/operations/addlineupdvrsmediacontainer.md) | :heavy_minus_sign:                                                                                | N/A                                                                                               |
-| `Dvr`                                                                                             | [][operations.AddLineupDVR](../../models/operations/addlineupdvr.md)                              | :heavy_minus_sign:                                                                                | N/A                                                                                               |

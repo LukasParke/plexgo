@@ -13,6 +13,8 @@ type Part struct {
 	AudioProfile *string `json:"audioProfile,omitempty"`
 	// The container of the media file, such as `mp4` or `mkv`
 	Container *string `json:"container,omitempty"`
+	// Deep analysis version for this part.
+	DeepAnalysisVersion *int64 `json:"deepAnalysisVersion,omitempty"`
 	// The duration of the media item, in milliseconds
 	Duration *int `json:"duration,omitempty"`
 	// Indicates if the part exists.
@@ -25,9 +27,19 @@ type Part struct {
 	// The key from which the media can be streamed
 	Key                   string `json:"key"`
 	OptimizedForStreaming *bool  `json:"optimizedForStreaming,omitempty"`
+	// RTP packet length for streaming.
+	PacketLength *int64 `json:"packetLength,omitempty"`
+	// Streaming protocol (e.g. dash, hls, direct).
+	Protocol *string `json:"protocol,omitempty"`
+	// Comma-separated list of bandwidth requirements.
+	RequiredBandwidths *string `json:"requiredBandwidths,omitempty"`
 	// The size of the media, in bytes
-	Size                 *int64         `json:"size,omitempty"`
-	Stream               []Stream       `json:"Stream,omitempty"`
+	Size   *int64   `json:"size,omitempty"`
+	Stream []Stream `json:"Stream,omitempty"`
+	// Mobile sync item association ID.
+	SyncItemID *int64 `json:"syncItemId,omitempty"`
+	// Sync state (e.g. pending, downloaded, processing).
+	SyncState            *string        `json:"syncState,omitempty"`
 	VideoProfile         *string        `json:"videoProfile,omitempty"`
 	AdditionalProperties map[string]any `additionalProperties:"true" json:"-"`
 }
@@ -62,6 +74,13 @@ func (p *Part) GetContainer() *string {
 		return nil
 	}
 	return p.Container
+}
+
+func (p *Part) GetDeepAnalysisVersion() *int64 {
+	if p == nil {
+		return nil
+	}
+	return p.DeepAnalysisVersion
 }
 
 func (p *Part) GetDuration() *int {
@@ -120,6 +139,27 @@ func (p *Part) GetOptimizedForStreaming() *bool {
 	return p.OptimizedForStreaming
 }
 
+func (p *Part) GetPacketLength() *int64 {
+	if p == nil {
+		return nil
+	}
+	return p.PacketLength
+}
+
+func (p *Part) GetProtocol() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Protocol
+}
+
+func (p *Part) GetRequiredBandwidths() *string {
+	if p == nil {
+		return nil
+	}
+	return p.RequiredBandwidths
+}
+
 func (p *Part) GetSize() *int64 {
 	if p == nil {
 		return nil
@@ -132,6 +172,20 @@ func (p *Part) GetStream() []Stream {
 		return nil
 	}
 	return p.Stream
+}
+
+func (p *Part) GetSyncItemID() *int64 {
+	if p == nil {
+		return nil
+	}
+	return p.SyncItemID
+}
+
+func (p *Part) GetSyncState() *string {
+	if p == nil {
+		return nil
+	}
+	return p.SyncState
 }
 
 func (p *Part) GetVideoProfile() *string {

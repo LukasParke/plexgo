@@ -138,18 +138,21 @@ type Media struct {
 	Has64bitOffsets *bool    `json:"has64bitOffsets,omitempty"`
 	// Voice activity detection availability flag returned by PMS.
 	// PMS may return this as a boolean or as string values (`"0"` or `"1"`).
-	//
 	HasVoiceActivity      *HasVoiceActivity      `json:"hasVoiceActivity,omitempty"`
 	Height                *int                   `json:"height,omitempty"`
 	ID                    int64                  `json:"id"`
 	OptimizedForStreaming *OptimizedForStreaming `json:"optimizedForStreaming,omitempty"`
 	Part                  []Part                 `json:"Part,omitempty"`
-	VideoCodec            *string                `json:"videoCodec,omitempty"`
-	VideoFrameRate        *string                `json:"videoFrameRate,omitempty"`
-	VideoProfile          *string                `json:"videoProfile,omitempty"`
-	VideoResolution       *string                `json:"videoResolution,omitempty"`
-	Width                 *int                   `json:"width,omitempty"`
-	AdditionalProperties  map[string]any         `additionalProperties:"true" json:"-"`
+	// Whether this media version is selected for playback.
+	Selected *bool `json:"selected,omitempty"`
+	// Unique identifier for this media instance.
+	UUID                 *string        `json:"uuid,omitempty"`
+	VideoCodec           *string        `json:"videoCodec,omitempty"`
+	VideoFrameRate       *string        `json:"videoFrameRate,omitempty"`
+	VideoProfile         *string        `json:"videoProfile,omitempty"`
+	VideoResolution      *string        `json:"videoResolution,omitempty"`
+	Width                *int           `json:"width,omitempty"`
+	AdditionalProperties map[string]any `additionalProperties:"true" json:"-"`
 }
 
 func (m Media) MarshalJSON() ([]byte, error) {
@@ -252,6 +255,20 @@ func (m *Media) GetPart() []Part {
 		return nil
 	}
 	return m.Part
+}
+
+func (m *Media) GetSelected() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.Selected
+}
+
+func (m *Media) GetUUID() *string {
+	if m == nil {
+		return nil
+	}
+	return m.UUID
 }
 
 func (m *Media) GetVideoCodec() *string {

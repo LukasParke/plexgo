@@ -144,12 +144,7 @@ type AddDownloadQueueItemsRequest struct {
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	// The queue id
-	QueueID int64 `pathParam:"style=simple,explode=false,name=queueId"`
-	// Keys to add
-	Keys []string `queryParam:"style=form,explode=false,name=keys"`
 	// Indicates how incompatible advanced subtitles (such as ass/ssa) should be included: * 'burn' - Burn incompatible advanced text subtitles into the video stream * 'text' - Transcode incompatible advanced text subtitles to a compatible text format, even if some markup is lost
-	//
 	AdvancedSubtitles *components.AdvancedSubtitles `queryParam:"style=form,explode=true,name=advancedSubtitles"`
 	// Percentage of original audio loudness to use when transcoding (100 is equivalent to original volume, 50 is half, 200 is double, etc)
 	AudioBoost *int64 `queryParam:"style=form,explode=true,name=audioBoost"`
@@ -188,14 +183,12 @@ type AddDownloadQueueItemsRequest struct {
 	// Target photo resolution.
 	PhotoResolution *string `queryParam:"style=form,explode=true,name=photoResolution"`
 	// Indicates the network streaming protocol to be used for the transcode session: * 'http' - include the file in the http response such as MKV streaming * 'hls' - hls stream (RFC 8216) * 'dash' - dash stream (ISO/IEC 23009-1:2022)
-	//
 	Protocol *components.Protocol `queryParam:"style=form,explode=true,name=protocol"`
 	// Number of seconds to include in each transcoded segment
 	SecondsPerSegment *int64 `queryParam:"style=form,explode=true,name=secondsPerSegment"`
 	// Percentage of original subtitle size to use when burning subtitles (100 is equivalent to original size, 50 is half, ect)
 	SubtitleSize *int64 `queryParam:"style=form,explode=true,name=subtitleSize"`
 	// Indicates how subtitles should be included: * 'auto' - Compute the appropriate subtitle setting automatically * 'burn' - Burn the selected subtitle; auto if no selected subtitle * 'none' - Ignore all subtitle streams * 'sidecar' - The selected subtitle should be provided as a sidecar * 'embedded' - The selected subtitle should be provided as an embedded stream * 'segmented' - The selected subtitle should be provided as a segmented stream
-	//
 	Subtitles *components.Subtitles `queryParam:"style=form,explode=true,name=subtitles"`
 	// Target video bitrate (in kbps).
 	VideoBitrate *int64 `queryParam:"style=form,explode=true,name=videoBitrate"`
@@ -203,6 +196,10 @@ type AddDownloadQueueItemsRequest struct {
 	VideoQuality *int64 `queryParam:"style=form,explode=true,name=videoQuality"`
 	// Target maximum video resolution.
 	VideoResolution *string `queryParam:"style=form,explode=true,name=videoResolution"`
+	// The queue id
+	QueueID int64 `pathParam:"style=simple,explode=false,name=queueId"`
+	// Keys to add
+	Keys []string `queryParam:"style=form,explode=false,name=keys"`
 }
 
 func (a AddDownloadQueueItemsRequest) MarshalJSON() ([]byte, error) {
@@ -291,20 +288,6 @@ func (a *AddDownloadQueueItemsRequest) GetMarketplace() *string {
 		return nil
 	}
 	return a.Marketplace
-}
-
-func (a *AddDownloadQueueItemsRequest) GetQueueID() int64 {
-	if a == nil {
-		return 0
-	}
-	return a.QueueID
-}
-
-func (a *AddDownloadQueueItemsRequest) GetKeys() []string {
-	if a == nil {
-		return []string{}
-	}
-	return a.Keys
 }
 
 func (a *AddDownloadQueueItemsRequest) GetAdvancedSubtitles() *components.AdvancedSubtitles {
@@ -489,25 +472,18 @@ func (a *AddDownloadQueueItemsRequest) GetVideoResolution() *string {
 	return a.VideoResolution
 }
 
-type AddedQueueItems struct {
-	// The queue item id that was added or the existing one if an item already exists in this queue with the same parameters
-	ID *int64 `json:"id,omitempty"`
-	// The key added to the queue
-	Key *string `json:"key,omitempty"`
+func (a *AddDownloadQueueItemsRequest) GetQueueID() int64 {
+	if a == nil {
+		return 0
+	}
+	return a.QueueID
 }
 
-func (a *AddedQueueItems) GetID() *int64 {
+func (a *AddDownloadQueueItemsRequest) GetKeys() []string {
 	if a == nil {
-		return nil
+		return []string{}
 	}
-	return a.ID
-}
-
-func (a *AddedQueueItems) GetKey() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Key
+	return a.Keys
 }
 
 // AddDownloadQueueItemsMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
@@ -516,13 +492,11 @@ func (a *AddedQueueItems) GetKey() *string {
 type AddDownloadQueueItemsMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize       *int64            `json:"totalSize,omitempty"`
-	AddedQueueItems []AddedQueueItems `json:"AddedQueueItems,omitempty"`
+	TotalSize       *int64                      `json:"totalSize,omitempty"`
+	AddedQueueItems []components.AddedQueueItem `json:"AddedQueueItems,omitempty"`
 }
 
 func (a *AddDownloadQueueItemsMediaContainer) GetIdentifier() *string {
@@ -553,7 +527,7 @@ func (a *AddDownloadQueueItemsMediaContainer) GetTotalSize() *int64 {
 	return a.TotalSize
 }
 
-func (a *AddDownloadQueueItemsMediaContainer) GetAddedQueueItems() []AddedQueueItems {
+func (a *AddDownloadQueueItemsMediaContainer) GetAddedQueueItems() []components.AddedQueueItem {
 	if a == nil {
 		return nil
 	}

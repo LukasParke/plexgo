@@ -8,11 +8,9 @@ package components
 type MediaContainerWithHubsMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
 	TotalSize *int64 `json:"totalSize,omitempty"`
 	Hub       []Hub  `json:"Hub,omitempty"`
 }
@@ -52,7 +50,6 @@ func (m *MediaContainerWithHubsMediaContainer) GetHub() []Hub {
 	return m.Hub
 }
 
-// MediaContainerWithHubs - OK
 type MediaContainerWithHubs struct {
 	MediaContainer *MediaContainerWithHubsMediaContainer `json:"MediaContainer,omitempty"`
 }

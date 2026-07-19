@@ -144,14 +144,14 @@ type GetSonicPathRequest struct {
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
+	// Limit results to count items
+	Count *int64 `queryParam:"style=form,explode=true,name=count"`
 	// Section identifier
 	SectionID int64 `pathParam:"style=simple,explode=false,name=sectionId"`
 	// The starting metadata item id
 	StartID int64 `queryParam:"style=form,explode=true,name=startID"`
 	// The ending metadata item id
 	EndID int64 `queryParam:"style=form,explode=true,name=endID"`
-	// Limit results to count items
-	Count *int64 `queryParam:"style=form,explode=true,name=count"`
 	// The maximum distance allowed along the path; defaults to 0.25
 	MaxDistance *float64 `queryParam:"style=form,explode=true,name=maxDistance"`
 }
@@ -244,6 +244,13 @@ func (g *GetSonicPathRequest) GetMarketplace() *string {
 	return g.Marketplace
 }
 
+func (g *GetSonicPathRequest) GetCount() *int64 {
+	if g == nil {
+		return nil
+	}
+	return g.Count
+}
+
 func (g *GetSonicPathRequest) GetSectionID() int64 {
 	if g == nil {
 		return 0
@@ -263,13 +270,6 @@ func (g *GetSonicPathRequest) GetEndID() int64 {
 		return 0
 	}
 	return g.EndID
-}
-
-func (g *GetSonicPathRequest) GetCount() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.Count
 }
 
 func (g *GetSonicPathRequest) GetMaxDistance() *float64 {

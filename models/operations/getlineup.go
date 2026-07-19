@@ -259,7 +259,9 @@ type GetLineupResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	Headers     map[string][]string
+	// OK
+	MediaContainerWithLineup *components.MediaContainerWithLineup
+	Headers                  map[string][]string
 }
 
 func (g *GetLineupResponse) GetContentType() string {
@@ -281,6 +283,13 @@ func (g *GetLineupResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return g.RawResponse
+}
+
+func (g *GetLineupResponse) GetMediaContainerWithLineup() *components.MediaContainerWithLineup {
+	if g == nil {
+		return nil
+	}
+	return g.MediaContainerWithLineup
 }
 
 func (g *GetLineupResponse) GetHeaders() map[string][]string {

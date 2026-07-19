@@ -2,7 +2,7 @@
 
 package plexgo
 
-// Generated from OpenAPI doc version 1.1.1 and generator version 2.884.4
+// Generated from OpenAPI doc version 1.1.1 and generator version 2.918.3
 
 import (
 	"context"
@@ -50,6 +50,32 @@ func Float64(f float64) *float64 { return &f }
 // Pointer provides a helper function to return a pointer to a type
 func Pointer[T any](v T) *T { return &v }
 
+// PlexAPI - Plex Media Server: OpenAPI specification for the Plex Media Server (PMS) API and the plex.tv cloud API.
+//
+// ## Base URLs
+//
+// - **PMS (local server)**: `http(s)://{host}:{port}` — Most endpoints in this spec target the local PMS.
+// - **plex.tv v2**: `https://plex.tv/api/v2` — Authentication, account, and social endpoints.
+// - **plex.tv v1 (legacy)**: `https://plex.tv/api` — Legacy XML endpoints (friends, home users, claims).
+// - **Cloud providers**: `https://discover.provider.plex.tv`, `https://metadata.provider.plex.tv`, etc.
+//
+// Endpoints that target plex.tv or cloud providers declare an override `servers` array.
+//
+// ## Authentication
+//
+// - **X-Plex-Token**: Pass via the `X-Plex-Token` header on every request. It may also be passed as a query parameter (`?X-Plex-Token=...`) on all endpoints.
+// - **X-Plex-Client-Identifier**: Mandatory for OAuth PIN flow (`/pins`) and JWT device registration. Must be a unique, persistent identifier for the client application.
+// - **OAuth PIN Flow**: `POST /pins` → user visits `https://plex.tv/link` → `GET /pins/{pinId}` → obtain `authToken`.
+//
+// ## Response Formats
+//
+// - **PMS endpoints**: Return XML by default. Send `Accept: application/json` to receive JSON.
+// - **plex.tv v2**: Returns JSON by default.
+// - **Legacy v1 endpoints** (`/pins.xml`, `/api/resources`, `/api/users/`): Return XML only.
+//
+// ## Rate Limiting
+//
+// plex.tv auth endpoints (PIN creation, sign-in) enforce rate limits. Clients should implement exponential backoff and reuse tokens rather than re-authenticating on every request.
 type PlexAPI struct {
 	SDKVersion string
 	// General endpoints for basic PMS operation not specific to any media provider
@@ -57,24 +83,32 @@ type PlexAPI struct {
 	// The server can notify clients in real-time of a wide range of events, from library scanning, to preferences being modified, to changes to media, and many other things. This is also the mechanism by which activity progress is reported.
 	//
 	// Two protocols for receiving the events are available: EventSource (also known as SSE), and WebSocket.
-	//
 	Events *Events
 	// API Operations against the Preferences
 	Preferences *Preferences
+	// Plex Playback operations
+	Playback *Playback
 	// Operations for rating media items (thumbs up/down, star ratings, etc.)
 	Rate *Rate
 	// The actions feature within a media provider
 	Timeline *Timeline
+	// Media providers are the starting points for the entire Plex Media Server media library API.  It defines the paths for the groups of endpoints.  The `/media/providers` should be the only hard-coded path in clients when accessing the media library.  Non-media library endpoints are outside the scope of the media provider.  See the description in See [the section in API Info](#section/API-Info/Media-Providers) for more information on how to use media providers.
+	// Note: Dynamic proxy paths such as `/{provider}/search`, `/{provider}/metadata`, and other provider-relative routes are resolved through the media provider API.
+	Provider *Provider
 	// Activities provide a way to monitor and control asynchronous operations on the server. In order to receive real-time updates for activities, a client would normally subscribe via either EventSource or Websocket endpoints.
 	//
 	// Activities are associated with HTTP replies via a special `X-Plex-Activity` header which contains the UUID of the activity.
 	//
 	// Activities are optional cancellable. If cancellable, they may be cancelled via the `DELETE` endpoint.
-	//
 	Activities *Activities
+	// Plex Users operations
+	Users *Users
+	// Plex Authentication operations
+	Authentication *Authentication
 	// The butler is responsible for running periodic tasks.  Some tasks run daily, others every few days, and some weekly.  These includes database maintenance, metadata updating, thumbnail generation, media analysis, and other tasks.
 	Butler *Butler
-	// API Operations against the Download Queue
+	// API Operations against the Download Queue.
+	// Note: The Download Queue is distinct from the Play Queue. The Download Queue manages offline/downloaded content, while the Play Queue manages active playback sessions.
 	DownloadQueue *DownloadQueue
 	// The hubs within a media provider
 	Hubs *Hubs
@@ -85,13 +119,10 @@ type PlexAPI struct {
 	// API Operations against the Collections
 	Collections *Collections
 	// The DVR provides means to watch and record live TV.  This section of endpoints describes how to setup the DVR itself
-	//
 	DVRs *DVRs
 	// The EPG (Electronic Program Guide) is responsible for obtaining metadata for what is airing on each channel and when
-	//
 	Epg *Epg
 	// LiveTV contains the playback sessions of a channel from a DVR device
-	//
 	LiveTV *LiveTV
 	// Logging mechanism to allow clients to log to the server
 	Log *Log
@@ -130,14 +161,14 @@ type PlexAPI struct {
 	//   - UDN: (string) A UUID for the device. This should be unique across models of a device at minimum.
 	//   - URLBase: (string) The base HTTP URL for the device from which all of the other endpoints are hosted.
 	//
+	// Note: This tag covers media grabber and network tuner devices only. For client device discovery, use `/clients` or `/resources`.
 	Devices *Devices
-	// Media providers are the starting points for the entire Plex Media Server media library API.  It defines the paths for the groups of endpoints.  The `/media/providers` should be the only hard-coded path in clients when accessing the media library.  Non-media library endpoints are outside the scope of the media provider.  See the description in See [the section in API Info](#section/API-Info/Media-Providers) for more information on how to use media providers.
-	Provider *Provider
 	// Subscriptions determine which media will be recorded and the criteria for selecting an airing when multiple are available
-	//
 	Subscriptions *Subscriptions
 	// API Operations against the Transcoder
 	Transcoder *Transcoder
+	// Plex Playlists operations
+	Playlists *Playlists
 	// Media playlists that can be created and played back
 	Playlist *Playlist
 	// Endpoints for manipulating playlists.
@@ -149,17 +180,15 @@ type PlexAPI struct {
 	// All created play queues will have an empty "Up Next" area - unless the item is an album and no `key` is provided. In this case the "Up Next" area will be populated by the contents of the album. This is to allow queueing of multiple albums - since the 'Add to Up Next' will insert after all the tracks. This means that If you're creating a PQ from an album, you can only shuffle it if you set `key`. This is due to the above implicit queueing of albums when no `key` is provided as well as the current limitation that you cannot shuffle a PQ with an "Up Next" area.
 	// The play queue window advances as the server receives timeline requests. The client needs to retrieve the play queue as the “now playing” item changes. There is no play queue API to update the playing item.
 	PlayQueue *PlayQueue
+	// Plex Plex operations
+	Plex *Plex
 	// Service provided to compute UltraBlur colors and images.
 	UltraBlur *UltraBlur
 	// The status endpoints give you information about current playbacks, play history, and even terminating sessions.
 	Status *Status
 	// This describes the API for searching and applying updates to the Plex Media Server.
 	// Updates to the status can be observed via the Event API.
-	//
-	Updater        *Updater
-	Authentication *Authentication
-	Users          *Users
-	Plex           *Plex
+	Updater *Updater
 	// The actual content of the media provider
 	Content *Content
 	// Endpoints for manipulating collections.  In addition to these endpoints, `/library/collections/:collectionId/X` will be rerouted to `/library/metadata/:collectionId/X` and respond to those endpoints as well.
@@ -239,19 +268,6 @@ func WithPort(port string) SDKOption {
 	}
 }
 
-// WithProtocol allows setting the protocol variable for url substitution
-func WithProtocol(protocol string) SDKOption {
-	return func(sdk *PlexAPI) {
-		for idx := range sdk.sdkConfiguration.ServerVariables {
-			if _, ok := sdk.sdkConfiguration.ServerVariables[idx]["protocol"]; !ok {
-				continue
-			}
-
-			sdk.sdkConfiguration.ServerVariables[idx]["protocol"] = fmt.Sprintf("%v", protocol)
-		}
-	}
-}
-
 // WithHost allows setting the host variable for url substitution
 func WithHost(host string) SDKOption {
 	return func(sdk *PlexAPI) {
@@ -261,6 +277,19 @@ func WithHost(host string) SDKOption {
 			}
 
 			sdk.sdkConfiguration.ServerVariables[idx]["host"] = fmt.Sprintf("%v", host)
+		}
+	}
+}
+
+// WithProtocol allows setting the protocol variable for url substitution
+func WithProtocol(protocol string) SDKOption {
+	return func(sdk *PlexAPI) {
+		for idx := range sdk.sdkConfiguration.ServerVariables {
+			if _, ok := sdk.sdkConfiguration.ServerVariables[idx]["protocol"]; !ok {
+				continue
+			}
+
+			sdk.sdkConfiguration.ServerVariables[idx]["protocol"] = fmt.Sprintf("%v", protocol)
 		}
 	}
 }
@@ -395,9 +424,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *PlexAPI {
 	sdk := &PlexAPI{
-		SDKVersion: "0.28.6",
+		SDKVersion: "0.29.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/go 0.28.6 2.884.4 1.1.1 github.com/LukeHagar/plexgo",
+			UserAgent:  "speakeasy-sdk/go 0.29.0 2.918.3 1.1.1 github.com/LukeHagar/plexgo",
 			Globals:    globals.Globals{},
 			ServerList: ServerList,
 			ServerVariables: []map[string]string{
@@ -407,9 +436,9 @@ func New(opts ...SDKOption) *PlexAPI {
 					"port":           "32400",
 				},
 				{
-					"protocol": "http",
 					"host":     "localhost",
 					"port":     "32400",
+					"protocol": "http",
 				},
 				{
 					"full_server_url": "http://localhost:32400",
@@ -437,9 +466,13 @@ func New(opts ...SDKOption) *PlexAPI {
 	sdk.General = newGeneral(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Events = newEvents(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Preferences = newPreferences(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Playback = newPlayback(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Rate = newRate(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Timeline = newTimeline(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Provider = newProvider(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Activities = newActivities(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Users = newUsers(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Authentication = newAuthentication(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Butler = newButler(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.DownloadQueue = newDownloadQueue(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Hubs = newHubs(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -451,18 +484,16 @@ func New(opts ...SDKOption) *PlexAPI {
 	sdk.LiveTV = newLiveTV(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Log = newLog(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Devices = newDevices(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.Provider = newProvider(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Subscriptions = newSubscriptions(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Transcoder = newTranscoder(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Playlists = newPlaylists(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Playlist = newPlaylist(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.LibraryPlaylists = newLibraryPlaylists(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PlayQueue = newPlayQueue(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Plex = newPlex(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.UltraBlur = newUltraBlur(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Status = newStatus(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Updater = newUpdater(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.Authentication = newAuthentication(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.Users = newUsers(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.Plex = newPlex(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Content = newContent(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.LibraryCollections = newLibraryCollections(sdk, sdk.sdkConfiguration, sdk.hooks)
 

@@ -207,6 +207,14 @@ type ReportRequest struct {
 	BufferedTime *int64 `queryParam:"style=form,explode=true,name=bufferedTime"`
 	// Size in kilobytes of data buffered by client.  Omit if computed by `bufferedTime` above
 	BufferedSize *int64 `queryParam:"style=form,explode=true,name=bufferedSize"`
+	// Groups timeline reports (e.g. /playQueues/123).
+	ContainerKey *string `queryParam:"style=form,explode=true,name=containerKey"`
+	// Global unique identifier for the item.
+	GUID *string `queryParam:"style=form,explode=true,name=guid"`
+	// Identifies the play queue itself (distinct from playQueueItemID).
+	PlayQueueID *int64 `queryParam:"style=form,explode=true,name=playQueueID"`
+	// Alternative to key/ratingKey (legacy).
+	URL *string `queryParam:"style=form,explode=true,name=url"`
 	// Unique per client playback session.  Used if a client can playback multiple items at a time (such as a browser with multiple tabs)
 	XPlexSessionIdentifier *string `header:"style=simple,explode=false,name=X-Plex-Session-Identifier"`
 }
@@ -397,6 +405,34 @@ func (r *ReportRequest) GetBufferedSize() *int64 {
 	return r.BufferedSize
 }
 
+func (r *ReportRequest) GetContainerKey() *string {
+	if r == nil {
+		return nil
+	}
+	return r.ContainerKey
+}
+
+func (r *ReportRequest) GetGUID() *string {
+	if r == nil {
+		return nil
+	}
+	return r.GUID
+}
+
+func (r *ReportRequest) GetPlayQueueID() *int64 {
+	if r == nil {
+		return nil
+	}
+	return r.PlayQueueID
+}
+
+func (r *ReportRequest) GetURL() *string {
+	if r == nil {
+		return nil
+	}
+	return r.URL
+}
+
 func (r *ReportRequest) GetXPlexSessionIdentifier() *string {
 	if r == nil {
 		return nil
@@ -404,42 +440,12 @@ func (r *ReportRequest) GetXPlexSessionIdentifier() *string {
 	return r.XPlexSessionIdentifier
 }
 
-type Bandwidth struct {
-	// The bandwidth at this time in kbps
-	Bandwidth *int64 `json:"bandwidth,omitempty"`
-	// The user-friendly resolution at this time
-	Resolution *string `json:"resolution,omitempty"`
-	// Media playback time where this bandwidth started
-	Time *int64 `json:"time,omitempty"`
-}
-
-func (b *Bandwidth) GetBandwidth() *int64 {
-	if b == nil {
-		return nil
-	}
-	return b.Bandwidth
-}
-
-func (b *Bandwidth) GetResolution() *string {
-	if b == nil {
-		return nil
-	}
-	return b.Resolution
-}
-
-func (b *Bandwidth) GetTime() *int64 {
-	if b == nil {
-		return nil
-	}
-	return b.Time
-}
-
 // Bandwidths - A list of media times and bandwidths when trascoding is using with auto adjustment of bandwidth
 type Bandwidths struct {
-	Bandwidth []Bandwidth `json:"Bandwidth,omitempty"`
+	Bandwidth []components.Bandwidth `json:"Bandwidth,omitempty"`
 }
 
-func (b *Bandwidths) GetBandwidth() []Bandwidth {
+func (b *Bandwidths) GetBandwidth() []components.Bandwidth {
 	if b == nil {
 		return nil
 	}
@@ -452,11 +458,9 @@ func (b *Bandwidths) GetBandwidth() []Bandwidth {
 type MediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
 	TotalSize            *int64  `json:"totalSize,omitempty"`
 	AllowCameraUpload    *bool   `json:"allowCameraUpload,omitempty"`
 	AllowChannelAccess   *bool   `json:"allowChannelAccess,omitempty"`
@@ -468,49 +472,54 @@ type MediaContainer struct {
 	Certificate          *bool   `json:"certificate,omitempty"`
 	CompanionProxy       *bool   `json:"companionProxy,omitempty"`
 	CountryCode          *string `json:"countryCode,omitempty"`
-	Diagnostics          *string `json:"diagnostics,omitempty"`
-	EventStream          *bool   `json:"eventStream,omitempty"`
-	FriendlyName         *string `json:"friendlyName,omitempty"`
-	HubSearch            *bool   `json:"hubSearch,omitempty"`
-	ItemClusters         *bool   `json:"itemClusters,omitempty"`
-	Livetv               *int64  `json:"livetv,omitempty"`
-	MachineIdentifier    any     `json:"machineIdentifier,omitempty"`
-	MediaProviders       *bool   `json:"mediaProviders,omitempty"`
-	Multiuser            *bool   `json:"multiuser,omitempty"`
-	MusicAnalysis        *int64  `json:"musicAnalysis,omitempty"`
-	MyPlex               *bool   `json:"myPlex,omitempty"`
-	MyPlexMappingState   any     `json:"myPlexMappingState,omitempty"`
-	MyPlexSigninState    any     `json:"myPlexSigninState,omitempty"`
-	MyPlexSubscription   *bool   `json:"myPlexSubscription,omitempty"`
-	MyPlexUsername       *string `json:"myPlexUsername,omitempty"`
-	OfflineTranscode     any     `json:"offlineTranscode,omitempty"`
-	// A comma-separated list of features which are enabled for the server owner
-	OwnerFeatures                 *string `json:"ownerFeatures,omitempty"`
-	Platform                      *string `json:"platform,omitempty"`
-	PlatformVersion               *string `json:"platformVersion,omitempty"`
-	PluginHost                    *bool   `json:"pluginHost,omitempty"`
-	PushNotifications             *bool   `json:"pushNotifications,omitempty"`
-	ReadOnlyLibraries             *bool   `json:"readOnlyLibraries,omitempty"`
-	StreamingBrainABRVersion      *int64  `json:"streamingBrainABRVersion,omitempty"`
-	StreamingBrainVersion         *int64  `json:"streamingBrainVersion,omitempty"`
-	Sync                          *bool   `json:"sync,omitempty"`
-	TranscoderActiveVideoSessions *int64  `json:"transcoderActiveVideoSessions,omitempty"`
-	TranscoderAudio               *bool   `json:"transcoderAudio,omitempty"`
-	TranscoderLyrics              *bool   `json:"transcoderLyrics,omitempty"`
-	TranscoderPhoto               *bool   `json:"transcoderPhoto,omitempty"`
-	TranscoderSubtitles           *bool   `json:"transcoderSubtitles,omitempty"`
-	TranscoderVideo               *bool   `json:"transcoderVideo,omitempty"`
-	// The suggested video quality bitrates to present to the user
-	TranscoderVideoBitrates  any     `json:"transcoderVideoBitrates,omitempty"`
-	TranscoderVideoQualities *string `json:"transcoderVideoQualities,omitempty"`
-	// The suggested video resolutions to the above quality bitrates
-	TranscoderVideoResolutions any     `json:"transcoderVideoResolutions,omitempty"`
-	UpdatedAt                  *int64  `json:"updatedAt,omitempty"`
-	Updater                    *bool   `json:"updater,omitempty"`
-	Version                    *string `json:"version,omitempty"`
-	VoiceSearch                *bool   `json:"voiceSearch,omitempty"`
+	// Comma-separated list of enabled diagnostics modules.
+	Diagnostics        []string `json:"diagnostics,omitempty"`
+	EventStream        *bool    `json:"eventStream,omitempty"`
+	FriendlyName       *string  `json:"friendlyName,omitempty"`
+	HubSearch          *bool    `json:"hubSearch,omitempty"`
+	ItemClusters       *bool    `json:"itemClusters,omitempty"`
+	Livetv             *int64   `json:"livetv,omitempty"`
+	MachineIdentifier  any      `json:"machineIdentifier,omitempty"`
+	MediaProviders     *bool    `json:"mediaProviders,omitempty"`
+	Multiuser          *bool    `json:"multiuser,omitempty"`
+	MusicAnalysis      *int64   `json:"musicAnalysis,omitempty"`
+	MyPlex             *bool    `json:"myPlex,omitempty"`
+	MyPlexMappingState any      `json:"myPlexMappingState,omitempty"`
+	MyPlexSigninState  any      `json:"myPlexSigninState,omitempty"`
+	MyPlexSubscription *bool    `json:"myPlexSubscription,omitempty"`
+	MyPlexUsername     *string  `json:"myPlexUsername,omitempty"`
+	// Whether offline transcoding is enabled.
+	OfflineTranscode *int `json:"offlineTranscode,omitempty"`
+	// List of enabled owner features.
+	OwnerFeatures                 []string `json:"ownerFeatures,omitempty"`
+	Platform                      *string  `json:"platform,omitempty"`
+	PlatformVersion               *string  `json:"platformVersion,omitempty"`
+	PluginHost                    *bool    `json:"pluginHost,omitempty"`
+	PushNotifications             *bool    `json:"pushNotifications,omitempty"`
+	ReadOnlyLibraries             *bool    `json:"readOnlyLibraries,omitempty"`
+	StreamingBrainABRVersion      *int64   `json:"streamingBrainABRVersion,omitempty"`
+	StreamingBrainVersion         *int64   `json:"streamingBrainVersion,omitempty"`
+	Sync                          *bool    `json:"sync,omitempty"`
+	TranscoderActiveVideoSessions *int64   `json:"transcoderActiveVideoSessions,omitempty"`
+	TranscoderAudio               *bool    `json:"transcoderAudio,omitempty"`
+	TranscoderLyrics              *bool    `json:"transcoderLyrics,omitempty"`
+	TranscoderPhoto               *bool    `json:"transcoderPhoto,omitempty"`
+	TranscoderSubtitles           *bool    `json:"transcoderSubtitles,omitempty"`
+	TranscoderVideo               *bool    `json:"transcoderVideo,omitempty"`
+	// List of supported transcoder video bitrates.
+	TranscoderVideoBitrates []string `json:"transcoderVideoBitrates,omitempty"`
+	// List of supported transcoder video qualities.
+	TranscoderVideoQualities []string `json:"transcoderVideoQualities,omitempty"`
+	// List of supported transcoder video resolutions.
+	TranscoderVideoResolutions []string `json:"transcoderVideoResolutions,omitempty"`
+	UpdatedAt                  *int64   `json:"updatedAt,omitempty"`
+	Updater                    *bool    `json:"updater,omitempty"`
+	Version                    *string  `json:"version,omitempty"`
+	VoiceSearch                *bool    `json:"voiceSearch,omitempty"`
 	// A list of media times and bandwidths when trascoding is using with auto adjustment of bandwidth
 	Bandwidths *Bandwidths `json:"Bandwidths,omitempty"`
+	// The play queue ID when playback originates from a queue.
+	PlayQueueID *int64 `json:"playQueueID,omitempty"`
 	// A code describing why the session was terminated by the server.
 	TerminationCode *int64 `json:"terminationCode,omitempty"`
 	// A user friendly and localized text describing why the session was terminated by the server.
@@ -615,7 +624,7 @@ func (m *MediaContainer) GetCountryCode() *string {
 	return m.CountryCode
 }
 
-func (m *MediaContainer) GetDiagnostics() *string {
+func (m *MediaContainer) GetDiagnostics() []string {
 	if m == nil {
 		return nil
 	}
@@ -720,14 +729,14 @@ func (m *MediaContainer) GetMyPlexUsername() *string {
 	return m.MyPlexUsername
 }
 
-func (m *MediaContainer) GetOfflineTranscode() any {
+func (m *MediaContainer) GetOfflineTranscode() *int {
 	if m == nil {
 		return nil
 	}
 	return m.OfflineTranscode
 }
 
-func (m *MediaContainer) GetOwnerFeatures() *string {
+func (m *MediaContainer) GetOwnerFeatures() []string {
 	if m == nil {
 		return nil
 	}
@@ -832,21 +841,21 @@ func (m *MediaContainer) GetTranscoderVideo() *bool {
 	return m.TranscoderVideo
 }
 
-func (m *MediaContainer) GetTranscoderVideoBitrates() any {
+func (m *MediaContainer) GetTranscoderVideoBitrates() []string {
 	if m == nil {
 		return nil
 	}
 	return m.TranscoderVideoBitrates
 }
 
-func (m *MediaContainer) GetTranscoderVideoQualities() *string {
+func (m *MediaContainer) GetTranscoderVideoQualities() []string {
 	if m == nil {
 		return nil
 	}
 	return m.TranscoderVideoQualities
 }
 
-func (m *MediaContainer) GetTranscoderVideoResolutions() any {
+func (m *MediaContainer) GetTranscoderVideoResolutions() []string {
 	if m == nil {
 		return nil
 	}
@@ -886,6 +895,13 @@ func (m *MediaContainer) GetBandwidths() *Bandwidths {
 		return nil
 	}
 	return m.Bandwidths
+}
+
+func (m *MediaContainer) GetPlayQueueID() *int64 {
+	if m == nil {
+		return nil
+	}
+	return m.PlayQueueID
 }
 
 func (m *MediaContainer) GetTerminationCode() *int64 {

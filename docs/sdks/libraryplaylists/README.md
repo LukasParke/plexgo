@@ -7,7 +7,7 @@ Endpoints for manipulating playlists.
 ### Available Operations
 
 * [CreatePlaylist](#createplaylist) - Create a Playlist
-* [UploadPlaylist](#uploadplaylist) - Upload
+* [UploadPlaylist](#uploadplaylist) - Upload media art
 * [DeletePlaylist](#deleteplaylist) - Delete a Playlist
 * [UpdatePlaylist](#updateplaylist) - Editing a Playlist
 * [GetPlaylistGenerators](#getplaylistgenerators) - Get a playlist's generators
@@ -657,18 +657,18 @@ func main() {
         PlaylistID: 972007,
         GeneratorID: 208334,
         Item: &operations.Item{
+            Title: plexgo.Pointer("Jack-Jack Attack"),
+            Type: plexgo.Pointer[int64](42),
             Location: &operations.ModifyPlaylistGeneratorQueryParamLocation{
                 URI: plexgo.Pointer("library://82503060-0d68-4603-b594-8b071d54819e/item/%2Flibrary%2Fmetadata%2F146"),
             },
             LocationID: plexgo.Pointer[int64](-1),
             Policy: &operations.Policy{
-                Value: plexgo.Pointer[int64](),
                 Scope: operations.QueryParamScopeAll.ToPointer(),
+                Value: plexgo.Pointer[int64](),
             },
             Target: plexgo.Pointer(""),
             TargetTagID: plexgo.Pointer[int64](1),
-            Title: plexgo.Pointer("Jack-Jack Attack"),
-            Type: plexgo.Pointer[int64](42),
         },
     })
     if err != nil {

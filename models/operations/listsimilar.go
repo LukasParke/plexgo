@@ -144,9 +144,10 @@ type ListSimilarRequest struct {
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	Ids         string  `pathParam:"style=simple,explode=false,name=ids"`
 	// Limit results to count items
 	Count *int64 `queryParam:"style=form,explode=true,name=count"`
+	// Comma-separated list of IDs
+	Ids string `pathParam:"style=simple,explode=false,name=ids"`
 }
 
 func (l ListSimilarRequest) MarshalJSON() ([]byte, error) {
@@ -237,18 +238,18 @@ func (l *ListSimilarRequest) GetMarketplace() *string {
 	return l.Marketplace
 }
 
-func (l *ListSimilarRequest) GetIds() string {
-	if l == nil {
-		return ""
-	}
-	return l.Ids
-}
-
 func (l *ListSimilarRequest) GetCount() *int64 {
 	if l == nil {
 		return nil
 	}
 	return l.Count
+}
+
+func (l *ListSimilarRequest) GetIds() string {
+	if l == nil {
+		return ""
+	}
+	return l.Ids
 }
 
 type ListSimilarResponse struct {

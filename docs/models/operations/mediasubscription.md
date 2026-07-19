@@ -3,7 +3,6 @@
 A media subscription contains a representation of metadata desired to be recorded
 
 
-
 ## Fields
 
 | Field                                                                            | Type                                                                             | Required                                                                         | Description                                                                      | Example                                                                          |

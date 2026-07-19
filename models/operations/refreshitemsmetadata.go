@@ -143,10 +143,15 @@ type RefreshItemsMetadataRequest struct {
 	// A friendly name for the client
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
-	Marketplace *string             `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	Ids         string              `pathParam:"style=simple,explode=false,name=ids"`
-	Agent       *string             `queryParam:"style=form,explode=true,name=agent"`
+	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
+	// Comma-separated list of IDs
+	Ids string `pathParam:"style=simple,explode=false,name=ids"`
+	// The identifier of the metadata agent to use
+	Agent *string `queryParam:"style=form,explode=true,name=agent"`
+	// The markUpdated
 	MarkUpdated *components.BoolInt `default:"0" queryParam:"style=form,explode=true,name=markUpdated"`
+	// Skip synchronous refresh
+	SkipRefresh *components.BoolInt `default:"0" queryParam:"style=form,explode=true,name=skipRefresh"`
 }
 
 func (r RefreshItemsMetadataRequest) MarshalJSON() ([]byte, error) {
@@ -256,6 +261,13 @@ func (r *RefreshItemsMetadataRequest) GetMarkUpdated() *components.BoolInt {
 		return nil
 	}
 	return r.MarkUpdated
+}
+
+func (r *RefreshItemsMetadataRequest) GetSkipRefresh() *components.BoolInt {
+	if r == nil {
+		return nil
+	}
+	return r.SkipRefresh
 }
 
 type RefreshItemsMetadataResponse struct {

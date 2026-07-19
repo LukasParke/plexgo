@@ -7,129 +7,25 @@ import (
 	"net/http"
 )
 
-// ListDVRsDVRsMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
-// Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
-// The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
-type ListDVRsDVRsMediaContainer struct {
-	Identifier *string `json:"identifier,omitempty"`
-	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
-	Offset *int64 `json:"offset,omitempty"`
-	Size   *int64 `json:"size,omitempty"`
-	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize *int64 `json:"totalSize,omitempty"`
-	// A status indicator. If present and non-zero, indicates an error
-	Status *int64 `json:"status,omitempty"`
+type ListDVRsRequest struct {
+	// Filter by DVR UUID.
+	UUID *string `queryParam:"style=form,explode=true,name=uuid"`
+	// Filter by lineup.
+	Lineup *string `queryParam:"style=form,explode=true,name=lineup"`
 }
 
-func (l *ListDVRsDVRsMediaContainer) GetIdentifier() *string {
+func (l *ListDVRsRequest) GetUUID() *string {
 	if l == nil {
 		return nil
 	}
-	return l.Identifier
+	return l.UUID
 }
 
-func (l *ListDVRsDVRsMediaContainer) GetOffset() *int64 {
+func (l *ListDVRsRequest) GetLineup() *string {
 	if l == nil {
 		return nil
 	}
-	return l.Offset
-}
-
-func (l *ListDVRsDVRsMediaContainer) GetSize() *int64 {
-	if l == nil {
-		return nil
-	}
-	return l.Size
-}
-
-func (l *ListDVRsDVRsMediaContainer) GetTotalSize() *int64 {
-	if l == nil {
-		return nil
-	}
-	return l.TotalSize
-}
-
-func (l *ListDVRsDVRsMediaContainer) GetStatus() *int64 {
-	if l == nil {
-		return nil
-	}
-	return l.Status
-}
-
-type Dvr struct {
-	Device   []components.Device `json:"Device,omitempty"`
-	Key      *string             `json:"key,omitempty"`
-	Language *string             `json:"language,omitempty"`
-	Lineup   *string             `json:"lineup,omitempty"`
-	UUID     *string             `json:"uuid,omitempty"`
-}
-
-func (d *Dvr) GetDevice() []components.Device {
-	if d == nil {
-		return nil
-	}
-	return d.Device
-}
-
-func (d *Dvr) GetKey() *string {
-	if d == nil {
-		return nil
-	}
-	return d.Key
-}
-
-func (d *Dvr) GetLanguage() *string {
-	if d == nil {
-		return nil
-	}
-	return d.Language
-}
-
-func (d *Dvr) GetLineup() *string {
-	if d == nil {
-		return nil
-	}
-	return d.Lineup
-}
-
-func (d *Dvr) GetUUID() *string {
-	if d == nil {
-		return nil
-	}
-	return d.UUID
-}
-
-type ListDVRsMediaContainer struct {
-	MediaContainer *ListDVRsDVRsMediaContainer `json:"MediaContainer,omitempty"`
-	Dvr            []Dvr                       `json:"DVR,omitempty"`
-}
-
-func (l *ListDVRsMediaContainer) GetMediaContainer() *ListDVRsDVRsMediaContainer {
-	if l == nil {
-		return nil
-	}
-	return l.MediaContainer
-}
-
-func (l *ListDVRsMediaContainer) GetDvr() []Dvr {
-	if l == nil {
-		return nil
-	}
-	return l.Dvr
-}
-
-// ListDVRsResponseBody - OK
-type ListDVRsResponseBody struct {
-	MediaContainer *ListDVRsMediaContainer `json:"MediaContainer,omitempty"`
-}
-
-func (l *ListDVRsResponseBody) GetMediaContainer() *ListDVRsMediaContainer {
-	if l == nil {
-		return nil
-	}
-	return l.MediaContainer
+	return l.Lineup
 }
 
 type ListDVRsResponse struct {
@@ -140,8 +36,8 @@ type ListDVRsResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// OK
-	Object  *ListDVRsResponseBody
-	Headers map[string][]string
+	DVRResponse *components.DVRResponse
+	Headers     map[string][]string
 }
 
 func (l *ListDVRsResponse) GetContentType() string {
@@ -165,11 +61,11 @@ func (l *ListDVRsResponse) GetRawResponse() *http.Response {
 	return l.RawResponse
 }
 
-func (l *ListDVRsResponse) GetObject() *ListDVRsResponseBody {
+func (l *ListDVRsResponse) GetDVRResponse() *components.DVRResponse {
 	if l == nil {
 		return nil
 	}
-	return l.Object
+	return l.DVRResponse
 }
 
 func (l *ListDVRsResponse) GetHeaders() map[string][]string {

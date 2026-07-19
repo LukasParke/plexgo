@@ -243,87 +243,17 @@ func (g *GetDevicesChannelsRequest) GetDeviceID() int64 {
 	return g.DeviceID
 }
 
-type DeviceChannel struct {
-	// Indicates the channel is DRMed and thus may not be playable
-	Drm            *bool   `json:"drm,omitempty"`
-	Favorite       *bool   `json:"favorite,omitempty"`
-	Hd             *bool   `json:"hd,omitempty"`
-	Identifier     *string `json:"identifier,omitempty"`
-	Key            *string `json:"key,omitempty"`
-	Name           *string `json:"name,omitempty"`
-	SignalQuality  *int64  `json:"signalQuality,omitempty"`
-	SignalStrength *int64  `json:"signalStrength,omitempty"`
-}
-
-func (d *DeviceChannel) GetDrm() *bool {
-	if d == nil {
-		return nil
-	}
-	return d.Drm
-}
-
-func (d *DeviceChannel) GetFavorite() *bool {
-	if d == nil {
-		return nil
-	}
-	return d.Favorite
-}
-
-func (d *DeviceChannel) GetHd() *bool {
-	if d == nil {
-		return nil
-	}
-	return d.Hd
-}
-
-func (d *DeviceChannel) GetIdentifier() *string {
-	if d == nil {
-		return nil
-	}
-	return d.Identifier
-}
-
-func (d *DeviceChannel) GetKey() *string {
-	if d == nil {
-		return nil
-	}
-	return d.Key
-}
-
-func (d *DeviceChannel) GetName() *string {
-	if d == nil {
-		return nil
-	}
-	return d.Name
-}
-
-func (d *DeviceChannel) GetSignalQuality() *int64 {
-	if d == nil {
-		return nil
-	}
-	return d.SignalQuality
-}
-
-func (d *DeviceChannel) GetSignalStrength() *int64 {
-	if d == nil {
-		return nil
-	}
-	return d.SignalStrength
-}
-
 // GetDevicesChannelsMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
 // Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
 // The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
 type GetDevicesChannelsMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize     *int64          `json:"totalSize,omitempty"`
-	DeviceChannel []DeviceChannel `json:"DeviceChannel,omitempty"`
+	TotalSize     *int64                     `json:"totalSize,omitempty"`
+	DeviceChannel []components.DeviceChannel `json:"DeviceChannel,omitempty"`
 }
 
 func (g *GetDevicesChannelsMediaContainer) GetIdentifier() *string {
@@ -354,7 +284,7 @@ func (g *GetDevicesChannelsMediaContainer) GetTotalSize() *int64 {
 	return g.TotalSize
 }
 
-func (g *GetDevicesChannelsMediaContainer) GetDeviceChannel() []DeviceChannel {
+func (g *GetDevicesChannelsMediaContainer) GetDeviceChannel() []components.DeviceChannel {
 	if g == nil {
 		return nil
 	}

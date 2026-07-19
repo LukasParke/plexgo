@@ -151,7 +151,7 @@ type AddSectionRequest struct {
 	// The name of the new section
 	Name string `queryParam:"style=form,explode=true,name=name"`
 	// The type of library section
-	Type int64 `queryParam:"style=form,explode=true,name=type"`
+	MediaType int64 `queryParam:"style=form,explode=true,name=type"`
 	// The scanner this section should use
 	Scanner *string `queryParam:"style=form,explode=true,name=scanner"`
 	// The agent this section should use for metadata
@@ -265,11 +265,11 @@ func (a *AddSectionRequest) GetName() string {
 	return a.Name
 }
 
-func (a *AddSectionRequest) GetType() int64 {
+func (a *AddSectionRequest) GetMediaType() int64 {
 	if a == nil {
 		return 0
 	}
-	return a.Type
+	return a.MediaType
 }
 
 func (a *AddSectionRequest) GetScanner() *string {
@@ -335,7 +335,7 @@ type AddSectionResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// OK
+	// Successfully created/executed add a library section
 	SlashGetResponses200 *components.SlashGetResponses200
 }
 

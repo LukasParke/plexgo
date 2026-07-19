@@ -1,5 +1,7 @@
 # EditSubscriptionPreferencesQueryParamPrefs
 
+The preference key to retrieve or set
+
 
 ## Fields
 

@@ -243,68 +243,6 @@ func (g *GetSectionFiltersRequest) GetSectionID() int64 {
 	return g.SectionID
 }
 
-// GetSectionFiltersMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
-// Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
-// The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
-type GetSectionFiltersMediaContainer struct {
-	Identifier *string `json:"identifier,omitempty"`
-	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
-	Offset *int64 `json:"offset,omitempty"`
-	Size   *int64 `json:"size,omitempty"`
-	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize *int64                 `json:"totalSize,omitempty"`
-	Directory []components.Directory `json:"Directory,omitempty"`
-}
-
-func (g *GetSectionFiltersMediaContainer) GetIdentifier() *string {
-	if g == nil {
-		return nil
-	}
-	return g.Identifier
-}
-
-func (g *GetSectionFiltersMediaContainer) GetOffset() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.Offset
-}
-
-func (g *GetSectionFiltersMediaContainer) GetSize() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.Size
-}
-
-func (g *GetSectionFiltersMediaContainer) GetTotalSize() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.TotalSize
-}
-
-func (g *GetSectionFiltersMediaContainer) GetDirectory() []components.Directory {
-	if g == nil {
-		return nil
-	}
-	return g.Directory
-}
-
-// GetSectionFiltersResponseBody - The filters on the section
-type GetSectionFiltersResponseBody struct {
-	MediaContainer *GetSectionFiltersMediaContainer `json:"MediaContainer,omitempty"`
-}
-
-func (g *GetSectionFiltersResponseBody) GetMediaContainer() *GetSectionFiltersMediaContainer {
-	if g == nil {
-		return nil
-	}
-	return g.MediaContainer
-}
-
 type GetSectionFiltersResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -313,7 +251,7 @@ type GetSectionFiltersResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// The filters on the section
-	Object *GetSectionFiltersResponseBody
+	MediaContainerWithDirectory *components.MediaContainerWithDirectory
 }
 
 func (g *GetSectionFiltersResponse) GetContentType() string {
@@ -337,9 +275,9 @@ func (g *GetSectionFiltersResponse) GetRawResponse() *http.Response {
 	return g.RawResponse
 }
 
-func (g *GetSectionFiltersResponse) GetObject() *GetSectionFiltersResponseBody {
+func (g *GetSectionFiltersResponse) GetMediaContainerWithDirectory() *components.MediaContainerWithDirectory {
 	if g == nil {
 		return nil
 	}
-	return g.Object
+	return g.MediaContainerWithDirectory
 }

@@ -163,7 +163,7 @@ type CreateSubscriptionRequest struct {
 	// The section location into which to grab.
 	TargetSectionLocationID *int64 `queryParam:"style=form,explode=true,name=targetSectionLocationID"`
 	// The type of the thing we're subscribing too (e.g. show, season).
-	Type *int64 `queryParam:"style=form,explode=true,name=type"`
+	MediaType *int64 `queryParam:"style=form,explode=true,name=type"`
 	// Hints describing what we're looking for.  Note: The hint `ratingKey` is required for downloading from a PMS remote.
 	Hints *Hints `queryParam:"style=deepObject,explode=true,name=hints"`
 	// Subscription preferences.
@@ -171,7 +171,6 @@ type CreateSubscriptionRequest struct {
 	// Subscription parameters.
 	//   - `mediaProviderID`: Required for downloads to indicate which MP the subscription will download into
 	//   - `source`: Required for downloads to indicate the source of the downloaded content.
-	//
 	Params *Params `queryParam:"style=deepObject,explode=true,name=params"`
 }
 
@@ -277,11 +276,11 @@ func (c *CreateSubscriptionRequest) GetTargetSectionLocationID() *int64 {
 	return c.TargetSectionLocationID
 }
 
-func (c *CreateSubscriptionRequest) GetType() *int64 {
+func (c *CreateSubscriptionRequest) GetMediaType() *int64 {
 	if c == nil {
 		return nil
 	}
-	return c.Type
+	return c.MediaType
 }
 
 func (c *CreateSubscriptionRequest) GetHints() *Hints {
@@ -311,11 +310,9 @@ func (c *CreateSubscriptionRequest) GetParams() *Params {
 type CreateSubscriptionMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
 	TotalSize         *int64                         `json:"totalSize,omitempty"`
 	MediaSubscription []components.MediaSubscription `json:"MediaSubscription,omitempty"`
 }

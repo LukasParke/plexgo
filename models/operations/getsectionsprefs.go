@@ -145,7 +145,7 @@ type GetSectionsPrefsRequest struct {
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
 	// The metadata type
-	Type int64 `queryParam:"style=form,explode=true,name=type"`
+	MediaType int64 `queryParam:"style=form,explode=true,name=type"`
 	// The metadata agent in use
 	Agent *string `queryParam:"style=form,explode=true,name=agent"`
 }
@@ -238,11 +238,11 @@ func (g *GetSectionsPrefsRequest) GetMarketplace() *string {
 	return g.Marketplace
 }
 
-func (g *GetSectionsPrefsRequest) GetType() int64 {
+func (g *GetSectionsPrefsRequest) GetMediaType() int64 {
 	if g == nil {
 		return 0
 	}
-	return g.Type
+	return g.MediaType
 }
 
 func (g *GetSectionsPrefsRequest) GetAgent() *string {
@@ -259,7 +259,7 @@ type GetSectionsPrefsResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// OK
+	// Successfully retrieved get section prefs
 	LibrarySections *components.LibrarySections
 }
 

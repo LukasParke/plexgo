@@ -143,14 +143,21 @@ type ListMatchesRequest struct {
 	// A friendly name for the client
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
-	Marketplace *string             `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	Ids         string              `pathParam:"style=simple,explode=false,name=ids"`
-	Title       *string             `queryParam:"style=form,explode=true,name=title"`
-	ParentTitle *string             `queryParam:"style=form,explode=true,name=parentTitle"`
-	Agent       *string             `queryParam:"style=form,explode=true,name=agent"`
-	Language    *string             `queryParam:"style=form,explode=true,name=language"`
-	Year        *int64              `queryParam:"style=form,explode=true,name=year"`
-	Manual      *components.BoolInt `default:"0" queryParam:"style=form,explode=true,name=manual"`
+	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
+	// Comma-separated list of IDs
+	Ids string `pathParam:"style=simple,explode=false,name=ids"`
+	// The title to filter by
+	Title *string `queryParam:"style=form,explode=true,name=title"`
+	// The parentTitle
+	ParentTitle *string `queryParam:"style=form,explode=true,name=parentTitle"`
+	// The identifier of the metadata agent to use
+	Agent *string `queryParam:"style=form,explode=true,name=agent"`
+	// The language code to use
+	Language *string `queryParam:"style=form,explode=true,name=language"`
+	// The year to filter by
+	Year *int64 `queryParam:"style=form,explode=true,name=year"`
+	// Whether to perform the operation manually
+	Manual *components.BoolInt `default:"0" queryParam:"style=form,explode=true,name=manual"`
 }
 
 func (l ListMatchesRequest) MarshalJSON() ([]byte, error) {

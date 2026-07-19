@@ -144,12 +144,12 @@ type GetCollectionImageRequest struct {
 	// A friendly name for the client
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
-	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
+	Marketplace *string               `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
+	Composite   *components.Composite `queryParam:"style=form,explode=true,name=composite"`
 	// The collection id
 	CollectionID int64 `pathParam:"style=simple,explode=false,name=collectionId"`
 	// The update time of the image.  Used for busting cache.
-	UpdatedAt int64                 `pathParam:"style=simple,explode=false,name=updatedAt"`
-	Composite *components.Composite `queryParam:"style=form,explode=true,name=composite"`
+	UpdatedAt int64 `pathParam:"style=simple,explode=false,name=updatedAt"`
 }
 
 func (g GetCollectionImageRequest) MarshalJSON() ([]byte, error) {
@@ -240,6 +240,13 @@ func (g *GetCollectionImageRequest) GetMarketplace() *string {
 	return g.Marketplace
 }
 
+func (g *GetCollectionImageRequest) GetComposite() *components.Composite {
+	if g == nil {
+		return nil
+	}
+	return g.Composite
+}
+
 func (g *GetCollectionImageRequest) GetCollectionID() int64 {
 	if g == nil {
 		return 0
@@ -252,13 +259,6 @@ func (g *GetCollectionImageRequest) GetUpdatedAt() int64 {
 		return 0
 	}
 	return g.UpdatedAt
-}
-
-func (g *GetCollectionImageRequest) GetComposite() *components.Composite {
-	if g == nil {
-		return nil
-	}
-	return g.Composite
 }
 
 type GetCollectionImageResponse struct {

@@ -5,6 +5,7 @@ package operations
 import (
 	"github.com/LukeHagar/plexgo/internal/utils"
 	"github.com/LukeHagar/plexgo/models/components"
+	"io"
 	"net/http"
 )
 
@@ -277,7 +278,10 @@ type GetMediaPartResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	Headers     map[string][]string
+	// OK
+	// The Close method must be called on this field, even if it is not used, to prevent resource leaks.
+	BinaryResponse io.ReadCloser
+	Headers        map[string][]string
 }
 
 func (g *GetMediaPartResponse) GetContentType() string {
@@ -299,6 +303,13 @@ func (g *GetMediaPartResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return g.RawResponse
+}
+
+func (g *GetMediaPartResponse) GetBinaryResponse() io.ReadCloser {
+	if g == nil {
+		return nil
+	}
+	return g.BinaryResponse
 }
 
 func (g *GetMediaPartResponse) GetHeaders() map[string][]string {

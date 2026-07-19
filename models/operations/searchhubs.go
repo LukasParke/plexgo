@@ -150,6 +150,8 @@ type SearchHubsRequest struct {
 	SectionID *int64 `queryParam:"style=form,explode=true,name=sectionId"`
 	// The number of items to return per hub.  3 if not specified
 	Limit *int64 `queryParam:"style=form,explode=true,name=limit"`
+	// Include collection results in search hubs
+	IncludeCollections *bool `queryParam:"style=form,explode=true,name=includeCollections"`
 }
 
 func (s SearchHubsRequest) MarshalJSON() ([]byte, error) {
@@ -261,66 +263,11 @@ func (s *SearchHubsRequest) GetLimit() *int64 {
 	return s.Limit
 }
 
-// SearchHubsMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
-// Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
-// The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
-type SearchHubsMediaContainer struct {
-	Identifier *string `json:"identifier,omitempty"`
-	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
-	Offset *int64 `json:"offset,omitempty"`
-	Size   *int64 `json:"size,omitempty"`
-	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize *int64           `json:"totalSize,omitempty"`
-	Hub       []components.Hub `json:"Hub,omitempty"`
-}
-
-func (s *SearchHubsMediaContainer) GetIdentifier() *string {
+func (s *SearchHubsRequest) GetIncludeCollections() *bool {
 	if s == nil {
 		return nil
 	}
-	return s.Identifier
-}
-
-func (s *SearchHubsMediaContainer) GetOffset() *int64 {
-	if s == nil {
-		return nil
-	}
-	return s.Offset
-}
-
-func (s *SearchHubsMediaContainer) GetSize() *int64 {
-	if s == nil {
-		return nil
-	}
-	return s.Size
-}
-
-func (s *SearchHubsMediaContainer) GetTotalSize() *int64 {
-	if s == nil {
-		return nil
-	}
-	return s.TotalSize
-}
-
-func (s *SearchHubsMediaContainer) GetHub() []components.Hub {
-	if s == nil {
-		return nil
-	}
-	return s.Hub
-}
-
-// SearchHubsResponseBody - OK
-type SearchHubsResponseBody struct {
-	MediaContainer *SearchHubsMediaContainer `json:"MediaContainer,omitempty"`
-}
-
-func (s *SearchHubsResponseBody) GetMediaContainer() *SearchHubsMediaContainer {
-	if s == nil {
-		return nil
-	}
-	return s.MediaContainer
+	return s.IncludeCollections
 }
 
 type SearchHubsResponse struct {
@@ -331,8 +278,8 @@ type SearchHubsResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// OK
-	Object  *SearchHubsResponseBody
-	Headers map[string][]string
+	MediaContainerWithHubs *components.MediaContainerWithHubs
+	Headers                map[string][]string
 }
 
 func (s *SearchHubsResponse) GetContentType() string {
@@ -356,11 +303,11 @@ func (s *SearchHubsResponse) GetRawResponse() *http.Response {
 	return s.RawResponse
 }
 
-func (s *SearchHubsResponse) GetObject() *SearchHubsResponseBody {
+func (s *SearchHubsResponse) GetMediaContainerWithHubs() *components.MediaContainerWithHubs {
 	if s == nil {
 		return nil
 	}
-	return s.Object
+	return s.MediaContainerWithHubs
 }
 
 func (s *SearchHubsResponse) GetHeaders() map[string][]string {

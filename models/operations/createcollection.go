@@ -144,14 +144,10 @@ type CreateCollectionRequest struct {
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	// The section where this collection will be created
-	SectionID string `queryParam:"style=form,explode=true,name=sectionId"`
 	// The title to filter by or assign
 	Title *string `queryParam:"style=form,explode=true,name=title"`
 	// Whether this is a smart collection/playlist
 	Smart *bool `queryParam:"style=form,explode=true,name=smart"`
-	// The URI for processing the smart collection.  Required for a smart collection
-	URI *string `queryParam:"style=form,explode=true,name=uri"`
 	// The type of media to retrieve or filter by.
 	//
 	// 1 = movie
@@ -165,8 +161,11 @@ type CreateCollectionRequest struct {
 	// 9 = photo
 	//
 	// E.g. A movie library will not return anything with type 3 as there are no seasons for movie libraries
-	//
 	Type *components.MediaType `queryParam:"style=form,explode=true,name=type"`
+	// The section where this collection will be created
+	SectionID string `queryParam:"style=form,explode=true,name=sectionId"`
+	// The URI for processing the smart collection.  Required for a smart collection
+	URI *string `queryParam:"style=form,explode=true,name=uri"`
 }
 
 func (c CreateCollectionRequest) MarshalJSON() ([]byte, error) {
@@ -257,13 +256,6 @@ func (c *CreateCollectionRequest) GetMarketplace() *string {
 	return c.Marketplace
 }
 
-func (c *CreateCollectionRequest) GetSectionID() string {
-	if c == nil {
-		return ""
-	}
-	return c.SectionID
-}
-
 func (c *CreateCollectionRequest) GetTitle() *string {
 	if c == nil {
 		return nil
@@ -278,18 +270,25 @@ func (c *CreateCollectionRequest) GetSmart() *bool {
 	return c.Smart
 }
 
-func (c *CreateCollectionRequest) GetURI() *string {
-	if c == nil {
-		return nil
-	}
-	return c.URI
-}
-
 func (c *CreateCollectionRequest) GetType() *components.MediaType {
 	if c == nil {
 		return nil
 	}
 	return c.Type
+}
+
+func (c *CreateCollectionRequest) GetSectionID() string {
+	if c == nil {
+		return ""
+	}
+	return c.SectionID
+}
+
+func (c *CreateCollectionRequest) GetURI() *string {
+	if c == nil {
+		return nil
+	}
+	return c.URI
 }
 
 type CreateCollectionResponse struct {
@@ -299,8 +298,8 @@ type CreateCollectionResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// OK
-	MediaContainerWithMetadata *components.MediaContainerWithMetadata
+	// The created collection
+	Collection *components.Collection
 }
 
 func (c *CreateCollectionResponse) GetContentType() string {
@@ -324,9 +323,9 @@ func (c *CreateCollectionResponse) GetRawResponse() *http.Response {
 	return c.RawResponse
 }
 
-func (c *CreateCollectionResponse) GetMediaContainerWithMetadata() *components.MediaContainerWithMetadata {
+func (c *CreateCollectionResponse) GetCollection() *components.Collection {
 	if c == nil {
 		return nil
 	}
-	return c.MediaContainerWithMetadata
+	return c.Collection
 }

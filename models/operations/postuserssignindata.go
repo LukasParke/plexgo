@@ -349,18 +349,11 @@ func (e *Status) IsExact() bool {
 }
 
 type Services struct {
-	Identifier string  `json:"identifier"`
 	Endpoint   string  `json:"endpoint"`
-	Token      *string `json:"token"`
+	Identifier string  `json:"identifier"`
 	Secret     *string `json:"secret"`
 	Status     Status  `json:"status"`
-}
-
-func (s *Services) GetIdentifier() string {
-	if s == nil {
-		return ""
-	}
-	return s.Identifier
+	Token      *string `json:"token"`
 }
 
 func (s *Services) GetEndpoint() string {
@@ -370,11 +363,11 @@ func (s *Services) GetEndpoint() string {
 	return s.Endpoint
 }
 
-func (s *Services) GetToken() *string {
+func (s *Services) GetIdentifier() string {
 	if s == nil {
-		return nil
+		return ""
 	}
-	return s.Token
+	return s.Identifier
 }
 
 func (s *Services) GetSecret() *string {
@@ -389,6 +382,13 @@ func (s *Services) GetStatus() Status {
 		return Status("")
 	}
 	return s.Status
+}
+
+func (s *Services) GetToken() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Token
 }
 
 // PostUsersSignInDataStatus - String representation of subscriptionActive
@@ -416,25 +416,18 @@ func (e *PostUsersSignInDataStatus) IsExact() bool {
 
 // Subscription - If the account's Plex Pass subscription is active
 type Subscription struct {
-	// List of features allowed on your Plex Pass subscription
-	Features []string `json:"features,omitempty"`
 	// If the account's Plex Pass subscription is active
 	Active *bool `json:"active,omitempty"`
-	// Date the account subscribed to Plex Pass
-	SubscribedAt *string `json:"subscribedAt,omitempty"`
-	// String representation of subscriptionActive
-	Status *PostUsersSignInDataStatus `json:"status,omitempty"`
+	// List of features allowed on your Plex Pass subscription
+	Features []string `json:"features,omitempty"`
 	// Payment service used for your Plex Pass subscription
 	PaymentService *string `json:"paymentService,omitempty"`
 	// Name of Plex Pass subscription plan
 	Plan *string `json:"plan,omitempty"`
-}
-
-func (s *Subscription) GetFeatures() []string {
-	if s == nil {
-		return nil
-	}
-	return s.Features
+	// String representation of subscriptionActive
+	Status *PostUsersSignInDataStatus `json:"status,omitempty"`
+	// Date the account subscribed to Plex Pass
+	SubscribedAt *string `json:"subscribedAt,omitempty"`
 }
 
 func (s *Subscription) GetActive() *bool {
@@ -444,18 +437,11 @@ func (s *Subscription) GetActive() *bool {
 	return s.Active
 }
 
-func (s *Subscription) GetSubscribedAt() *string {
+func (s *Subscription) GetFeatures() []string {
 	if s == nil {
 		return nil
 	}
-	return s.SubscribedAt
-}
-
-func (s *Subscription) GetStatus() *PostUsersSignInDataStatus {
-	if s == nil {
-		return nil
-	}
-	return s.Status
+	return s.Features
 }
 
 func (s *Subscription) GetPaymentService() *string {
@@ -470,6 +456,20 @@ func (s *Subscription) GetPlan() *string {
 		return nil
 	}
 	return s.Plan
+}
+
+func (s *Subscription) GetStatus() *PostUsersSignInDataStatus {
+	if s == nil {
+		return nil
+	}
+	return s.Status
+}
+
+func (s *Subscription) GetSubscribedAt() *string {
+	if s == nil {
+		return nil
+	}
+	return s.SubscribedAt
 }
 
 // PostUsersSignInDataAuthenticationStatus - String representation of subscriptionActive
@@ -496,25 +496,18 @@ func (e *PostUsersSignInDataAuthenticationStatus) IsExact() bool {
 }
 
 type PostUsersSignInDataSubscription struct {
-	// List of features allowed on your Plex Pass subscription
-	Features []string `json:"features,omitempty"`
 	// If the account's Plex Pass subscription is active
 	Active *bool `json:"active,omitempty"`
-	// Date the account subscribed to Plex Pass
-	SubscribedAt *string `json:"subscribedAt,omitempty"`
-	// String representation of subscriptionActive
-	Status *PostUsersSignInDataAuthenticationStatus `json:"status,omitempty"`
+	// List of features allowed on your Plex Pass subscription
+	Features []string `json:"features,omitempty"`
 	// Payment service used for your Plex Pass subscription
 	PaymentService *string `json:"paymentService,omitempty"`
 	// Name of Plex Pass subscription plan
 	Plan *string `json:"plan,omitempty"`
-}
-
-func (p *PostUsersSignInDataSubscription) GetFeatures() []string {
-	if p == nil {
-		return nil
-	}
-	return p.Features
+	// String representation of subscriptionActive
+	Status *PostUsersSignInDataAuthenticationStatus `json:"status,omitempty"`
+	// Date the account subscribed to Plex Pass
+	SubscribedAt *string `json:"subscribedAt,omitempty"`
 }
 
 func (p *PostUsersSignInDataSubscription) GetActive() *bool {
@@ -524,18 +517,11 @@ func (p *PostUsersSignInDataSubscription) GetActive() *bool {
 	return p.Active
 }
 
-func (p *PostUsersSignInDataSubscription) GetSubscribedAt() *string {
+func (p *PostUsersSignInDataSubscription) GetFeatures() []string {
 	if p == nil {
 		return nil
 	}
-	return p.SubscribedAt
-}
-
-func (p *PostUsersSignInDataSubscription) GetStatus() *PostUsersSignInDataAuthenticationStatus {
-	if p == nil {
-		return nil
-	}
-	return p.Status
+	return p.Features
 }
 
 func (p *PostUsersSignInDataSubscription) GetPaymentService() *string {
@@ -552,25 +538,18 @@ func (p *PostUsersSignInDataSubscription) GetPlan() *string {
 	return p.Plan
 }
 
-type PostUsersSignInDataState string
-
-const (
-	PostUsersSignInDataStateEnded PostUsersSignInDataState = "ended"
-)
-
-func (e PostUsersSignInDataState) ToPointer() *PostUsersSignInDataState {
-	return &e
+func (p *PostUsersSignInDataSubscription) GetStatus() *PostUsersSignInDataAuthenticationStatus {
+	if p == nil {
+		return nil
+	}
+	return p.Status
 }
 
-// IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *PostUsersSignInDataState) IsExact() bool {
-	if e != nil {
-		switch *e {
-		case "ended":
-			return true
-		}
+func (p *PostUsersSignInDataSubscription) GetSubscribedAt() *string {
+	if p == nil {
+		return nil
 	}
-	return false
+	return p.SubscribedAt
 }
 
 type InternalPaymentMethod struct {
@@ -595,22 +574,43 @@ func (b *Billing) GetPaymentMethodID() *int64 {
 	return b.PaymentMethodID
 }
 
+type PostUsersSignInDataState string
+
+const (
+	PostUsersSignInDataStateEnded PostUsersSignInDataState = "ended"
+)
+
+func (e PostUsersSignInDataState) ToPointer() *PostUsersSignInDataState {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PostUsersSignInDataState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ended":
+			return true
+		}
+	}
+	return false
+}
+
 type PastSubscription struct {
-	ID            *string                  `json:"id"`
-	Mode          *string                  `json:"mode"`
-	RenewsAt      *int64                   `json:"renewsAt"`
-	EndsAt        *int64                   `json:"endsAt"`
+	Type          string                   `json:"type"`
+	Billing       Billing                  `json:"billing"`
 	Canceled      *bool                    `default:"false" json:"canceled"`
-	GracePeriod   *bool                    `default:"false" json:"gracePeriod"`
-	OnHold        *bool                    `default:"false" json:"onHold"`
+	CanConvert    *bool                    `default:"false" json:"canConvert"`
+	CanDowngrade  *bool                    `default:"false" json:"canDowngrade"`
 	CanReactivate *bool                    `default:"false" json:"canReactivate"`
 	CanUpgrade    *bool                    `default:"false" json:"canUpgrade"`
-	CanDowngrade  *bool                    `default:"false" json:"canDowngrade"`
-	CanConvert    *bool                    `default:"false" json:"canConvert"`
-	Type          string                   `json:"type"`
-	Transfer      *string                  `json:"transfer"`
+	EndsAt        *int64                   `json:"endsAt"`
+	GracePeriod   *bool                    `default:"false" json:"gracePeriod"`
+	ID            *string                  `json:"id"`
+	Mode          *string                  `json:"mode"`
+	OnHold        *bool                    `default:"false" json:"onHold"`
+	RenewsAt      *int64                   `json:"renewsAt"`
 	State         PostUsersSignInDataState `json:"state"`
-	Billing       Billing                  `json:"billing"`
+	Transfer      *string                  `json:"transfer"`
 }
 
 func (p PastSubscription) MarshalJSON() ([]byte, error) {
@@ -624,32 +624,18 @@ func (p *PastSubscription) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (p *PastSubscription) GetID() *string {
+func (p *PastSubscription) GetType() string {
 	if p == nil {
-		return nil
+		return ""
 	}
-	return p.ID
+	return p.Type
 }
 
-func (p *PastSubscription) GetMode() *string {
+func (p *PastSubscription) GetBilling() Billing {
 	if p == nil {
-		return nil
+		return Billing{}
 	}
-	return p.Mode
-}
-
-func (p *PastSubscription) GetRenewsAt() *int64 {
-	if p == nil {
-		return nil
-	}
-	return p.RenewsAt
-}
-
-func (p *PastSubscription) GetEndsAt() *int64 {
-	if p == nil {
-		return nil
-	}
-	return p.EndsAt
+	return p.Billing
 }
 
 func (p *PastSubscription) GetCanceled() *bool {
@@ -659,18 +645,18 @@ func (p *PastSubscription) GetCanceled() *bool {
 	return p.Canceled
 }
 
-func (p *PastSubscription) GetGracePeriod() *bool {
+func (p *PastSubscription) GetCanConvert() *bool {
 	if p == nil {
 		return nil
 	}
-	return p.GracePeriod
+	return p.CanConvert
 }
 
-func (p *PastSubscription) GetOnHold() *bool {
+func (p *PastSubscription) GetCanDowngrade() *bool {
 	if p == nil {
 		return nil
 	}
-	return p.OnHold
+	return p.CanDowngrade
 }
 
 func (p *PastSubscription) GetCanReactivate() *bool {
@@ -687,32 +673,46 @@ func (p *PastSubscription) GetCanUpgrade() *bool {
 	return p.CanUpgrade
 }
 
-func (p *PastSubscription) GetCanDowngrade() *bool {
+func (p *PastSubscription) GetEndsAt() *int64 {
 	if p == nil {
 		return nil
 	}
-	return p.CanDowngrade
+	return p.EndsAt
 }
 
-func (p *PastSubscription) GetCanConvert() *bool {
+func (p *PastSubscription) GetGracePeriod() *bool {
 	if p == nil {
 		return nil
 	}
-	return p.CanConvert
+	return p.GracePeriod
 }
 
-func (p *PastSubscription) GetType() string {
-	if p == nil {
-		return ""
-	}
-	return p.Type
-}
-
-func (p *PastSubscription) GetTransfer() *string {
+func (p *PastSubscription) GetID() *string {
 	if p == nil {
 		return nil
 	}
-	return p.Transfer
+	return p.ID
+}
+
+func (p *PastSubscription) GetMode() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Mode
+}
+
+func (p *PastSubscription) GetOnHold() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.OnHold
+}
+
+func (p *PastSubscription) GetRenewsAt() *int64 {
+	if p == nil {
+		return nil
+	}
+	return p.RenewsAt
 }
 
 func (p *PastSubscription) GetState() PostUsersSignInDataState {
@@ -722,11 +722,11 @@ func (p *PastSubscription) GetState() PostUsersSignInDataState {
 	return p.State
 }
 
-func (p *PastSubscription) GetBilling() Billing {
+func (p *PastSubscription) GetTransfer() *string {
 	if p == nil {
-		return Billing{}
+		return nil
 	}
-	return p.Billing
+	return p.Transfer
 }
 
 type Trials struct {
@@ -734,12 +734,15 @@ type Trials struct {
 
 // PostUsersSignInDataUserPlexAccount - Returns the user account data with a valid auth token
 type PostUsersSignInDataUserPlexAccount struct {
+	// The title of the account (username or friendly name)
+	Title string `json:"title"`
 	// Unknown
 	AdsConsent           *bool  `json:"adsConsent,omitempty"`
 	AdsConsentReminderAt *int64 `json:"adsConsentReminderAt,omitempty"`
 	AdsConsentSetAt      *int64 `json:"adsConsentSetAt,omitempty"`
 	// Unknown
-	Anonymous *bool `default:"false" json:"anonymous"`
+	Anonymous          *bool   `default:"false" json:"anonymous"`
+	AttributionPartner *string `json:"attributionPartner,omitempty"`
 	// The account token
 	AuthToken string `json:"authToken"`
 	// If the two-factor authentication backup codes have been created
@@ -752,12 +755,12 @@ type PostUsersSignInDataUserPlexAccount struct {
 	Email string `json:"email"`
 	// If login with email only is enabled
 	EmailOnlyAuth *bool `default:"false" json:"emailOnlyAuth"`
+	// List of devices your allowed to use with this account
+	Entitlements []string `json:"entitlements,omitempty"`
 	// If experimental features are enabled
 	ExperimentalFeatures *bool `default:"false" json:"experimentalFeatures"`
 	// Your account full name
 	FriendlyName string `json:"friendlyName"`
-	// List of devices your allowed to use with this account
-	Entitlements []string `json:"entitlements,omitempty"`
 	// If the account is a Plex Home guest user
 	Guest *bool `default:"false" json:"guest"`
 	// If the account has a password
@@ -803,17 +806,15 @@ type PostUsersSignInDataUserPlexAccount struct {
 	Subscriptions           []PostUsersSignInDataSubscription `json:"subscriptions,omitempty"`
 	// URL of the account thumbnail
 	Thumb *string `json:"thumb,omitempty"`
-	// The title of the account (username or friendly name)
-	Title string `json:"title"`
 	// If two-factor authentication is enabled
 	TwoFactorEnabled *bool `default:"false" json:"twoFactorEnabled"`
 	// The account username
 	Username string `json:"username"`
 	// The account UUID
-	UUID               string             `json:"uuid"`
-	AttributionPartner *string            `json:"attributionPartner,omitempty"`
-	PastSubscriptions  []PastSubscription `json:"pastSubscriptions"`
-	Trials             []Trials           `json:"trials"`
+	UUID                 string             `json:"uuid"`
+	PastSubscriptions    []PastSubscription `json:"pastSubscriptions"`
+	Trials               []Trials           `json:"trials"`
+	AdditionalProperties map[string]any     `additionalProperties:"true" json:"-"`
 }
 
 func (p PostUsersSignInDataUserPlexAccount) MarshalJSON() ([]byte, error) {
@@ -825,6 +826,13 @@ func (p *PostUsersSignInDataUserPlexAccount) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (p *PostUsersSignInDataUserPlexAccount) GetTitle() string {
+	if p == nil {
+		return ""
+	}
+	return p.Title
 }
 
 func (p *PostUsersSignInDataUserPlexAccount) GetAdsConsent() *bool {
@@ -853,6 +861,13 @@ func (p *PostUsersSignInDataUserPlexAccount) GetAnonymous() *bool {
 		return nil
 	}
 	return p.Anonymous
+}
+
+func (p *PostUsersSignInDataUserPlexAccount) GetAttributionPartner() *string {
+	if p == nil {
+		return nil
+	}
+	return p.AttributionPartner
 }
 
 func (p *PostUsersSignInDataUserPlexAccount) GetAuthToken() string {
@@ -897,6 +912,13 @@ func (p *PostUsersSignInDataUserPlexAccount) GetEmailOnlyAuth() *bool {
 	return p.EmailOnlyAuth
 }
 
+func (p *PostUsersSignInDataUserPlexAccount) GetEntitlements() []string {
+	if p == nil {
+		return nil
+	}
+	return p.Entitlements
+}
+
 func (p *PostUsersSignInDataUserPlexAccount) GetExperimentalFeatures() *bool {
 	if p == nil {
 		return nil
@@ -909,13 +931,6 @@ func (p *PostUsersSignInDataUserPlexAccount) GetFriendlyName() string {
 		return ""
 	}
 	return p.FriendlyName
-}
-
-func (p *PostUsersSignInDataUserPlexAccount) GetEntitlements() []string {
-	if p == nil {
-		return nil
-	}
-	return p.Entitlements
 }
 
 func (p *PostUsersSignInDataUserPlexAccount) GetGuest() *bool {
@@ -1079,13 +1094,6 @@ func (p *PostUsersSignInDataUserPlexAccount) GetThumb() *string {
 	return p.Thumb
 }
 
-func (p *PostUsersSignInDataUserPlexAccount) GetTitle() string {
-	if p == nil {
-		return ""
-	}
-	return p.Title
-}
-
 func (p *PostUsersSignInDataUserPlexAccount) GetTwoFactorEnabled() *bool {
 	if p == nil {
 		return nil
@@ -1107,13 +1115,6 @@ func (p *PostUsersSignInDataUserPlexAccount) GetUUID() string {
 	return p.UUID
 }
 
-func (p *PostUsersSignInDataUserPlexAccount) GetAttributionPartner() *string {
-	if p == nil {
-		return nil
-	}
-	return p.AttributionPartner
-}
-
 func (p *PostUsersSignInDataUserPlexAccount) GetPastSubscriptions() []PastSubscription {
 	if p == nil {
 		return []PastSubscription{}
@@ -1126,6 +1127,13 @@ func (p *PostUsersSignInDataUserPlexAccount) GetTrials() []Trials {
 		return []Trials{}
 	}
 	return p.Trials
+}
+
+func (p *PostUsersSignInDataUserPlexAccount) GetAdditionalProperties() map[string]any {
+	if p == nil {
+		return nil
+	}
+	return p.AdditionalProperties
 }
 
 type PostUsersSignInDataResponse struct {

@@ -258,11 +258,9 @@ func (a *AddDeviceToDVRRequest) GetDeviceID() int64 {
 type AddDeviceToDVRDVRsMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
 	TotalSize *int64 `json:"totalSize,omitempty"`
 	// A status indicator. If present and non-zero, indicates an error
 	Status *int64 `json:"status,omitempty"`
@@ -303,52 +301,9 @@ func (a *AddDeviceToDVRDVRsMediaContainer) GetStatus() *int64 {
 	return a.Status
 }
 
-type AddDeviceToDVRDVR struct {
-	Device   []components.Device `json:"Device,omitempty"`
-	Key      *string             `json:"key,omitempty"`
-	Language *string             `json:"language,omitempty"`
-	Lineup   *string             `json:"lineup,omitempty"`
-	UUID     *string             `json:"uuid,omitempty"`
-}
-
-func (a *AddDeviceToDVRDVR) GetDevice() []components.Device {
-	if a == nil {
-		return nil
-	}
-	return a.Device
-}
-
-func (a *AddDeviceToDVRDVR) GetKey() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Key
-}
-
-func (a *AddDeviceToDVRDVR) GetLanguage() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Language
-}
-
-func (a *AddDeviceToDVRDVR) GetLineup() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Lineup
-}
-
-func (a *AddDeviceToDVRDVR) GetUUID() *string {
-	if a == nil {
-		return nil
-	}
-	return a.UUID
-}
-
 type AddDeviceToDVRMediaContainer struct {
 	MediaContainer *AddDeviceToDVRDVRsMediaContainer `json:"MediaContainer,omitempty"`
-	Dvr            []AddDeviceToDVRDVR               `json:"DVR,omitempty"`
+	Dvr            []components.Dvr                  `json:"DVR,omitempty"`
 }
 
 func (a *AddDeviceToDVRMediaContainer) GetMediaContainer() *AddDeviceToDVRDVRsMediaContainer {
@@ -358,7 +313,7 @@ func (a *AddDeviceToDVRMediaContainer) GetMediaContainer() *AddDeviceToDVRDVRsMe
 	return a.MediaContainer
 }
 
-func (a *AddDeviceToDVRMediaContainer) GetDvr() []AddDeviceToDVRDVR {
+func (a *AddDeviceToDVRMediaContainer) GetDvr() []components.Dvr {
 	if a == nil {
 		return nil
 	}

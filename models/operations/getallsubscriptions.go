@@ -148,6 +148,10 @@ type GetAllSubscriptionsRequest struct {
 	IncludeGrabs *components.BoolInt `default:"0" queryParam:"style=form,explode=true,name=includeGrabs"`
 	// Compute the storage of recorded items desired by this subscription
 	IncludeStorage *components.BoolInt `default:"0" queryParam:"style=form,explode=true,name=includeStorage"`
+	// Pagination start offset.
+	XPlexContainerStart *int64 `queryParam:"style=form,explode=true,name=X-Plex-Container-Start"`
+	// Pagination page size.
+	XPlexContainerSize *int64 `queryParam:"style=form,explode=true,name=X-Plex-Container-Size"`
 }
 
 func (g GetAllSubscriptionsRequest) MarshalJSON() ([]byte, error) {
@@ -250,6 +254,20 @@ func (g *GetAllSubscriptionsRequest) GetIncludeStorage() *components.BoolInt {
 		return nil
 	}
 	return g.IncludeStorage
+}
+
+func (g *GetAllSubscriptionsRequest) GetXPlexContainerStart() *int64 {
+	if g == nil {
+		return nil
+	}
+	return g.XPlexContainerStart
+}
+
+func (g *GetAllSubscriptionsRequest) GetXPlexContainerSize() *int64 {
+	if g == nil {
+		return nil
+	}
+	return g.XPlexContainerSize
 }
 
 type GetAllSubscriptionsResponse struct {

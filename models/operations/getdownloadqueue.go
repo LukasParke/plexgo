@@ -3,8 +3,6 @@
 package operations
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/LukeHagar/plexgo/internal/utils"
 	"github.com/LukeHagar/plexgo/models/components"
 	"net/http"
@@ -245,94 +243,17 @@ func (g *GetDownloadQueueRequest) GetQueueID() int64 {
 	return g.QueueID
 }
 
-// GetDownloadQueueStatus - The state of this queue
-//   - deciding: At least one item is still being decided
-//   - waiting: At least one item is waiting for transcode and none are currently transcoding
-//   - processing: At least one item is being transcoded
-//   - done: All items are available (or potentially expired)
-//   - error: At least one item has encountered an error
-type GetDownloadQueueStatus string
-
-const (
-	GetDownloadQueueStatusDeciding   GetDownloadQueueStatus = "deciding"
-	GetDownloadQueueStatusWaiting    GetDownloadQueueStatus = "waiting"
-	GetDownloadQueueStatusProcessing GetDownloadQueueStatus = "processing"
-	GetDownloadQueueStatusDone       GetDownloadQueueStatus = "done"
-	GetDownloadQueueStatusError      GetDownloadQueueStatus = "error"
-)
-
-func (e GetDownloadQueueStatus) ToPointer() *GetDownloadQueueStatus {
-	return &e
-}
-func (e *GetDownloadQueueStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "deciding":
-		fallthrough
-	case "waiting":
-		fallthrough
-	case "processing":
-		fallthrough
-	case "done":
-		fallthrough
-	case "error":
-		*e = GetDownloadQueueStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GetDownloadQueueStatus: %v", v)
-	}
-}
-
-type GetDownloadQueueDownloadQueue struct {
-	ID        *int64 `json:"id,omitempty"`
-	ItemCount *int64 `json:"itemCount,omitempty"`
-	// The state of this queue
-	//   - deciding: At least one item is still being decided
-	//   - waiting: At least one item is waiting for transcode and none are currently transcoding
-	//   - processing: At least one item is being transcoded
-	//   - done: All items are available (or potentially expired)
-	//   - error: At least one item has encountered an error
-	//
-	Status *GetDownloadQueueStatus `json:"status,omitempty"`
-}
-
-func (g *GetDownloadQueueDownloadQueue) GetID() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.ID
-}
-
-func (g *GetDownloadQueueDownloadQueue) GetItemCount() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.ItemCount
-}
-
-func (g *GetDownloadQueueDownloadQueue) GetStatus() *GetDownloadQueueStatus {
-	if g == nil {
-		return nil
-	}
-	return g.Status
-}
-
 // GetDownloadQueueMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
 // Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
 // The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
 type GetDownloadQueueMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize     *int64                          `json:"totalSize,omitempty"`
-	DownloadQueue []GetDownloadQueueDownloadQueue `json:"DownloadQueue,omitempty"`
+	TotalSize     *int64                     `json:"totalSize,omitempty"`
+	DownloadQueue []components.DownloadQueue `json:"DownloadQueue,omitempty"`
 }
 
 func (g *GetDownloadQueueMediaContainer) GetIdentifier() *string {
@@ -363,7 +284,7 @@ func (g *GetDownloadQueueMediaContainer) GetTotalSize() *int64 {
 	return g.TotalSize
 }
 
-func (g *GetDownloadQueueMediaContainer) GetDownloadQueue() []GetDownloadQueueDownloadQueue {
+func (g *GetDownloadQueueMediaContainer) GetDownloadQueue() []components.DownloadQueue {
 	if g == nil {
 		return nil
 	}

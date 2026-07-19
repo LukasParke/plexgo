@@ -144,13 +144,14 @@ type AddExtrasRequest struct {
 	DeviceName *string `header:"style=simple,explode=false,name=X-Plex-Device-Name"`
 	// The marketplace on which the client application is distributed
 	Marketplace *string `header:"style=simple,explode=false,name=X-Plex-Marketplace"`
-	Ids         string  `pathParam:"style=simple,explode=false,name=ids"`
+	// The title to filter by or assign
+	Title *string `queryParam:"style=form,explode=true,name=title"`
+	// Comma-separated list of IDs
+	Ids string `pathParam:"style=simple,explode=false,name=ids"`
 	// The metadata type of the extra
 	ExtraType *int64 `queryParam:"style=form,explode=true,name=extraType"`
 	// The URL of the extra
 	URL string `queryParam:"style=form,explode=true,name=url"`
-	// The title to filter by or assign
-	Title *string `queryParam:"style=form,explode=true,name=title"`
 }
 
 func (a AddExtrasRequest) MarshalJSON() ([]byte, error) {
@@ -241,6 +242,13 @@ func (a *AddExtrasRequest) GetMarketplace() *string {
 	return a.Marketplace
 }
 
+func (a *AddExtrasRequest) GetTitle() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Title
+}
+
 func (a *AddExtrasRequest) GetIds() string {
 	if a == nil {
 		return ""
@@ -260,13 +268,6 @@ func (a *AddExtrasRequest) GetURL() string {
 		return ""
 	}
 	return a.URL
-}
-
-func (a *AddExtrasRequest) GetTitle() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Title
 }
 
 type AddExtrasResponse struct {

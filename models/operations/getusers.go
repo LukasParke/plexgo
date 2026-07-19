@@ -240,114 +240,6 @@ func (g *GetUsersRequest) GetMarketplace() *string {
 	return g.Marketplace
 }
 
-// Protected - Indicates whether the account is protected.
-type Protected int
-
-const (
-	ProtectedDisable Protected = 0
-	ProtectedEnable  Protected = 1
-)
-
-func (e Protected) ToPointer() *Protected {
-	return &e
-}
-func (e *Protected) UnmarshalJSON(data []byte) error {
-	var v int
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case 0:
-		fallthrough
-	case 1:
-		*e = Protected(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Protected: %v", v)
-	}
-}
-
-// Home - Indicates if the user is part of a home group.
-type Home int
-
-const (
-	HomeDisable Home = 0
-	HomeEnable  Home = 1
-)
-
-func (e Home) ToPointer() *Home {
-	return &e
-}
-func (e *Home) UnmarshalJSON(data []byte) error {
-	var v int
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case 0:
-		fallthrough
-	case 1:
-		*e = Home(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Home: %v", v)
-	}
-}
-
-// AllowTuners - Indicates if the user is allowed to use tuners.
-type AllowTuners int
-
-const (
-	AllowTunersDisable AllowTuners = 0
-	AllowTunersEnable  AllowTuners = 1
-)
-
-func (e AllowTuners) ToPointer() *AllowTuners {
-	return &e
-}
-func (e *AllowTuners) UnmarshalJSON(data []byte) error {
-	var v int
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case 0:
-		fallthrough
-	case 1:
-		*e = AllowTuners(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AllowTuners: %v", v)
-	}
-}
-
-// GetUsersAllowSync - Indicates if the user is allowed to sync media.
-type GetUsersAllowSync int
-
-const (
-	GetUsersAllowSyncDisable GetUsersAllowSync = 0
-	GetUsersAllowSyncEnable  GetUsersAllowSync = 1
-)
-
-func (e GetUsersAllowSync) ToPointer() *GetUsersAllowSync {
-	return &e
-}
-func (e *GetUsersAllowSync) UnmarshalJSON(data []byte) error {
-	var v int
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case 0:
-		fallthrough
-	case 1:
-		*e = GetUsersAllowSync(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GetUsersAllowSync: %v", v)
-	}
-}
-
 // AllowCameraUpload - Indicates if the user is allowed to upload from a camera.
 type AllowCameraUpload int
 
@@ -426,6 +318,114 @@ func (e *AllowSubtitleAdmin) UnmarshalJSON(data []byte) error {
 		return nil
 	default:
 		return fmt.Errorf("invalid value for AllowSubtitleAdmin: %v", v)
+	}
+}
+
+// GetUsersAllowSync - Indicates if the user is allowed to sync media.
+type GetUsersAllowSync int
+
+const (
+	GetUsersAllowSyncDisable GetUsersAllowSync = 0
+	GetUsersAllowSyncEnable  GetUsersAllowSync = 1
+)
+
+func (e GetUsersAllowSync) ToPointer() *GetUsersAllowSync {
+	return &e
+}
+func (e *GetUsersAllowSync) UnmarshalJSON(data []byte) error {
+	var v int
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case 0:
+		fallthrough
+	case 1:
+		*e = GetUsersAllowSync(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for GetUsersAllowSync: %v", v)
+	}
+}
+
+// AllowTuners - Indicates if the user is allowed to use tuners.
+type AllowTuners int
+
+const (
+	AllowTunersDisable AllowTuners = 0
+	AllowTunersEnable  AllowTuners = 1
+)
+
+func (e AllowTuners) ToPointer() *AllowTuners {
+	return &e
+}
+func (e *AllowTuners) UnmarshalJSON(data []byte) error {
+	var v int
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case 0:
+		fallthrough
+	case 1:
+		*e = AllowTuners(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AllowTuners: %v", v)
+	}
+}
+
+// Home - Indicates if the user is part of a home group.
+type Home int
+
+const (
+	HomeDisable Home = 0
+	HomeEnable  Home = 1
+)
+
+func (e Home) ToPointer() *Home {
+	return &e
+}
+func (e *Home) UnmarshalJSON(data []byte) error {
+	var v int
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case 0:
+		fallthrough
+	case 1:
+		*e = Home(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for Home: %v", v)
+	}
+}
+
+// Protected - Indicates whether the account is protected.
+type Protected int
+
+const (
+	ProtectedDisable Protected = 0
+	ProtectedEnable  Protected = 1
+)
+
+func (e Protected) ToPointer() *Protected {
+	return &e
+}
+func (e *Protected) UnmarshalJSON(data []byte) error {
+	var v int
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case 0:
+		fallthrough
+	case 1:
+		*e = Protected(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for Protected: %v", v)
 	}
 }
 
@@ -538,21 +538,21 @@ func (e *Pending) UnmarshalJSON(data []byte) error {
 }
 
 type Server struct {
+	AllLibraries *AllLibraries `default:"0" json:"allLibraries"`
 	// Unique ID of the server of the connected user
 	ID int64 `json:"id"`
-	// ID of the actual Plex server.
-	ServerID int64 `json:"serverId"`
+	// Unix epoch datetime in seconds
+	LastSeenAt int64 `json:"lastSeenAt"`
 	// Machine identifier of the Plex server.
 	MachineIdentifier string `json:"machineIdentifier"`
 	// Name of the Plex server of the connected user.
 	Name string `json:"name"`
-	// Unix epoch datetime in seconds
-	LastSeenAt int64 `json:"lastSeenAt"`
 	// Number of libraries in the server this user has access to.
-	NumLibraries int64         `json:"numLibraries"`
-	AllLibraries *AllLibraries `default:"0" json:"allLibraries"`
-	Owned        *Owned        `default:"0" json:"owned"`
-	Pending      *Pending      `default:"0" json:"pending"`
+	NumLibraries int64    `json:"numLibraries"`
+	Owned        *Owned   `default:"0" json:"owned"`
+	Pending      *Pending `default:"0" json:"pending"`
+	// ID of the actual Plex server.
+	ServerID int64 `json:"serverId"`
 }
 
 func (s Server) MarshalJSON() ([]byte, error) {
@@ -566,6 +566,13 @@ func (s *Server) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (s *Server) GetAllLibraries() *AllLibraries {
+	if s == nil {
+		return nil
+	}
+	return s.AllLibraries
+}
+
 func (s *Server) GetID() int64 {
 	if s == nil {
 		return 0
@@ -573,11 +580,11 @@ func (s *Server) GetID() int64 {
 	return s.ID
 }
 
-func (s *Server) GetServerID() int64 {
+func (s *Server) GetLastSeenAt() int64 {
 	if s == nil {
 		return 0
 	}
-	return s.ServerID
+	return s.LastSeenAt
 }
 
 func (s *Server) GetMachineIdentifier() string {
@@ -594,25 +601,11 @@ func (s *Server) GetName() string {
 	return s.Name
 }
 
-func (s *Server) GetLastSeenAt() int64 {
-	if s == nil {
-		return 0
-	}
-	return s.LastSeenAt
-}
-
 func (s *Server) GetNumLibraries() int64 {
 	if s == nil {
 		return 0
 	}
 	return s.NumLibraries
-}
-
-func (s *Server) GetAllLibraries() *AllLibraries {
-	if s == nil {
-		return nil
-	}
-	return s.AllLibraries
 }
 
 func (s *Server) GetOwned() *Owned {
@@ -629,26 +622,23 @@ func (s *Server) GetPending() *Pending {
 	return s.Pending
 }
 
+func (s *Server) GetServerID() int64 {
+	if s == nil {
+		return 0
+	}
+	return s.ServerID
+}
+
 type User struct {
-	// User's unique ID.
-	ID int64 `json:"id"`
 	// User's display name.
-	Title string `json:"title"`
-	// User's username.
-	Username string `json:"username"`
-	// User's email address.
-	Email string `json:"email"`
-	// ID of the user's recommendation playlist.
-	RecommendationsPlaylistID *string `json:"recommendationsPlaylistId,omitempty"`
-	// URL to the user's avatar image.
-	Thumb              string              `json:"thumb"`
-	Protected          *Protected          `default:"0" json:"protected"`
-	Home               *Home               `default:"0" json:"home"`
-	AllowTuners        *AllowTuners        `default:"0" json:"allowTuners"`
-	AllowSync          *GetUsersAllowSync  `default:"0" json:"allowSync"`
+	Title              string              `json:"title"`
 	AllowCameraUpload  *AllowCameraUpload  `default:"0" json:"allowCameraUpload"`
 	AllowChannels      *AllowChannels      `default:"0" json:"allowChannels"`
 	AllowSubtitleAdmin *AllowSubtitleAdmin `default:"0" json:"allowSubtitleAdmin"`
+	AllowSync          *GetUsersAllowSync  `default:"0" json:"allowSync"`
+	AllowTuners        *AllowTuners        `default:"0" json:"allowTuners"`
+	// User's email address.
+	Email string `json:"email"`
 	// Filters applied for all content.
 	FilterAll *string `json:"filterAll,omitempty"`
 	// Filters applied for movies.
@@ -658,10 +648,20 @@ type User struct {
 	// Filters applied for photos.
 	FilterPhotos *string `json:"filterPhotos,omitempty"`
 	// Filters applied for television.
-	FilterTelevision *string     `json:"filterTelevision,omitempty"`
-	Restricted       *Restricted `default:"0" json:"restricted"`
+	FilterTelevision *string `json:"filterTelevision,omitempty"`
+	Home             *Home   `default:"0" json:"home"`
+	// User's unique ID.
+	ID        int64      `json:"id"`
+	Protected *Protected `default:"0" json:"protected"`
+	// ID of the user's recommendation playlist.
+	RecommendationsPlaylistID *string     `json:"recommendationsPlaylistId,omitempty"`
+	Restricted                *Restricted `default:"0" json:"restricted"`
 	// List of servers owned by the user.
 	Server []Server `json:"Server"`
+	// URL to the user's avatar image.
+	Thumb string `json:"thumb"`
+	// User's username.
+	Username string `json:"username"`
 }
 
 func (u User) MarshalJSON() ([]byte, error) {
@@ -675,74 +675,11 @@ func (u *User) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (u *User) GetID() int64 {
-	if u == nil {
-		return 0
-	}
-	return u.ID
-}
-
 func (u *User) GetTitle() string {
 	if u == nil {
 		return ""
 	}
 	return u.Title
-}
-
-func (u *User) GetUsername() string {
-	if u == nil {
-		return ""
-	}
-	return u.Username
-}
-
-func (u *User) GetEmail() string {
-	if u == nil {
-		return ""
-	}
-	return u.Email
-}
-
-func (u *User) GetRecommendationsPlaylistID() *string {
-	if u == nil {
-		return nil
-	}
-	return u.RecommendationsPlaylistID
-}
-
-func (u *User) GetThumb() string {
-	if u == nil {
-		return ""
-	}
-	return u.Thumb
-}
-
-func (u *User) GetProtected() *Protected {
-	if u == nil {
-		return nil
-	}
-	return u.Protected
-}
-
-func (u *User) GetHome() *Home {
-	if u == nil {
-		return nil
-	}
-	return u.Home
-}
-
-func (u *User) GetAllowTuners() *AllowTuners {
-	if u == nil {
-		return nil
-	}
-	return u.AllowTuners
-}
-
-func (u *User) GetAllowSync() *GetUsersAllowSync {
-	if u == nil {
-		return nil
-	}
-	return u.AllowSync
 }
 
 func (u *User) GetAllowCameraUpload() *AllowCameraUpload {
@@ -764,6 +701,27 @@ func (u *User) GetAllowSubtitleAdmin() *AllowSubtitleAdmin {
 		return nil
 	}
 	return u.AllowSubtitleAdmin
+}
+
+func (u *User) GetAllowSync() *GetUsersAllowSync {
+	if u == nil {
+		return nil
+	}
+	return u.AllowSync
+}
+
+func (u *User) GetAllowTuners() *AllowTuners {
+	if u == nil {
+		return nil
+	}
+	return u.AllowTuners
+}
+
+func (u *User) GetEmail() string {
+	if u == nil {
+		return ""
+	}
+	return u.Email
 }
 
 func (u *User) GetFilterAll() *string {
@@ -801,6 +759,34 @@ func (u *User) GetFilterTelevision() *string {
 	return u.FilterTelevision
 }
 
+func (u *User) GetHome() *Home {
+	if u == nil {
+		return nil
+	}
+	return u.Home
+}
+
+func (u *User) GetID() int64 {
+	if u == nil {
+		return 0
+	}
+	return u.ID
+}
+
+func (u *User) GetProtected() *Protected {
+	if u == nil {
+		return nil
+	}
+	return u.Protected
+}
+
+func (u *User) GetRecommendationsPlaylistID() *string {
+	if u == nil {
+		return nil
+	}
+	return u.RecommendationsPlaylistID
+}
+
 func (u *User) GetRestricted() *Restricted {
 	if u == nil {
 		return nil
@@ -815,6 +801,20 @@ func (u *User) GetServer() []Server {
 	return u.Server
 }
 
+func (u *User) GetThumb() string {
+	if u == nil {
+		return ""
+	}
+	return u.Thumb
+}
+
+func (u *User) GetUsername() string {
+	if u == nil {
+		return ""
+	}
+	return u.Username
+}
+
 // GetUsersMediaContainer - Container holding user and server details.
 type GetUsersMediaContainer struct {
 	// The friendly name of the Plex instance.
@@ -822,10 +822,10 @@ type GetUsersMediaContainer struct {
 	Identifier   string `json:"identifier"`
 	// Unique Machine identifier of the Plex server.
 	MachineIdentifier string `json:"machineIdentifier"`
-	// Total number of users.
-	TotalSize int64 `json:"totalSize"`
 	// Number of users in the current response.
 	Size int64 `json:"size"`
+	// Total number of users.
+	TotalSize int64 `json:"totalSize"`
 	// List of users with access to the Plex server.
 	User []User `json:"User"`
 }
@@ -851,18 +851,18 @@ func (g *GetUsersMediaContainer) GetMachineIdentifier() string {
 	return g.MachineIdentifier
 }
 
-func (g *GetUsersMediaContainer) GetTotalSize() int64 {
-	if g == nil {
-		return 0
-	}
-	return g.TotalSize
-}
-
 func (g *GetUsersMediaContainer) GetSize() int64 {
 	if g == nil {
 		return 0
 	}
 	return g.Size
+}
+
+func (g *GetUsersMediaContainer) GetTotalSize() int64 {
+	if g == nil {
+		return 0
+	}
+	return g.TotalSize
 }
 
 func (g *GetUsersMediaContainer) GetUser() []User {

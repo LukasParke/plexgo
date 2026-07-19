@@ -37,27 +37,20 @@ func (e *PlexDeviceProtocol) UnmarshalJSON(data []byte) error {
 }
 
 type Connections struct {
-	// The protocol used for the connection (http, https, etc)
-	Protocol PlexDeviceProtocol `json:"protocol"`
 	// The (ip) address or domain name used for the connection
 	Address string `json:"address"`
-	// The port used for the connection
-	Port int `json:"port"`
-	// The full URI of the connection
-	URI string `json:"uri"`
-	// If the connection is local address
-	Local bool `json:"local"`
-	// If the connection is relayed through plex.direct
-	Relay bool `json:"relay"`
 	// If the connection is using IPv6
 	IPv6 bool `json:"IPv6"`
-}
-
-func (c *Connections) GetProtocol() PlexDeviceProtocol {
-	if c == nil {
-		return PlexDeviceProtocol("")
-	}
-	return c.Protocol
+	// If the connection is local address
+	Local bool `json:"local"`
+	// The port used for the connection
+	Port int `json:"port"`
+	// The protocol used for the connection (http, https, etc)
+	Protocol PlexDeviceProtocol `json:"protocol"`
+	// If the connection is relayed through plex.direct
+	Relay bool `json:"relay"`
+	// The full URI of the connection
+	URI string `json:"uri"`
 }
 
 func (c *Connections) GetAddress() string {
@@ -67,18 +60,11 @@ func (c *Connections) GetAddress() string {
 	return c.Address
 }
 
-func (c *Connections) GetPort() int {
+func (c *Connections) GetIPv6() bool {
 	if c == nil {
-		return 0
+		return false
 	}
-	return c.Port
-}
-
-func (c *Connections) GetURI() string {
-	if c == nil {
-		return ""
-	}
-	return c.URI
+	return c.IPv6
 }
 
 func (c *Connections) GetLocal() bool {
@@ -88,6 +74,20 @@ func (c *Connections) GetLocal() bool {
 	return c.Local
 }
 
+func (c *Connections) GetPort() int {
+	if c == nil {
+		return 0
+	}
+	return c.Port
+}
+
+func (c *Connections) GetProtocol() PlexDeviceProtocol {
+	if c == nil {
+		return PlexDeviceProtocol("")
+	}
+	return c.Protocol
+}
+
 func (c *Connections) GetRelay() bool {
 	if c == nil {
 		return false
@@ -95,39 +95,39 @@ func (c *Connections) GetRelay() bool {
 	return c.Relay
 }
 
-func (c *Connections) GetIPv6() bool {
+func (c *Connections) GetURI() string {
 	if c == nil {
-		return false
+		return ""
 	}
-	return c.IPv6
+	return c.URI
 }
 
 type PlexDevice struct {
-	Name             string    `json:"name"`
-	Product          string    `json:"product"`
-	ProductVersion   string    `json:"productVersion"`
-	Platform         *string   `json:"platform"`
-	PlatformVersion  *string   `json:"platformVersion"`
-	Device           *string   `json:"device"`
-	ClientIdentifier string    `json:"clientIdentifier"`
-	CreatedAt        time.Time `json:"createdAt"`
-	LastSeenAt       time.Time `json:"lastSeenAt"`
-	Provides         string    `json:"provides"`
-	// ownerId is null when the device is owned by the token used to send the request
-	OwnerID                *int64        `json:"ownerId"`
-	SourceTitle            *string       `json:"sourceTitle"`
-	PublicAddress          string        `json:"publicAddress"`
 	AccessToken            string        `json:"accessToken"`
-	Owned                  bool          `json:"owned"`
-	Home                   bool          `json:"home"`
-	Synced                 bool          `json:"synced"`
-	Relay                  bool          `json:"relay"`
-	Presence               bool          `json:"presence"`
-	HTTPSRequired          bool          `json:"httpsRequired"`
-	PublicAddressMatches   bool          `json:"publicAddressMatches"`
-	DNSRebindingProtection bool          `json:"dnsRebindingProtection"`
-	NatLoopbackSupported   bool          `json:"natLoopbackSupported"`
+	ClientIdentifier       string        `json:"clientIdentifier"`
 	Connections            []Connections `json:"connections"`
+	CreatedAt              time.Time     `json:"createdAt"`
+	Device                 *string       `json:"device,omitempty"`
+	DNSRebindingProtection bool          `json:"dnsRebindingProtection"`
+	Home                   bool          `json:"home"`
+	HTTPSRequired          bool          `json:"httpsRequired"`
+	LastSeenAt             time.Time     `json:"lastSeenAt"`
+	Name                   string        `json:"name"`
+	NatLoopbackSupported   bool          `json:"natLoopbackSupported"`
+	Owned                  bool          `json:"owned"`
+	// ownerId is null when the device is owned by the token used to send the request
+	OwnerID              *int64  `json:"ownerId"`
+	Platform             *string `json:"platform,omitempty"`
+	PlatformVersion      *string `json:"platformVersion,omitempty"`
+	Presence             bool    `json:"presence"`
+	Product              string  `json:"product"`
+	ProductVersion       string  `json:"productVersion"`
+	Provides             string  `json:"provides"`
+	PublicAddress        string  `json:"publicAddress"`
+	PublicAddressMatches bool    `json:"publicAddressMatches"`
+	Relay                bool    `json:"relay"`
+	SourceTitle          *string `json:"sourceTitle"`
+	Synced               bool    `json:"synced"`
 }
 
 func (p PlexDevice) MarshalJSON() ([]byte, error) {
@@ -141,6 +141,69 @@ func (p *PlexDevice) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (p *PlexDevice) GetAccessToken() string {
+	if p == nil {
+		return ""
+	}
+	return p.AccessToken
+}
+
+func (p *PlexDevice) GetClientIdentifier() string {
+	if p == nil {
+		return ""
+	}
+	return p.ClientIdentifier
+}
+
+func (p *PlexDevice) GetConnections() []Connections {
+	if p == nil {
+		return []Connections{}
+	}
+	return p.Connections
+}
+
+func (p *PlexDevice) GetCreatedAt() time.Time {
+	if p == nil {
+		return time.Time{}
+	}
+	return p.CreatedAt
+}
+
+func (p *PlexDevice) GetDevice() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Device
+}
+
+func (p *PlexDevice) GetDNSRebindingProtection() bool {
+	if p == nil {
+		return false
+	}
+	return p.DNSRebindingProtection
+}
+
+func (p *PlexDevice) GetHome() bool {
+	if p == nil {
+		return false
+	}
+	return p.Home
+}
+
+func (p *PlexDevice) GetHTTPSRequired() bool {
+	if p == nil {
+		return false
+	}
+	return p.HTTPSRequired
+}
+
+func (p *PlexDevice) GetLastSeenAt() time.Time {
+	if p == nil {
+		return time.Time{}
+	}
+	return p.LastSeenAt
+}
+
 func (p *PlexDevice) GetName() string {
 	if p == nil {
 		return ""
@@ -148,18 +211,25 @@ func (p *PlexDevice) GetName() string {
 	return p.Name
 }
 
-func (p *PlexDevice) GetProduct() string {
+func (p *PlexDevice) GetNatLoopbackSupported() bool {
 	if p == nil {
-		return ""
+		return false
 	}
-	return p.Product
+	return p.NatLoopbackSupported
 }
 
-func (p *PlexDevice) GetProductVersion() string {
+func (p *PlexDevice) GetOwned() bool {
 	if p == nil {
-		return ""
+		return false
 	}
-	return p.ProductVersion
+	return p.Owned
+}
+
+func (p *PlexDevice) GetOwnerID() *int64 {
+	if p == nil {
+		return nil
+	}
+	return p.OwnerID
 }
 
 func (p *PlexDevice) GetPlatform() *string {
@@ -176,32 +246,25 @@ func (p *PlexDevice) GetPlatformVersion() *string {
 	return p.PlatformVersion
 }
 
-func (p *PlexDevice) GetDevice() *string {
+func (p *PlexDevice) GetPresence() bool {
 	if p == nil {
-		return nil
+		return false
 	}
-	return p.Device
+	return p.Presence
 }
 
-func (p *PlexDevice) GetClientIdentifier() string {
+func (p *PlexDevice) GetProduct() string {
 	if p == nil {
 		return ""
 	}
-	return p.ClientIdentifier
+	return p.Product
 }
 
-func (p *PlexDevice) GetCreatedAt() time.Time {
+func (p *PlexDevice) GetProductVersion() string {
 	if p == nil {
-		return time.Time{}
+		return ""
 	}
-	return p.CreatedAt
-}
-
-func (p *PlexDevice) GetLastSeenAt() time.Time {
-	if p == nil {
-		return time.Time{}
-	}
-	return p.LastSeenAt
+	return p.ProductVersion
 }
 
 func (p *PlexDevice) GetProvides() string {
@@ -211,74 +274,11 @@ func (p *PlexDevice) GetProvides() string {
 	return p.Provides
 }
 
-func (p *PlexDevice) GetOwnerID() *int64 {
-	if p == nil {
-		return nil
-	}
-	return p.OwnerID
-}
-
-func (p *PlexDevice) GetSourceTitle() *string {
-	if p == nil {
-		return nil
-	}
-	return p.SourceTitle
-}
-
 func (p *PlexDevice) GetPublicAddress() string {
 	if p == nil {
 		return ""
 	}
 	return p.PublicAddress
-}
-
-func (p *PlexDevice) GetAccessToken() string {
-	if p == nil {
-		return ""
-	}
-	return p.AccessToken
-}
-
-func (p *PlexDevice) GetOwned() bool {
-	if p == nil {
-		return false
-	}
-	return p.Owned
-}
-
-func (p *PlexDevice) GetHome() bool {
-	if p == nil {
-		return false
-	}
-	return p.Home
-}
-
-func (p *PlexDevice) GetSynced() bool {
-	if p == nil {
-		return false
-	}
-	return p.Synced
-}
-
-func (p *PlexDevice) GetRelay() bool {
-	if p == nil {
-		return false
-	}
-	return p.Relay
-}
-
-func (p *PlexDevice) GetPresence() bool {
-	if p == nil {
-		return false
-	}
-	return p.Presence
-}
-
-func (p *PlexDevice) GetHTTPSRequired() bool {
-	if p == nil {
-		return false
-	}
-	return p.HTTPSRequired
 }
 
 func (p *PlexDevice) GetPublicAddressMatches() bool {
@@ -288,23 +288,23 @@ func (p *PlexDevice) GetPublicAddressMatches() bool {
 	return p.PublicAddressMatches
 }
 
-func (p *PlexDevice) GetDNSRebindingProtection() bool {
+func (p *PlexDevice) GetRelay() bool {
 	if p == nil {
 		return false
 	}
-	return p.DNSRebindingProtection
+	return p.Relay
 }
 
-func (p *PlexDevice) GetNatLoopbackSupported() bool {
+func (p *PlexDevice) GetSourceTitle() *string {
+	if p == nil {
+		return nil
+	}
+	return p.SourceTitle
+}
+
+func (p *PlexDevice) GetSynced() bool {
 	if p == nil {
 		return false
 	}
-	return p.NatLoopbackSupported
-}
-
-func (p *PlexDevice) GetConnections() []Connections {
-	if p == nil {
-		return []Connections{}
-	}
-	return p.Connections
+	return p.Synced
 }

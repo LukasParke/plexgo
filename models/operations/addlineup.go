@@ -252,131 +252,6 @@ func (a *AddLineupRequest) GetLineup() string {
 	return a.Lineup
 }
 
-// AddLineupDVRsMediaContainer - `MediaContainer` is the root element of most Plex API responses. It serves as a generic container for various types of content (Metadata, Hubs, Directories, etc.) and includes pagination information (offset, size, totalSize) when applicable.
-// Common attributes: - identifier: Unique identifier for this container - size: Number of items in this response page - totalSize: Total number of items available (for pagination) - offset: Starting index of this page (for pagination)
-// The container often "hoists" common attributes from its children. For example, if all tracks in a container share the same album title, the `parentTitle` attribute may appear on the MediaContainer rather than being repeated on each track.
-type AddLineupDVRsMediaContainer struct {
-	Identifier *string `json:"identifier,omitempty"`
-	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
-	Offset *int64 `json:"offset,omitempty"`
-	Size   *int64 `json:"size,omitempty"`
-	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
-	TotalSize *int64 `json:"totalSize,omitempty"`
-	// A status indicator. If present and non-zero, indicates an error
-	Status *int64 `json:"status,omitempty"`
-}
-
-func (a *AddLineupDVRsMediaContainer) GetIdentifier() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Identifier
-}
-
-func (a *AddLineupDVRsMediaContainer) GetOffset() *int64 {
-	if a == nil {
-		return nil
-	}
-	return a.Offset
-}
-
-func (a *AddLineupDVRsMediaContainer) GetSize() *int64 {
-	if a == nil {
-		return nil
-	}
-	return a.Size
-}
-
-func (a *AddLineupDVRsMediaContainer) GetTotalSize() *int64 {
-	if a == nil {
-		return nil
-	}
-	return a.TotalSize
-}
-
-func (a *AddLineupDVRsMediaContainer) GetStatus() *int64 {
-	if a == nil {
-		return nil
-	}
-	return a.Status
-}
-
-type AddLineupDVR struct {
-	Device   []components.Device `json:"Device,omitempty"`
-	Key      *string             `json:"key,omitempty"`
-	Language *string             `json:"language,omitempty"`
-	Lineup   *string             `json:"lineup,omitempty"`
-	UUID     *string             `json:"uuid,omitempty"`
-}
-
-func (a *AddLineupDVR) GetDevice() []components.Device {
-	if a == nil {
-		return nil
-	}
-	return a.Device
-}
-
-func (a *AddLineupDVR) GetKey() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Key
-}
-
-func (a *AddLineupDVR) GetLanguage() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Language
-}
-
-func (a *AddLineupDVR) GetLineup() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Lineup
-}
-
-func (a *AddLineupDVR) GetUUID() *string {
-	if a == nil {
-		return nil
-	}
-	return a.UUID
-}
-
-type AddLineupMediaContainer struct {
-	MediaContainer *AddLineupDVRsMediaContainer `json:"MediaContainer,omitempty"`
-	Dvr            []AddLineupDVR               `json:"DVR,omitempty"`
-}
-
-func (a *AddLineupMediaContainer) GetMediaContainer() *AddLineupDVRsMediaContainer {
-	if a == nil {
-		return nil
-	}
-	return a.MediaContainer
-}
-
-func (a *AddLineupMediaContainer) GetDvr() []AddLineupDVR {
-	if a == nil {
-		return nil
-	}
-	return a.Dvr
-}
-
-// AddLineupResponseBody - OK
-type AddLineupResponseBody struct {
-	MediaContainer *AddLineupMediaContainer `json:"MediaContainer,omitempty"`
-}
-
-func (a *AddLineupResponseBody) GetMediaContainer() *AddLineupMediaContainer {
-	if a == nil {
-		return nil
-	}
-	return a.MediaContainer
-}
-
 type AddLineupResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -385,8 +260,8 @@ type AddLineupResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// OK
-	Object  *AddLineupResponseBody
-	Headers map[string][]string
+	DVRResponse *components.DVRResponse
+	Headers     map[string][]string
 }
 
 func (a *AddLineupResponse) GetContentType() string {
@@ -410,11 +285,11 @@ func (a *AddLineupResponse) GetRawResponse() *http.Response {
 	return a.RawResponse
 }
 
-func (a *AddLineupResponse) GetObject() *AddLineupResponseBody {
+func (a *AddLineupResponse) GetDVRResponse() *components.DVRResponse {
 	if a == nil {
 		return nil
 	}
-	return a.Object
+	return a.DVRResponse
 }
 
 func (a *AddLineupResponse) GetHeaders() map[string][]string {

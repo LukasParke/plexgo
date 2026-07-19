@@ -8,11 +8,9 @@ package components
 type MediaContainerWithMetadataMediaContainer struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// The offset of where this container page starts among the total objects available. Also provided in the `X-Plex-Container-Start` header.
-	//
 	Offset *int64 `json:"offset,omitempty"`
 	Size   *int64 `json:"size,omitempty"`
 	// The total size of objects available. Also provided in the `X-Plex-Container-Total-Size` header.
-	//
 	TotalSize *int64     `json:"totalSize,omitempty"`
 	Metadata  []Metadata `json:"Metadata,omitempty"`
 }
@@ -52,6 +50,7 @@ func (m *MediaContainerWithMetadataMediaContainer) GetMetadata() []Metadata {
 	return m.Metadata
 }
 
+// MediaContainerWithMetadata - A MediaContainer that includes metadata items. When `includeCollections=1` is passed to endpoints such as `/library/sections/{sectionId}/all`, this container may also include `Collection` items.
 type MediaContainerWithMetadata struct {
 	MediaContainer *MediaContainerWithMetadataMediaContainer `json:"MediaContainer,omitempty"`
 }

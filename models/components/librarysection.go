@@ -123,30 +123,33 @@ type LibrarySection struct {
 	// The title of the library
 	Title *string `json:"title,omitempty"`
 	// The type of media content in the Plex library. This can represent videos, music, or photos.
-	//
-	Type             MediaTypeString          `json:"type"`
-	Agent            *string                  `json:"agent,omitempty"`
-	AllowSync        *LibrarySectionAllowSync `json:"allowSync,omitempty"`
-	Art              *string                  `json:"art,omitempty"`
-	Composite        *string                  `json:"composite,omitempty"`
-	Content          *bool                    `json:"content,omitempty"`
-	ContentChangedAt *int64                   `json:"contentChangedAt,omitempty"`
-	CreatedAt        *int64                   `json:"createdAt,omitempty"`
-	Directory        *bool                    `json:"directory,omitempty"`
+	Type      MediaTypeString          `json:"type"`
+	Agent     *string                  `json:"agent,omitempty"`
+	AllowSync *LibrarySectionAllowSync `json:"allowSync,omitempty"`
+	Art       *string                  `json:"art,omitempty"`
+	Composite *string                  `json:"composite,omitempty"`
+	Content   *bool                    `json:"content,omitempty"`
+	// Unix epoch datetime in seconds
+	ContentChangedAt *int64 `json:"contentChangedAt,omitempty"`
+	// Unix epoch datetime in seconds
+	CreatedAt *int64 `json:"createdAt,omitempty"`
+	Directory *bool  `json:"directory,omitempty"`
 	// Indicates whether this section has filtering capabilities
-	Filters  *bool   `json:"filters,omitempty"`
-	Hidden   *bool   `json:"hidden,omitempty"`
-	Key      *string `json:"key,omitempty"`
-	Language string  `json:"language"`
-	// The universally unique identifier for the library.
-	UUID     string                   `json:"uuid"`
+	Filters  *bool                    `json:"filters,omitempty"`
+	Hidden   *bool                    `json:"hidden,omitempty"`
+	Key      *string                  `json:"key,omitempty"`
+	Language string                   `json:"language"`
 	Location []LibrarySectionLocation `json:"Location,omitempty"`
 	// Indicates whether this library section is currently scanning
-	Refreshing *bool   `json:"refreshing,omitempty"`
-	ScannedAt  *int64  `json:"scannedAt,omitempty"`
-	Scanner    *string `json:"scanner,omitempty"`
-	Thumb      *string `json:"thumb,omitempty"`
-	UpdatedAt  *int64  `json:"updatedAt,omitempty"`
+	Refreshing *bool `json:"refreshing,omitempty"`
+	// Unix epoch datetime in seconds
+	ScannedAt *int64  `json:"scannedAt,omitempty"`
+	Scanner   *string `json:"scanner,omitempty"`
+	Thumb     *string `json:"thumb,omitempty"`
+	// Unix epoch datetime in seconds
+	UpdatedAt *int64 `json:"updatedAt,omitempty"`
+	// The universally unique identifier for the library.
+	UUID string `json:"uuid"`
 }
 
 func (l *LibrarySection) GetTitle() *string {
@@ -247,13 +250,6 @@ func (l *LibrarySection) GetLanguage() string {
 	return l.Language
 }
 
-func (l *LibrarySection) GetUUID() string {
-	if l == nil {
-		return ""
-	}
-	return l.UUID
-}
-
 func (l *LibrarySection) GetLocation() []LibrarySectionLocation {
 	if l == nil {
 		return nil
@@ -294,4 +290,11 @@ func (l *LibrarySection) GetUpdatedAt() *int64 {
 		return nil
 	}
 	return l.UpdatedAt
+}
+
+func (l *LibrarySection) GetUUID() string {
+	if l == nil {
+		return ""
+	}
+	return l.UUID
 }

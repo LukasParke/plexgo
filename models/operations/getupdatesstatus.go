@@ -3,136 +3,9 @@
 package operations
 
 import (
-	"encoding/json"
-	"fmt"
+	"github.com/LukeHagar/plexgo/models/components"
 	"net/http"
 )
-
-// GetUpdatesStatusState - The status of this update.
-//
-// - available - This release is available
-// - downloading - This release is downloading
-// - downloaded - This release has been downloaded
-// - installing - This release is installing
-// - tonight - This release will be installed tonight
-// - skipped - This release has been skipped
-// - error - This release has an error
-// - notify - This release is only notifying it is available (typically because it cannot be installed on this setup)
-// - done - This release is complete
-type GetUpdatesStatusState string
-
-const (
-	GetUpdatesStatusStateAvailable   GetUpdatesStatusState = "available"
-	GetUpdatesStatusStateDownloading GetUpdatesStatusState = "downloading"
-	GetUpdatesStatusStateDownloaded  GetUpdatesStatusState = "downloaded"
-	GetUpdatesStatusStateInstalling  GetUpdatesStatusState = "installing"
-	GetUpdatesStatusStateTonight     GetUpdatesStatusState = "tonight"
-	GetUpdatesStatusStateSkipped     GetUpdatesStatusState = "skipped"
-	GetUpdatesStatusStateError       GetUpdatesStatusState = "error"
-	GetUpdatesStatusStateNotify      GetUpdatesStatusState = "notify"
-	GetUpdatesStatusStateDone        GetUpdatesStatusState = "done"
-)
-
-func (e GetUpdatesStatusState) ToPointer() *GetUpdatesStatusState {
-	return &e
-}
-func (e *GetUpdatesStatusState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "available":
-		fallthrough
-	case "downloading":
-		fallthrough
-	case "downloaded":
-		fallthrough
-	case "installing":
-		fallthrough
-	case "tonight":
-		fallthrough
-	case "skipped":
-		fallthrough
-	case "error":
-		fallthrough
-	case "notify":
-		fallthrough
-	case "done":
-		*e = GetUpdatesStatusState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GetUpdatesStatusState: %v", v)
-	}
-}
-
-type Release struct {
-	// A list of what has been added in this version
-	Added *string `json:"added,omitempty"`
-	// The URL of where this update is available
-	DownloadURL *string `json:"downloadURL,omitempty"`
-	// A list of what has been fixed in this version
-	Fixed *string `json:"fixed,omitempty"`
-	// The URL key of the update
-	Key *string `json:"key,omitempty"`
-	// The status of this update.
-	//
-	// - available - This release is available
-	// - downloading - This release is downloading
-	// - downloaded - This release has been downloaded
-	// - installing - This release is installing
-	// - tonight - This release will be installed tonight
-	// - skipped - This release has been skipped
-	// - error - This release has an error
-	// - notify - This release is only notifying it is available (typically because it cannot be installed on this setup)
-	// - done - This release is complete
-	//
-	State *GetUpdatesStatusState `json:"state,omitempty"`
-	// The version available
-	Version *string `json:"version,omitempty"`
-}
-
-func (r *Release) GetAdded() *string {
-	if r == nil {
-		return nil
-	}
-	return r.Added
-}
-
-func (r *Release) GetDownloadURL() *string {
-	if r == nil {
-		return nil
-	}
-	return r.DownloadURL
-}
-
-func (r *Release) GetFixed() *string {
-	if r == nil {
-		return nil
-	}
-	return r.Fixed
-}
-
-func (r *Release) GetKey() *string {
-	if r == nil {
-		return nil
-	}
-	return r.Key
-}
-
-func (r *Release) GetState() *GetUpdatesStatusState {
-	if r == nil {
-		return nil
-	}
-	return r.State
-}
-
-func (r *Release) GetVersion() *string {
-	if r == nil {
-		return nil
-	}
-	return r.Version
-}
 
 type GetUpdatesStatusMediaContainer struct {
 	// The version of the updater (currently `1`)
@@ -142,8 +15,8 @@ type GetUpdatesStatusMediaContainer struct {
 	// The last time a check for updates was performed
 	CheckedAt *int64 `json:"checkedAt,omitempty"`
 	// The URL where the update is available
-	DownloadURL *string   `json:"downloadURL,omitempty"`
-	Release     []Release `json:"Release,omitempty"`
+	DownloadURL *string              `json:"downloadURL,omitempty"`
+	Release     []components.Release `json:"Release,omitempty"`
 	// The current error code (`0` means no error)
 	Status *int64 `json:"status,omitempty"`
 }
@@ -176,7 +49,7 @@ func (g *GetUpdatesStatusMediaContainer) GetDownloadURL() *string {
 	return g.DownloadURL
 }
 
-func (g *GetUpdatesStatusMediaContainer) GetRelease() []Release {
+func (g *GetUpdatesStatusMediaContainer) GetRelease() []components.Release {
 	if g == nil {
 		return nil
 	}
@@ -190,9 +63,16 @@ func (g *GetUpdatesStatusMediaContainer) GetStatus() *int64 {
 	return g.Status
 }
 
-// GetUpdatesStatusResponseBody - OK
+// GetUpdatesStatusResponseBody - Status of the PMS updater.
 type GetUpdatesStatusResponseBody struct {
 	MediaContainer *GetUpdatesStatusMediaContainer `json:"MediaContainer,omitempty"`
+	// Timestamp of the last update check.
+	CheckedAt *int64 `json:"checkedAt,omitempty"`
+	// The URL where the update is available.
+	DownloadURL *string              `json:"downloadURL,omitempty"`
+	Release     []components.Release `json:"Release,omitempty"`
+	// The current error code (0 means no error).
+	Status *int64 `json:"status,omitempty"`
 }
 
 func (g *GetUpdatesStatusResponseBody) GetMediaContainer() *GetUpdatesStatusMediaContainer {
@@ -200,6 +80,34 @@ func (g *GetUpdatesStatusResponseBody) GetMediaContainer() *GetUpdatesStatusMedi
 		return nil
 	}
 	return g.MediaContainer
+}
+
+func (g *GetUpdatesStatusResponseBody) GetCheckedAt() *int64 {
+	if g == nil {
+		return nil
+	}
+	return g.CheckedAt
+}
+
+func (g *GetUpdatesStatusResponseBody) GetDownloadURL() *string {
+	if g == nil {
+		return nil
+	}
+	return g.DownloadURL
+}
+
+func (g *GetUpdatesStatusResponseBody) GetRelease() []components.Release {
+	if g == nil {
+		return nil
+	}
+	return g.Release
+}
+
+func (g *GetUpdatesStatusResponseBody) GetStatus() *int64 {
+	if g == nil {
+		return nil
+	}
+	return g.Status
 }
 
 type GetUpdatesStatusResponse struct {

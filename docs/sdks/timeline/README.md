@@ -9,6 +9,7 @@ The actions feature within a media provider
 * [MarkPlayed](#markplayed) - Mark an item as played
 * [Report](#report) - Report media timeline
 * [Unscrobble](#unscrobble) - Mark an item as unplayed
+* [GetConversionQueue](#getconversionqueue) - Get Conversion Queue
 
 ## MarkPlayed
 
@@ -50,6 +51,7 @@ func main() {
     res, err := s.Timeline.MarkPlayed(ctx, operations.MarkPlayedRequest{
         Identifier: "<value>",
         Key: plexgo.Pointer("59398"),
+        URI: "https://mad-dredger.name",
     })
     if err != nil {
         log.Fatal(err)
@@ -81,7 +83,6 @@ func main() {
 ## Report
 
 This endpoint is hit during media playback for an item. It must be hit whenever the play state changes, or in the absence of a play state change, in a regular fashion (generally this means every 10 seconds on a LAN/WAN, and every 20 seconds over cellular).
-
 
 ### Example Usage
 
@@ -197,6 +198,7 @@ func main() {
 
     res, err := s.Timeline.Unscrobble(ctx, operations.UnscrobbleRequest{
         Identifier: "<value>",
+        URI: "https://qualified-order.org",
     })
     if err != nil {
         log.Fatal(err)
@@ -223,4 +225,69 @@ func main() {
 
 | Error Type         | Status Code        | Content Type       |
 | ------------------ | ------------------ | ------------------ |
+| sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
+
+## GetConversionQueue
+
+Get the conversion/optimization queue.
+
+### Example Usage
+
+<!-- UsageSnippet language="go" operationID="getConversionQueue" method="get" path="/playQueues/1" -->
+```go
+package main
+
+import(
+	"context"
+	"github.com/LukeHagar/plexgo/models/components"
+	"github.com/LukeHagar/plexgo"
+	"github.com/LukeHagar/plexgo/models/operations"
+	"log"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := plexgo.New(
+        plexgo.WithAccepts(components.AcceptsApplicationXML),
+        plexgo.WithClientIdentifier("abc123"),
+        plexgo.WithProduct("Plex for Roku"),
+        plexgo.WithVersion("2.4.1"),
+        plexgo.WithPlatform("Roku"),
+        plexgo.WithPlatformVersion("4.3 build 1057"),
+        plexgo.WithDevice("Roku 3"),
+        plexgo.WithModel("4200X"),
+        plexgo.WithDeviceVendor("Roku"),
+        plexgo.WithDeviceName("Living Room TV"),
+        plexgo.WithMarketplace("googlePlay"),
+        plexgo.WithSecurity("<YOUR_API_KEY_HERE>"),
+    )
+
+    res, err := s.Timeline.GetConversionQueue(ctx, operations.GetConversionQueueRequest{})
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res.MediaContainerWithPlayQueue != nil {
+        // handle response
+    }
+}
+```
+
+### Parameters
+
+| Parameter                                                                                    | Type                                                                                         | Required                                                                                     | Description                                                                                  |
+| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `ctx`                                                                                        | [context.Context](https://pkg.go.dev/context#Context)                                        | :heavy_check_mark:                                                                           | The context to use for the request.                                                          |
+| `request`                                                                                    | [operations.GetConversionQueueRequest](../../models/operations/getconversionqueuerequest.md) | :heavy_check_mark:                                                                           | The request object to use for the request.                                                   |
+| `opts`                                                                                       | [][operations.Option](../../models/operations/option.md)                                     | :heavy_minus_sign:                                                                           | The options for this request.                                                                |
+
+### Response
+
+**[*operations.GetConversionQueueResponse](../../models/operations/getconversionqueueresponse.md), error**
+
+### Errors
+
+| Error Type         | Status Code        | Content Type       |
+| ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
 | sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |

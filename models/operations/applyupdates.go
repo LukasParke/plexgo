@@ -259,6 +259,7 @@ type ApplyUpdatesResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	Body        []byte
 }
 
 func (a *ApplyUpdatesResponse) GetContentType() string {
@@ -280,4 +281,11 @@ func (a *ApplyUpdatesResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return a.RawResponse
+}
+
+func (a *ApplyUpdatesResponse) GetBody() []byte {
+	if a == nil {
+		return nil
+	}
+	return a.Body
 }
