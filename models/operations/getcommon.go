@@ -163,8 +163,6 @@ type GetCommonRequest struct {
 	MediaQuery *components.MediaQuery `queryParam:"style=form,explode=true,name=mediaQuery"`
 	// Section identifier
 	SectionID int64 `pathParam:"style=simple,explode=false,name=sectionId"`
-	// Item type
-	MediaType *int64 `queryParam:"style=form,explode=true,name=type"`
 }
 
 func (g GetCommonRequest) MarshalJSON() ([]byte, error) {
@@ -267,13 +265,6 @@ func (g *GetCommonRequest) GetSectionID() int64 {
 		return 0
 	}
 	return g.SectionID
-}
-
-func (g *GetCommonRequest) GetMediaType() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.MediaType
 }
 
 type GetCommonResponse struct {

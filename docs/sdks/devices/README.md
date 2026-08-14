@@ -532,20 +532,9 @@ func main() {
         ChannelMapping: &operations.ChannelMapping{},
         ChannelMappingByKey: &operations.ChannelMappingByKey{},
         ChannelsEnabled: []string{
-            "4",
-            "6",
-            ".",
-            "1",
-            ",",
-            "4",
-            "4",
-            ".",
-            "1",
-            ",",
-            "4",
-            "5",
-            ".",
-            "1",
+            "46.1",
+            "44.1",
+            "45.1",
         },
     })
     if err != nil {

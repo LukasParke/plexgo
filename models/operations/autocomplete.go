@@ -163,8 +163,6 @@ type AutocompleteRequest struct {
 	MediaQuery *components.MediaQuery `queryParam:"style=form,explode=true,name=mediaQuery"`
 	// Section identifier
 	SectionID int64 `pathParam:"style=simple,explode=false,name=sectionId"`
-	// Item type
-	MediaType *int64 `queryParam:"style=form,explode=true,name=type"`
 	// The "field" stands in for any field, the value is a partial string for matching
 	FieldQuery *string `queryParam:"style=form,explode=true,name=field.query"`
 }
@@ -269,13 +267,6 @@ func (a *AutocompleteRequest) GetSectionID() int64 {
 		return 0
 	}
 	return a.SectionID
-}
-
-func (a *AutocompleteRequest) GetMediaType() *int64 {
-	if a == nil {
-		return nil
-	}
-	return a.MediaType
 }
 
 func (a *AutocompleteRequest) GetFieldQuery() *string {

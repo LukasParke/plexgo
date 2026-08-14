@@ -163,10 +163,6 @@ type GetFirstCharactersRequest struct {
 	MediaQuery *components.MediaQuery `queryParam:"style=form,explode=true,name=mediaQuery"`
 	// Section identifier
 	SectionID int64 `pathParam:"style=simple,explode=false,name=sectionId"`
-	// The metadata type to filter on
-	MediaType *int64 `queryParam:"style=form,explode=true,name=type"`
-	// The metadata type to filter on
-	Sort *int64 `queryParam:"style=form,explode=true,name=sort"`
 }
 
 func (g GetFirstCharactersRequest) MarshalJSON() ([]byte, error) {
@@ -269,20 +265,6 @@ func (g *GetFirstCharactersRequest) GetSectionID() int64 {
 		return 0
 	}
 	return g.SectionID
-}
-
-func (g *GetFirstCharactersRequest) GetMediaType() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.MediaType
-}
-
-func (g *GetFirstCharactersRequest) GetSort() *int64 {
-	if g == nil {
-		return nil
-	}
-	return g.Sort
 }
 
 type GetFirstCharactersDirectory struct {

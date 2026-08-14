@@ -154,29 +154,8 @@ func main() {
 
     res, err := s.Status.ListPlaybackHistory(ctx, operations.ListPlaybackHistoryRequest{
         Sort: []string{
-            "v",
-            "i",
-            "e",
-            "w",
-            "e",
-            "d",
-            "A",
-            "t",
-            ":",
-            "d",
-            "e",
-            "s",
-            "c",
-            ",",
-            "a",
-            "c",
-            "c",
-            "o",
-            "u",
-            "n",
-            "t",
-            "I",
-            "D",
+            "viewedAt:desc",
+            "accountID",
         },
     })
     if err != nil {

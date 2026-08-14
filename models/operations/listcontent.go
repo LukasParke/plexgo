@@ -171,10 +171,6 @@ type ListContentRequest struct {
 	MediaQuery *components.MediaQuery `queryParam:"style=form,explode=true,name=mediaQuery"`
 	// The id of the section
 	SectionID int64 `pathParam:"style=simple,explode=false,name=sectionId"`
-	// Filter by metadata type (1=movie, 2=show, 3=season, 4=episode, 8=artist, 9=album, 10=track)
-	MediaType *int64 `queryParam:"style=form,explode=true,name=type"`
-	// Sort key and direction (e.g. addedAt:desc, titleSort)
-	Sort *string `queryParam:"style=form,explode=true,name=sort"`
 	// Adds the Meta object to the response
 	IncludeMeta *components.BoolInt `default:"0" queryParam:"style=form,explode=true,name=includeMeta"`
 	// Adds the Guid object to the response
@@ -367,20 +363,6 @@ func (l *ListContentRequest) GetSectionID() int64 {
 		return 0
 	}
 	return l.SectionID
-}
-
-func (l *ListContentRequest) GetMediaType() *int64 {
-	if l == nil {
-		return nil
-	}
-	return l.MediaType
-}
-
-func (l *ListContentRequest) GetSort() *string {
-	if l == nil {
-		return nil
-	}
-	return l.Sort
 }
 
 func (l *ListContentRequest) GetIncludeMeta() *components.BoolInt {

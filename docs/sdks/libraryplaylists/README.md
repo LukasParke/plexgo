@@ -665,7 +665,6 @@ func main() {
             LocationID: plexgo.Pointer[int64](-1),
             Policy: &operations.Policy{
                 Scope: operations.QueryParamScopeAll.ToPointer(),
-                Value: plexgo.Pointer[int64](),
             },
             Target: plexgo.Pointer(""),
             TargetTagID: plexgo.Pointer[int64](1),

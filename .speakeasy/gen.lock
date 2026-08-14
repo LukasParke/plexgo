@@ -1,20 +1,20 @@
 lockVersion: 2.0.0
 id: dfa99515-01c0-42eb-9be5-ee212fd03eb3
 management:
-  docChecksum: 3709ffe7a6a4b8a56a8eb38cfd80f9bf
+  docChecksum: ea414229037fddd5dd7769a67111aaf7
   docVersion: 1.1.1
-  speakeasyVersion: 1.790.2
-  generationVersion: 2.918.3
-  releaseVersion: 0.29.0
-  configChecksum: a10fc8da3740418cfbd1b40954fbf563
+  speakeasyVersion: 1.793.1
+  generationVersion: 2.928.0
+  releaseVersion: 0.29.1
+  configChecksum: e942ebbcb1976265de364ffd814555d6
   repoURL: https://github.com/LukasParke/plexgo.git
   repoSubDirectory: .
   installationURL: https://github.com/LukasParke/plexgo
   published: true
 persistentEdits:
-  generation_id: 79c450b7-2360-4fc9-902d-d162fa4ba548
-  pristine_commit_hash: e7f3c244603d5684c24c46b0df8af163c5708b1e
-  pristine_tree_hash: 2743d95bf107fb75ed27f17db3405c5b989780ae
+  generation_id: 66453c38-48f3-4f0e-8c27-230887194ec0
+  pristine_commit_hash: e5c380d918ebf7d8d8e563c3fe6a77487d695a16
+  pristine_tree_hash: 99f2a0603f7b87be51d5af279dfce16f5c7cdc9e
 features:
   go:
     acceptHeaders: 2.81.2
@@ -28,7 +28,7 @@ features:
     downloadStreams: 0.1.2
     enums: 2.82.1
     envVarSecurityUsage: 0.3.2
-    errors: 2.83.1
+    errors: 2.83.2
     examples: 2.81.7
     flattening: 2.81.2
     globalSecurity: 2.82.15
@@ -45,7 +45,7 @@ features:
     responseFormat: 0.1.2
     retries: 2.84.3
     sdkHooks: 0.3.0
-    unions: 2.87.7
+    unions: 2.87.8
     uploadStreams: 0.1.0
 trackedFiles:
   .gitattributes:
@@ -1338,8 +1338,8 @@ trackedFiles:
     pristine_git_object: 88d2c5891d642b345d710a726dce82a0049808e6
   docs/models/operations/autocompleterequest.md:
     id: 752ede2ff9a7
-    last_write_checksum: sha1:9f8a244564501f9d9a0ba988090804ce69588228
-    pristine_git_object: e5ec5655ac6f4325763fd73c1395c14ad3e96213
+    last_write_checksum: sha1:c37d7218621d8859f03842e7be282931ac82481c
+    pristine_git_object: 8213e69487fcfdf0bc410f211c859ce3f0e65a39
   docs/models/operations/autocompleteresponse.md:
     id: 9556d0b2a229
     last_write_checksum: sha1:695922f65ba5951bad4332d8601a4ac835ca18c4
@@ -1598,8 +1598,8 @@ trackedFiles:
     pristine_git_object: d4ad2b560d00b79e75cd999e36d3961a69b81f91
   docs/models/operations/createdvrrequest.md:
     id: 2fdac691e37b
-    last_write_checksum: sha1:adfc887cb14a8bd11b52893e5b8540ce14825c76
-    pristine_git_object: f1499c97b830f829b8a774360929da9246ebd184
+    last_write_checksum: sha1:5790f07c0b94e4d6c9ac7aedfabb98c630954ecf
+    pristine_git_object: baf76e76804ed511bf17c7048e6481534297be65
   docs/models/operations/createdvrresponse.md:
     id: e7ab382219cb
     last_write_checksum: sha1:e7f2f3416e37c5dceefe22950b99589517f93e4a
@@ -2646,8 +2646,8 @@ trackedFiles:
     pristine_git_object: 33027e22455ae3cd97bda3f0e264a155047073aa
   docs/models/operations/getcommonrequest.md:
     id: 03f8738efc54
-    last_write_checksum: sha1:8d2f7c02b26aa12a1189cb9a0cf7d4d4b886647b
-    pristine_git_object: f2d9bb99692048f01565250f1fedf9fd61467c74
+    last_write_checksum: sha1:a99ade50dd908f68ac9967969e88fd446b897f03
+    pristine_git_object: b20c151f6c7db09a6c40bbeb91375d774cb290ce
   docs/models/operations/getcommonresponse.md:
     id: 53585ee02b44
     last_write_checksum: sha1:37d2ca5a4c9b51d5ac052503894a856cfef0074c
@@ -2950,8 +2950,8 @@ trackedFiles:
     pristine_git_object: ad6f822434a75cf18b009b68f1c46580fe80b3e4
   docs/models/operations/getfirstcharactersrequest.md:
     id: b219a5cb1c7c
-    last_write_checksum: sha1:9abc357d07021f72a4ef944acbec6f75df0fce61
-    pristine_git_object: cdad903285dd44b6ef893552aef9074ba9e43031
+    last_write_checksum: sha1:f33e339ba5375f97be42827709d318b38343d5e5
+    pristine_git_object: c6cd685ee17fdd144b43f3ae3903601d2257382f
   docs/models/operations/getfirstcharactersresponse.md:
     id: 97939773be9e
     last_write_checksum: sha1:dd75342ab32395804b0c42dac23894668b0e9a27
@@ -4626,8 +4626,8 @@ trackedFiles:
     pristine_git_object: a4c48e5f94cc783e2319d656b7bf8078a314e552
   docs/models/operations/listcontentrequest.md:
     id: 9b34965d2c84
-    last_write_checksum: sha1:5db16f5d6992cb7bad252bb7f9b07be83ca5336d
-    pristine_git_object: 074abd98c4aab3a57deda1323022c4bcc337a822
+    last_write_checksum: sha1:1e803348d29f6e7eb78e184ada4fdea7246555b9
+    pristine_git_object: 79528f01a9b9aeb6b99e6e936d1e432d23f94597
   docs/models/operations/listcontentresponse.md:
     id: 6b4287b89c7f
     last_write_checksum: sha1:186cd732472da689a7d28f3f1dcf5613a6239974
@@ -4742,8 +4742,8 @@ trackedFiles:
     pristine_git_object: b73e570c08fd6d44e5ad7169f1fcdff676210d45
   docs/models/operations/listplaybackhistoryrequest.md:
     id: 9ea59e188150
-    last_write_checksum: sha1:88f23e3ad60beab27d13445746243cb8894d9773
-    pristine_git_object: 81f1c6fc1010d7c781d28e36aaae4af4352aeb10
+    last_write_checksum: sha1:66856abb76e38eaaa1c20167802305f8387fb954
+    pristine_git_object: c7c9578da5f9d19715d59392b0742e14da5217ab
   docs/models/operations/listplaybackhistoryresponse.md:
     id: 606b19009f27
     last_write_checksum: sha1:c951a0fc5f812b62ea300536b336a4b2c912f62e
@@ -4934,8 +4934,8 @@ trackedFiles:
     pristine_git_object: ed0279ee19b8d4f1653a3b23324738407db26a23
   docs/models/operations/modifyplaylistgeneratorrequest.md:
     id: 8cf6628965e6
-    last_write_checksum: sha1:2e34bf91a370bdf40abfa90a604e514eb5b5388a
-    pristine_git_object: d18e405af05eef6ce00abf363fa66499c1d2fb0a
+    last_write_checksum: sha1:cce3c0c51d25d3131cff066300cef391e328eb60
+    pristine_git_object: 9ab0a0e3e21a195c515f24114b62fa2a62cf8ef4
   docs/models/operations/modifyplaylistgeneratorresponse.md:
     id: 0bc58c538347
     last_write_checksum: sha1:b2b952d740e314494c78474e14b7b5e5694b8b84
@@ -5850,8 +5850,8 @@ trackedFiles:
     pristine_git_object: 382a0ddc9529466721f40e1e80781ee0e9e7f6bc
   docs/models/operations/setchannelmaprequest.md:
     id: 1ab5d2d41f65
-    last_write_checksum: sha1:680e2e9ecd0ad33b15a41350719f62cb5b0fb73c
-    pristine_git_object: 08e319bec703650aa7192b8c8d051bc43857627b
+    last_write_checksum: sha1:1e83fc471d9df0bdb5caaddcdc8fbe0bdbe9cd21
+    pristine_git_object: e56d04353ff6b1de6cdb10a9970829d9c49df025
   docs/models/operations/setchannelmapresponse.md:
     id: f81afc5b9e72
     last_write_checksum: sha1:d8ea96f9a2ce656b922f40606d2e57d0bd1f20f2
@@ -6574,16 +6574,16 @@ trackedFiles:
     pristine_git_object: c6db5be668990821b323b01b7dfeca9da0ed452b
   docs/sdks/devices/README.md:
     id: 205e305f3b19
-    last_write_checksum: sha1:67d8de4c3a7ab801b29f336520e831b9f8b95997
-    pristine_git_object: 31e2b59cf6b8555630c09ea0a481d4ea2dabf48c
+    last_write_checksum: sha1:c8d6311f6b7b55aa825e4d9608d1aa94c6fb4c46
+    pristine_git_object: 3b8d85c39471e708fbccdf5551460a5c4fbc6dbb
   docs/sdks/downloadqueue/README.md:
     id: 7225c9239fb3
     last_write_checksum: sha1:9d7ee51a4727ccbaf6ae59557d47b695f9b5d8ab
     pristine_git_object: c9d37df445596970326fbca05d31c536d580e9a0
   docs/sdks/dvrs/README.md:
     id: ba626de30d49
-    last_write_checksum: sha1:4b56dbc1d1cfd74088125a506e2cdf9169172d93
-    pristine_git_object: 1bb47078de105b7f99f7ca5163652040993d7080
+    last_write_checksum: sha1:2fb1dcd3eaa3c5469d823a8590241eee0ad99b87
+    pristine_git_object: 2a613a885803027bcf6a832db02af055b52b73c7
   docs/sdks/epg/README.md:
     id: 6d2f3f4c92bc
     last_write_checksum: sha1:cefc4af92900a5117025bbf80f935bd2bb25fdb3
@@ -6610,8 +6610,8 @@ trackedFiles:
     pristine_git_object: a8d8222da8f4e349c96dde035970ceb0bf3faca8
   docs/sdks/libraryplaylists/README.md:
     id: 6d90dabc1c66
-    last_write_checksum: sha1:b6991efbfdaa50ad6e780d160c42ab00ddd630bb
-    pristine_git_object: 82be4baab8d91781eec594194762d85247f4d5cc
+    last_write_checksum: sha1:0ed03627b97545f768b6a43c16c251eab3cf538d
+    pristine_git_object: 2a57790fda0db826553da6c26a86a86729363f83
   docs/sdks/livetv/README.md:
     id: 0b8d917b9355
     last_write_checksum: sha1:71bb13e306b11a16eec5c1c14ed0be0c22b0475f
@@ -6658,8 +6658,8 @@ trackedFiles:
     pristine_git_object: 7054e13583e2f1fd8baad67d22d3a3ae6cbfdb14
   docs/sdks/status/README.md:
     id: ad809e9b945c
-    last_write_checksum: sha1:7f01ede0768c7df78cf97983f758e966f3032cc1
-    pristine_git_object: 5781670cdb1e1f9c7a94658731157df80a49a2c7
+    last_write_checksum: sha1:18f5ae28681905725878318602d9efcce1b73f03
+    pristine_git_object: 4aa907b253a51ddbca761182a1b49bf4882dd943
   docs/sdks/subscriptions/README.md:
     id: 298b9ab3c3e0
     last_write_checksum: sha1:89643db58717cb8eaa5d9f8b6365b56a64525acd
@@ -7318,8 +7318,8 @@ trackedFiles:
     pristine_git_object: 2517811b43195fcdda2782e3d0470ccf57db3b57
   models/operations/autocomplete.go:
     id: 830b65e22675
-    last_write_checksum: sha1:8e25a85a9572abe4884a34653c6cd35fcbf08ecd
-    pristine_git_object: 9391f4bfddc9b340d25bac7f35d06a9f6729b0ee
+    last_write_checksum: sha1:cf4cd6d2d6867b5aaa7f1ac3a8c5383eda7ad04c
+    pristine_git_object: a6b83b852e523ec0a9723559630954ea710df414
   models/operations/browsefilesystem.go:
     id: e0cf40249985
     last_write_checksum: sha1:4adb545e4efd11ca2269720fc93645f0f4cebf88
@@ -7722,8 +7722,8 @@ trackedFiles:
     pristine_git_object: c863f9e45cb864b72daf9d5d18bba83fdf81f650
   models/operations/getcommon.go:
     id: 94d1d31bcb88
-    last_write_checksum: sha1:7c17faf284a1228e4fb35e1ab0bb0002526f03fa
-    pristine_git_object: 3b78f1a575da888c4448b8d2e4b5a7bfcc1c2486
+    last_write_checksum: sha1:8b306a9315125ff998c195cc2b5d79a7b50a9c23
+    pristine_git_object: 8dc5ac2b30d916c949d49bbdf7ee953dbe5d5f5b
   models/operations/getcontinuewatching.go:
     id: 29035b197dfb
     last_write_checksum: sha1:e3c92998a81c2c663069a686e99445b34c750160
@@ -7814,8 +7814,8 @@ trackedFiles:
     pristine_git_object: 92872468a24077bdb786c0f5b08aa876d83ddf1c
   models/operations/getfirstcharacters.go:
     id: ed6e4a34b275
-    last_write_checksum: sha1:8caba68427f0b3a208ad8ed089f21425d7556a57
-    pristine_git_object: 4e26e7f3c68e7072721d07a987f12b3b5a3f5238
+    last_write_checksum: sha1:71ac81adc2716a81398ced15e1aae6e0da20f467
+    pristine_git_object: c8f7d5d4838bb10ae6a234e74ee4e21707ff7e05
   models/operations/getfolders.go:
     id: e9bc8a619e3c
     last_write_checksum: sha1:3d56fd845c066b3697b632a6a51f4a1d70da0f18
@@ -8322,8 +8322,8 @@ trackedFiles:
     pristine_git_object: 7e1b430e65d0a08c19eaf3a12f585faaba5d4100
   models/operations/listcontent.go:
     id: 9153e19d6155
-    last_write_checksum: sha1:5c282eb11de928207808a0590b2081ce86656196
-    pristine_git_object: c395408d967644b1d7f63c2e7992975f1c4d5365
+    last_write_checksum: sha1:52024ecfef653cfe613e6861d62f5449f4e6a948
+    pristine_git_object: f4292dd53bdae5644b2706b43589de9ebe1476fa
   models/operations/listdevices.go:
     id: f6e0754c7067
     last_write_checksum: sha1:ea887a525e61e19a7f1bbc527f1756d63203355f
@@ -8922,8 +8922,8 @@ trackedFiles:
     pristine_git_object: 1cac9f1cae7d90aa4e4368e58cc8b794d89bbd00
   plexapi.go:
     id: 08c9dfa9b434
-    last_write_checksum: sha1:80fa424ee616d61192eb06e7e6db6532e16c5aad
-    pristine_git_object: 1a92d6feca56e9a5a0731f750d726403a9b6bc8e
+    last_write_checksum: sha1:93db9df44470fa6d2b87eac5ce94f4e4fd4d8a13
+    pristine_git_object: 2ecd36383ea2b113eaab648dc403e2d56a649e15
   preferences.go:
     id: fcfda30d344e
     last_write_checksum: sha1:cf1ce4c4e01c87e63f4fd22dbbdb727403c72458
@@ -14284,7 +14284,7 @@ examples:
           playlistId: 972007
           generatorId: 208334
         query:
-          Item: {"title": "Jack-Jack Attack", "type": 42, "Location": {"uri": "library://82503060-0d68-4603-b594-8b071d54819e/item/%2Flibrary%2Fmetadata%2F146"}, "locationID": -1, "Policy": {"scope": "all", "unwatched": 0, "value": null}, "target": "", "targetTagID": 1}
+          Item: {"title": "Jack-Jack Attack", "type": 42, "Location": {"uri": "library://82503060-0d68-4603-b594-8b071d54819e/item/%2Flibrary%2Fmetadata%2F146"}, "locationID": -1, "Policy": {"scope": "all", "unwatched": 0}, "target": "", "targetTagID": 1}
         header:
           accepts: "application/xml"
           X-Plex-Client-Identifier: "abc123"
@@ -14801,7 +14801,7 @@ examples:
     speakeasy-default-list-content:
       parameters:
         path:
-          sectionId: null
+          sectionId: 813218
         query:
           X-Plex-Container-Start: 0
           X-Plex-Container-Size: 50
@@ -18439,6 +18439,7 @@ examples:
           application/json: {"MediaContainer": {"identifier": "com.plexapp.plugins.library", "size": 1, "Metadata": []}}
 examplesVersion: 1.0.2
 generatedTests: {}
+releaseNotes: "## Go SDK Changes:\n* `PlexApi.Library.Autocomplete()`: \n  *  `request.Request.MediaType` **Removed** (Breaking ⚠️)\n* `PlexApi.Library.GetCommon()`: \n  *  `request.Request.MediaType` **Removed** (Breaking ⚠️)\n* `PlexApi.Library.GetFirstCharacters()`:  `request.Request` **Changed** (Breaking ⚠️)\n* `PlexApi.Content.ListContent()`:  `request.Request` **Changed** (Breaking ⚠️)\n"
 generatedFiles:
   - .gitattributes
   - /models/components/accepts.go
