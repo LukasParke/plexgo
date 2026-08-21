@@ -648,6 +648,7 @@ func main() {
 * [GetUsers](docs/sdks/users/README.md#getusers) - Get list of all connected users
 * [GetAccountXML](docs/sdks/users/README.md#getaccountxml) - Get Account (XML)
 * [GetAccountJSON](docs/sdks/users/README.md#getaccountjson) - Get Account (JSON)
+* [AcceptInvite](docs/sdks/users/README.md#acceptinvite) - Accept an Invite
 * [DeleteHomeUser](docs/sdks/users/README.md#deletehomeuser) - Delete Home User
 * [UpdateHomeUser](docs/sdks/users/README.md#updatehomeuser) - Update Home User
 * [UpdateRestrictedUser](docs/sdks/users/README.md#updaterestricteduser) - Update Restricted User

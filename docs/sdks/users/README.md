@@ -20,6 +20,7 @@ Plex Users operations
 * [GetUsers](#getusers) - Get list of all connected users
 * [GetAccountXML](#getaccountxml) - Get Account (XML)
 * [GetAccountJSON](#getaccountjson) - Get Account (JSON)
+* [AcceptInvite](#acceptinvite) - Accept an Invite
 * [DeleteHomeUser](#deletehomeuser) - Delete Home User
 * [UpdateHomeUser](#updatehomeuser) - Update Home User
 * [UpdateRestrictedUser](#updaterestricteduser) - Update Restricted User
@@ -876,6 +877,76 @@ func main() {
 ### Response
 
 **[*operations.GetAccountJSONResponse](../../models/operations/getaccountjsonresponse.md), error**
+
+### Errors
+
+| Error Type         | Status Code        | Content Type       |
+| ------------------ | ------------------ | ------------------ |
+| sdkerrors.Error    | 401                | application/json   |
+| sdkerrors.SDKError | 4XX, 5XX           | \*/\*              |
+
+## AcceptInvite
+
+Accept a pending Plex friend, home, or server invitation.
+
+### Example Usage
+
+<!-- UsageSnippet language="go" operationID="acceptInvite" method="put" path="/api/invites/requests/{inviteId}" -->
+```go
+package main
+
+import(
+	"context"
+	"github.com/LukeHagar/plexgo/models/components"
+	"github.com/LukeHagar/plexgo"
+	"github.com/LukeHagar/plexgo/models/operations"
+	"log"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := plexgo.New(
+        plexgo.WithAccepts(components.AcceptsApplicationXML),
+        plexgo.WithClientIdentifier("abc123"),
+        plexgo.WithProduct("Plex for Roku"),
+        plexgo.WithVersion("2.4.1"),
+        plexgo.WithPlatform("Roku"),
+        plexgo.WithPlatformVersion("4.3 build 1057"),
+        plexgo.WithDevice("Roku 3"),
+        plexgo.WithModel("4200X"),
+        plexgo.WithDeviceVendor("Roku"),
+        plexgo.WithDeviceName("Living Room TV"),
+        plexgo.WithMarketplace("googlePlay"),
+        plexgo.WithSecurity("<YOUR_API_KEY_HERE>"),
+    )
+
+    res, err := s.Users.AcceptInvite(ctx, operations.AcceptInviteRequest{
+        InviteID: 530502,
+        Friend: components.BoolIntTrue,
+        Home: components.BoolIntTrue,
+        Server: components.BoolIntTrue,
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res.Body != nil {
+        // handle response
+    }
+}
+```
+
+### Parameters
+
+| Parameter                                                                        | Type                                                                             | Required                                                                         | Description                                                                      |
+| -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `ctx`                                                                            | [context.Context](https://pkg.go.dev/context#Context)                            | :heavy_check_mark:                                                               | The context to use for the request.                                              |
+| `request`                                                                        | [operations.AcceptInviteRequest](../../models/operations/acceptinviterequest.md) | :heavy_check_mark:                                                               | The request object to use for the request.                                       |
+| `opts`                                                                           | [][operations.Option](../../models/operations/option.md)                         | :heavy_minus_sign:                                                               | The options for this request.                                                    |
+
+### Response
+
+**[*operations.AcceptInviteResponse](../../models/operations/acceptinviteresponse.md), error**
 
 ### Errors
 

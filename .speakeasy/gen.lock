@@ -1,27 +1,27 @@
 lockVersion: 2.0.0
 id: dfa99515-01c0-42eb-9be5-ee212fd03eb3
 management:
-  docChecksum: ea414229037fddd5dd7769a67111aaf7
+  docChecksum: ee3f0cb3f9403deebefa4d0d5f4bac29
   docVersion: 1.1.1
-  speakeasyVersion: 1.793.1
-  generationVersion: 2.928.0
-  releaseVersion: 0.29.1
-  configChecksum: e942ebbcb1976265de364ffd814555d6
+  speakeasyVersion: 1.795.1
+  generationVersion: 2.932.9
+  releaseVersion: 0.29.2
+  configChecksum: 235137bded878bf45479477e39e729bb
   repoURL: https://github.com/LukasParke/plexgo.git
   repoSubDirectory: .
   installationURL: https://github.com/LukasParke/plexgo
   published: true
 persistentEdits:
-  generation_id: 66453c38-48f3-4f0e-8c27-230887194ec0
-  pristine_commit_hash: e5c380d918ebf7d8d8e563c3fe6a77487d695a16
-  pristine_tree_hash: 99f2a0603f7b87be51d5af279dfce16f5c7cdc9e
+  generation_id: 8019c194-74db-42ee-b667-8b982a2a5398
+  pristine_commit_hash: e3fe1848923fa85c0500b28ed3396f2c74c5d7dc
+  pristine_tree_hash: a18cdfa5b426a5c1fa302af7b1ff93ba9a7da7c7
 features:
   go:
     acceptHeaders: 2.81.2
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.3
     constsAndDefaults: 0.1.14
-    core: 3.13.47
+    core: 3.13.48
     deepObjectParams: 0.1.1
     defaultEnabledRetries: 0.2.0
     deprecations: 2.81.3
@@ -45,7 +45,7 @@ features:
     responseFormat: 0.1.2
     retries: 2.84.3
     sdkHooks: 0.3.0
-    unions: 2.87.8
+    unions: 2.87.9
     uploadStreams: 0.1.0
 trackedFiles:
   .gitattributes:
@@ -1092,6 +1092,18 @@ trackedFiles:
     id: eea774a93a31
     last_write_checksum: sha1:c7df77ddc553ff0e51226c8eee8554529f5d0c43
     pristine_git_object: 02786deb73b26dcd0d88e34a73a0773bab7c858a
+  docs/models/operations/acceptinviteglobals.md:
+    id: a268d8e4c595
+    last_write_checksum: sha1:dd08938231227b78d056e6fb37cdd5b21b85efb9
+    pristine_git_object: 015a6388f7039925a14ac163e208370aa2de591e
+  docs/models/operations/acceptinviterequest.md:
+    id: 2a12747645d8
+    last_write_checksum: sha1:e85f507d0106cac1dfc4f6c39f4ceacc77db4f9f
+    pristine_git_object: eefe23adacf25382776179a2b3596da8c314fb01
+  docs/models/operations/acceptinviteresponse.md:
+    id: 11731fb1297c
+    last_write_checksum: sha1:584ad0d6b51fca05c23a6d2301cc36b06852f3cf
+    pristine_git_object: 372ecf6458b209519aff8f12c1b632d1c0b39b33
   docs/models/operations/action.md:
     id: 4adfe415d164
     last_write_checksum: sha1:9d1d645550e5e48012c06c40bd05200945f110f8
@@ -6682,8 +6694,8 @@ trackedFiles:
     pristine_git_object: 28f7498a638fa868edfdee9815ac445d2ae271d9
   docs/sdks/users/README.md:
     id: 5d80027045fe
-    last_write_checksum: sha1:3e9ae6431142de2dd7d80eb17b170a29ac0b0622
-    pristine_git_object: b51abf240d87d304504091ef33a6bdef9cade800
+    last_write_checksum: sha1:72597514bf711a97a24e48d0fea250f5e0a3631a
+    pristine_git_object: 6c4201e606cf31f4be98df894b3b90d3ef0a354f
   docs/types/date.md:
     id: 3a10eb495943
     last_write_checksum: sha1:45ab0675ea1c52ce29e9b5c70c4ef5c0ae29f2bf
@@ -6710,8 +6722,8 @@ trackedFiles:
     pristine_git_object: e132b1672530aeb767b6c18e2dc66cef8295a03d
   go.mod:
     id: c47645c391ad
-    last_write_checksum: sha1:585f553a23140dc2c4ee04356ac6b3bf53ffba64
-    pristine_git_object: a4abd6eb97861996c81ed65ba1730c224aa159b1
+    last_write_checksum: sha1:5fb77b1b808e1d9070d35d890bb193bd4a6eb929
+    pristine_git_object: 5b2089421922941f4bbcb8de3e403b21d242ca65
   hubs.go:
     id: 0a99b6c9b587
     last_write_checksum: sha1:84da2a9301d12d994486643010ccb74baf2e7687
@@ -7256,6 +7268,10 @@ trackedFiles:
     id: 80882d948371
     last_write_checksum: sha1:bd875190ce2914297e24fe9ff6b7e2c4ac658b4b
     pristine_git_object: ba6648d706af28d58b6b9612be6e126a3314461e
+  models/operations/acceptinvite.go:
+    id: f21f1a018324
+    last_write_checksum: sha1:7e1f734db382176763d836a1f72ce8ec68ef64df
+    pristine_git_object: b275bae90f0ac3eb35c8d0c9da299dcaab141745
   models/operations/addcollectionitems.go:
     id: ec749fe65a1f
     last_write_checksum: sha1:1e1e2ca9a3c065d8f67288686dc70baa9ae7866b
@@ -8922,8 +8938,8 @@ trackedFiles:
     pristine_git_object: 1cac9f1cae7d90aa4e4368e58cc8b794d89bbd00
   plexapi.go:
     id: 08c9dfa9b434
-    last_write_checksum: sha1:93db9df44470fa6d2b87eac5ce94f4e4fd4d8a13
-    pristine_git_object: 2ecd36383ea2b113eaab648dc403e2d56a649e15
+    last_write_checksum: sha1:fce3f52c40d648358eb9783311af839f13f0ad26
+    pristine_git_object: c49df2b0574dd3ea350dca056959d2a8355d6a22
   preferences.go:
     id: fcfda30d344e
     last_write_checksum: sha1:cf1ce4c4e01c87e63f4fd22dbbdb727403c72458
@@ -8986,8 +9002,8 @@ trackedFiles:
     pristine_git_object: 9bad5a86bce892ef560b1e904aae8dcb3f3dd6ad
   users.go:
     id: 7e42b6a24db6
-    last_write_checksum: sha1:9248af9c2b739ef234410fe0df145c8f1e075153
-    pristine_git_object: 2247bc1b871be9eedf124c500b0e85b13e7c5328
+    last_write_checksum: sha1:47357d9758c274ffaa205430fe879ad4b33160e0
+    pristine_git_object: 7ad97c377027c3e1a5b62983ff03fc9d7b51c0a6
 examples:
   getServerCapabilities:
     speakeasy-default-get-server-capabilities:
@@ -18437,9 +18453,37 @@ examples:
       responses:
         "200":
           application/json: {"MediaContainer": {"identifier": "com.plexapp.plugins.library", "size": 1, "Metadata": []}}
+  acceptInvite:
+    speakeasy-default-accept-invite:
+      parameters:
+        path:
+          inviteId: 530502
+        query:
+          friend: 1
+          home: 1
+          server: 1
+        header:
+          accepts: "application/xml"
+          X-Plex-Client-Identifier: "abc123"
+          X-Plex-Product: "Plex for Roku"
+          X-Plex-Version: "2.4.1"
+          X-Plex-Platform: "Roku"
+          X-Plex-Platform-Version: "4.3 build 1057"
+          X-Plex-Device: "Roku 3"
+          X-Plex-Model: "4200X"
+          X-Plex-Device-Vendor: "Roku"
+          X-Plex-Device-Name: "Living Room TV"
+          X-Plex-Marketplace: "googlePlay"
+      responses:
+        "200":
+          application/xml: "0xA9fA681439"
+        "401":
+          application/json: {"errors": [{"code": 1, "message": "string value", "status": 1}]}
 examplesVersion: 1.0.2
 generatedTests: {}
-releaseNotes: "## Go SDK Changes:\n* `PlexApi.Library.Autocomplete()`: \n  *  `request.Request.MediaType` **Removed** (Breaking ⚠️)\n* `PlexApi.Library.GetCommon()`: \n  *  `request.Request.MediaType` **Removed** (Breaking ⚠️)\n* `PlexApi.Library.GetFirstCharacters()`:  `request.Request` **Changed** (Breaking ⚠️)\n* `PlexApi.Content.ListContent()`:  `request.Request` **Changed** (Breaking ⚠️)\n"
+releaseNotes: |
+  ## Go SDK Changes:
+  * `PlexApi.Users.AcceptInvite()`: **Added**
 generatedFiles:
   - .gitattributes
   - /models/components/accepts.go
